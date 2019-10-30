@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<h4>Actualizar</h4>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- {{ form.as_p }} -->
+    {% for field in form.visible_fields %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field|add_class:'form-control' }}
+        {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+    {% endfor %}
+   
+    <button type="submit" class="btn btn-primary">Aceptar</button>
+    <a href="../" class="btn btn-primary">Volver</a>
+   
+</form>
+{% endblock %}
