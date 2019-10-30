@@ -7,4 +7,8 @@ admin.site.register(TRAINERS)
 admin.site.register(GROUPS)
 admin.site.register(WEEKDAYS)
 admin.site.register(HOURS)
+admin.site.register(MEMBERSHIP_TYPES)
+admin.site.register(CLASS_TYPES)
+admin.site.register(CLIENTS_ATTENDANCES)
+admin.site.register(TRAINERS_ATTENDANCES)
 # Register your models here.
