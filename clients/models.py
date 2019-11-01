@@ -40,8 +40,8 @@ class CLIENTS_ATTENDANCES(models.Model):
 
 class TRAINERS_ATTENDANCES(models.Model):
     attendance_id = models.AutoField(primary_key=True)
-    trainer_id = models.ForeignKey('CLIENTS', models.DO_NOTHING, db_column='client_id', blank=True)
-    date = models.DateField()
+    trainer_id = models.ForeignKey('TRAINERS', models.DO_NOTHING, db_column='trainer_id', blank=True)
+    date = models.DateField(auto_now_add=True)
     description = models.CharField(max_length=10, blank=True, null=False)
 
     class Meta:

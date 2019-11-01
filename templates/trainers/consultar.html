@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h4>Detalles</h4>
+        <p><span class="txt_negrita">Nombre:</span> <div class="form-control"> {{object.trainer_name}}</div></p>
+        <p><span class="txt_negrita">Apellidos:</span> <div class="form-control"> {{trainers.trainer_surname}}</div></p>
+        <p><span class="txt_negrita">Fecha de nacimiento:</span> <div class="form-control"> {{trainers.trainer_birthday}}</div></p>
+        <p><span class="txt_negrita">Telefono:</span> <div class="form-control">{{trainers.trainer_phone}} </div></p>
+        <p><span class="txt_negrita">Telefono de emergencia:</span> <div class="form-control"> {{trainers.trainer_emergency_phone}}</div></p>
+        <p><span class="txt_negrita">Email:</span> <div class="form-control"> {{trainers.trainer_email}}</div></p>
+        <p><span class="txt_negrita">Genero:</span> <div class="form-control"> {{trainers.trainer_gender}}</div></p>
+        <p><span class="txt_negrita">Domicilio:</span> <div class="form-control"> {{trainers.trainer_address}}</div></p>
+        <p><span class="txt_negrita">RFC:</span> <div class="form-control"> {{trainers.trainer_rfc}}</div></p>
+    <!-- Botón para volver a la vista principal (Home) -->
+    <a href="../" class="btn btn-primary">Volver</a>
+{% endblock %}

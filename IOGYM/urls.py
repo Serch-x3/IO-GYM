@@ -21,6 +21,21 @@ from clients.views import *
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
+
+    path('trainers/asistencia', trainersAsistencia.as_view(template_name = "trainers/asistencia.html"), name='trainer asistencia'),
+
+    path('trainers/', trainersAdministrar.as_view(template_name = "trainers/index.html"), name='trainer administrar'),
+
+    path('trainers/eliminar/<int:pk>', trainersEliminar.as_view(),name='trainer eliminar'),
+
+    path('trainers/consultar/<int:pk>', trainersConsulta.as_view(template_name = "trainers/consultar.html"), name='trainer consultar'),
+
+    path('trainers/editar/<int:pk>', trainersEditar.as_view(template_name = "trainers/editar.html"), name='trainer editar'),
+
+    path('trainers/registrar', trainersRegistrar.as_view(template_name = "trainers/registrar.html"), name='trainer registrar'),
+
+    path('', clientsAttendancesCrear.as_view(template_name = "index.html"), name='index'),
+
     # La ruta 'leer' en donde listamos todos los registros o clients de la Base de Datos
     path('clients/', clientsListado.as_view(template_name = "clients/index.html"), name='leer'),
  
