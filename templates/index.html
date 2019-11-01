@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
 {% block content %}
 
-<h1>IO-GYM</h1>
+<div class="container" align="center">
+  <form method="post" enctype="multipart/form-data">
+    <img class="mr-5" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="40%">
+    <h2>Ingreso de Cliente</h2>
+    <div class="row">
+      <div class="col">
+      </div>
+      <div class="col col-8 col-sm-6 col-lg-4">
 
         {% csrf_token %}
 
@@ -20,23 +29,6 @@
       </div>
     </div>
     <button type="submit" onclick="check" class="btn btn-primary">Ingresar</button>
-
-    <div id="noClientSelected" class="alert alert-danger collapse" role="alert">
-      This is a danger alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
-    </div>
-
-    <script type="text/javascript">
-      $('#noClientSelected').hide();
-      function check() {
-        var e = document.getElementById("id_client_id");
-        var strUser = e.options[e.selectedIndex].text;
-        if(strUser=null){
-          $('#noClientSelected').show();
-        }
-      }
-
-    </script>
-
     <div class="fixed-bottom mb-5 mr-5" align="right">
       <a class="btn btn-success" href="/admin">Administrador</a>
       <a class="btn btn-success" href="/trainers/asistencia">Entrenador</a>

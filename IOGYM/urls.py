@@ -19,7 +19,6 @@ from . import views
 from clients.views import *
 
 urlpatterns = [
-    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
 
     path('trainers/asistencia', trainersAsistencia.as_view(template_name = "trainers/asistencia.html"), name='trainer asistencia'),
@@ -38,16 +37,16 @@ urlpatterns = [
 
     # La ruta 'leer' en donde listamos todos los registros o clients de la Base de Datos
     path('clients/', clientsListado.as_view(template_name = "clients/index.html"), name='leer'),
- 
-    # La ruta 'detalles' en donde mostraremos una página con los detalles de un postre o registro 
+
+    # La ruta 'detalles' en donde mostraremos una página con los detalles de un postre o registro
     path('clients/detalle/<int:pk>', clientsDetalle.as_view(template_name = "clients/detalles.html"), name='detalles'),
- 
-    # La ruta 'crear' en donde mostraremos un formulario para crear un nuevo postre o registro  
+
+    # La ruta 'crear' en donde mostraremos un formulario para crear un nuevo postre o registro
     path('clients/crear', clientsCrear.as_view(template_name = "clients/crear.html"), name='crear'),
- 
-    # La ruta 'actualizar' en donde mostraremos un formulario para actualizar un postre o registro de la Base de Datos 
-    path('clients/editar/<int:pk>', clientsActualizar.as_view(template_name = "clients/actualizar.html"), name='actualizar'), 
- 
-    # La ruta 'eliminar' que usaremos para eliminar un postre o registro de la Base de Datos 
+
+    # La ruta 'actualizar' en donde mostraremos un formulario para actualizar un postre o registro de la Base de Datos
+    path('clients/editar/<int:pk>', clientsActualizar.as_view(template_name = "clients/actualizar.html"), name='actualizar'),
+
+    # La ruta 'eliminar' que usaremos para eliminar un postre o registro de la Base de Datos
     path('clients/eliminar/<int:pk>', clientsEliminar.as_view(), name='eliminar'),
 ]

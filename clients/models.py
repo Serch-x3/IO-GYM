@@ -12,9 +12,15 @@ class MEMBERSHIPS(models.Model):
         managed = True
         db_table = 'MEMBERSHIPS'
 
+    def __str__(self):
+        return self.client_id
+
 class MEMBERSHIP_TYPES(models.Model):
     membership_type_id = models.AutoField(primary_key=True)
     description = models.CharField(max_length=60, blank=True, null=False)
+
+    def __str__(self):
+        return self.description
 
     class Meta:
         managed = True
@@ -29,14 +35,16 @@ class CLASS_TYPES(models.Model):
         managed = True
         db_table = 'CLASS_TYPES'
 
+
 class CLIENTS_ATTENDANCES(models.Model):
     attendance_id = models.AutoField(primary_key=True)
-    client_id = models.ForeignKey('CLIENTS', models.DO_NOTHING, db_column='client_id', blank=True)
-    date = models.DateField()
+    client_id = models.ForeignKey('CLIENTS', models.DO_NOTHING, db_column='client_id', blank=True, null=False)
+    date = models.DateField(auto_now_add=True)
 
     class Meta:
         managed = True
         db_table = 'CLIENT_ATTENDANCES'
+
 
 class TRAINERS_ATTENDANCES(models.Model):
     attendance_id = models.AutoField(primary_key=True)
@@ -57,10 +65,13 @@ class CLIENTS(models.Model):
     client_emergency_phone = models.IntegerField(blank=True)
     client_email = models.CharField(max_length=40, blank=True, null=True)
     client_gender = models.CharField(max_length=1, blank=True, null=True)
-    
+
     class Meta:
         managed = True
         db_table = 'CLIENTS'
+
+    def __str__(self):
+        return self.client_name+' '+self.client_surname
 
 class GYMCLASSES(models.Model):
     gymclass_id = models.AutoField(primary_key=True)
@@ -68,6 +79,8 @@ class GYMCLASSES(models.Model):
     class Meta:
         managed = True
         db_table = 'GYMCLASSES'
+    def __str__(self):
+        return self.gymclass_name
 
 class TRAINERS(models.Model):
     trainer_id = models.AutoField(primary_key=True)
@@ -86,21 +99,30 @@ class TRAINERS(models.Model):
         managed = True
         db_table = 'TRAINNERS'
 
+    def __str__(self):
+        return self.trainer_name+' '+self.trainer_surname
+
 class WEEKDAYS(models.Model):
     weekdays_id = models.AutoField(primary_key=True)
     weekdays_name = models.CharField(max_length=15)
-    
+
     class Meta:
         managed = True
         db_table = 'WEEKDAYS'
 
+    def __str__(self):
+        return self.weekdays_name
+
 class HOURS(models.Model):
     hour_id = models.AutoField(primary_key=True)
     hour_name = models.CharField(max_length=20)
-    
+
     class Meta:
         managed = True
         db_table = 'HOURS'
+    def __str__(self):
+        return self.hour_name
+
 
 class GROUPS(models.Model):
     group_id = models.AutoField(primary_key=True)
@@ -111,5 +133,3 @@ class GROUPS(models.Model):
     class Meta:
         managed = True
         db_table = 'GROUPS'
-
-    
