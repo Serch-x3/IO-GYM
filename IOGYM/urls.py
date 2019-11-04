@@ -17,9 +17,21 @@ from django.contrib import admin
 from django.urls import path
 from . import views
 from clients.views import *
+from django.conf.urls import url
+from clients.filters import *
+from django_filters.views import FilterView
 
 urlpatterns = [
+
+    path('trainers/', FilterView.as_view(filterset_class=TrainersFilter,template_name='trainers/index.html'), name='search trainer'),
+
+    path('clients/', FilterView.as_view(filterset_class=ClientsFilter,template_name='clients/index.html'), name='search client'),
+
     path('admin/', admin.site.urls),
+
+    path('admin/asistencias', clientsView.as_view(template_name = "admin/asistencias.html"), name='admin asistencias'),
+
+    path('admin/index', trainersAsistencia.as_view(template_name = "admin/index.html"), name='admin index'),
 
     path('trainers/asistencia', trainersAsistencia.as_view(template_name = "trainers/asistencia.html"), name='trainer asistencia'),
 

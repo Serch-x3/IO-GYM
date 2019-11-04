@@ -10,6 +10,15 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 from django import forms
+from .filters import *
+
+def searchClient(request):
+    clients_list = User.objects.all()
+    clients_filter = UserFilter(request.GET, queryset=user_list)
+    return render(request, '/clients/search.html', {'filter': clients_filter})
+
+class clientsView(ListView):
+    model=clientesView
 
 class trainersAsistencia(SuccessMessageMixin, CreateView):
     model=TRAINERS_ATTENDANCES

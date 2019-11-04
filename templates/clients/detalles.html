@@ -2,6 +2,11 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
+<script>
+function goBack() {
+  window.history.back()
+}
+</script>
 
 <div class="container">
   <div class="row">
@@ -13,7 +18,7 @@
     </div>
     <div class="col" align="center">
       <!-- Botón para volver a la vista principal (Home) -->
-      <a href="../" class="btn btn-primary mt-5">Atrás</a>
+      <a href="#" onclick="goBack()" class="btn btn-primary mt-5">Atrás</a>
     </div>
   </div>
 

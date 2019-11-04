@@ -1,6 +1,14 @@
 from django.db import models
 # Create your models here.
 
+class clientesView(models.Model):
+    id=models.CharField(),
+    date=models.DateField();
+
+    class Meta:
+        managed = False
+        db_table = 'clientesView'
+
 class MEMBERSHIPS(models.Model):
     membership_id = models.AutoField(primary_key=True)
     register_date = models.DateField()

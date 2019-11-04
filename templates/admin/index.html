@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<script>
+function goBack() {
+  window.history.back()
+}
+</script>
+
+<div class="container">
+    <div class="row">
+      <div class="col-3">
+        <img class="mr-5" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="100%">
+      </div>
+      <div class="col-6" align="center">
+        <h2 class="mt-5">Administración</h2>
+      </div>
+      <div class="col-3" align="center">
+        <a href="#" onclick="goBack()"class="btn btn-primary mt-5">Atrás</a>
+      </div>
+    </div>
+
+    <div class="row mb-5" align="center">
+      <div class="col">
+        <a href="../../clients" class="btn btn-primary">Administrar Clientes</a>
+      </div>
+      <div class="col">
+        <a href="../../trainers" class="btn btn-primary">Administrar Entrenadores</a>
+      </div>
+      <div class="col">
+        <a href="../../clients" class="btn btn-primary">Administrar Clientes x2</a>
+      </div>
+    </div>
+
+    <div class="alert alert-success mt-5" role="alert">
+      <h4 class="alert-heading">¡Bienvenido a IO-GYM!</h4>
+      <p>Esta es la página de administración de IO-GYM. Puedes administrar los clientes, entrenadores y hacer consultas de las estadísticas de tu gimnasio. Sólo elige la opción que usted desee</p>
+      <hr>
+      <p class="mb-0">Si considera que hay un problema con el sistema o requiere ayuda personalizada, comuníquese con el soporte técnico de AfterByte al (+521) 341-846-7852 o envíe un correo a afterbyte@gmail.com (nos dio flojera hacer un formulario de contacto gg)</p>
+  </div>
+</div>
+
+{% endblock %}
