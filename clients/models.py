@@ -1,4 +1,5 @@
 from django.db import models
+from model_utils import Choices
 # Create your models here.
 
 class clientesView(models.Model):
@@ -65,6 +66,7 @@ class TRAINERS_ATTENDANCES(models.Model):
         db_table = 'TRAINNERS_ATTENDANCES'
 
 class CLIENTS(models.Model):
+    options=Choices('M','F')
     client_id = models.AutoField(primary_key=True)
     client_name = models.CharField(max_length=40, blank=True, null=False)
     client_surname = models.CharField(max_length=40, blank=True, null=True)
@@ -72,7 +74,7 @@ class CLIENTS(models.Model):
     client_phone = models.IntegerField(blank=True, null=True)
     client_emergency_phone = models.IntegerField(blank=True)
     client_email = models.CharField(max_length=40, blank=True, null=True)
-    client_gender = models.CharField(max_length=1, blank=True, null=True)
+    client_gender = models.CharField(choices=options,max_length=1, blank=True, null=True)
 
     class Meta:
         managed = True
@@ -90,14 +92,20 @@ class GYMCLASSES(models.Model):
     def __str__(self):
         return self.gymclass_name
 
+    def delete(self, *args, **kwargs):
+        GROUPS.objects.filter(gymclass_id=self.gymclass_id).update(gymclass_id=None)
+        CLASS_TYPES.objects.filter(gymclass_id=self.gymclass_id).update(gymclass_id=None)
+        super(GYMCLASSES, self).delete(*args, **kwargs)
+
 class TRAINERS(models.Model):
+    options=Choices('M','F')
     trainer_id = models.AutoField(primary_key=True)
     trainer_name = models.CharField(max_length=40, blank=True)
     trainer_surname = models.CharField(max_length=40, blank=True, null=True)
     trainer_birthday = models.DateField()
     trainer_phone = models.IntegerField(blank=True, null=True)
     trainer_email = models.CharField(max_length=40, blank=True, null=True)
-    trainer_gender = models.CharField(max_length=1, blank=True, null=True)
+    trainer_gender = models.CharField(choices=options, max_length=1, blank=True, null=True)
     trainer_address = models.CharField(max_length=60, blank=True, null=True)
     trainer_emergency_phone = models.IntegerField(blank=True)
     trainer_rfc = models.CharField(max_length=13, blank=True, null=True)
@@ -111,8 +119,9 @@ class TRAINERS(models.Model):
         return self.trainer_name+' '+self.trainer_surname
 
 class WEEKDAYS(models.Model):
+    options=Choices('Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo')
     weekdays_id = models.AutoField(primary_key=True)
-    weekdays_name = models.CharField(max_length=15)
+    weekdays_name = models.CharField(unique=True, choices=options,max_length=15)
 
     class Meta:
         managed = True
@@ -120,6 +129,10 @@ class WEEKDAYS(models.Model):
 
     def __str__(self):
         return self.weekdays_name
+
+    def delete(self, *args, **kwargs):
+        GROUPS.objects.filter(weekday_id=self.weekdays_id).update(weekday_id=None)
+        super(WEEKDAYS, self).delete(*args, **kwargs)
 
 class HOURS(models.Model):
     hour_id = models.AutoField(primary_key=True)
@@ -130,6 +143,10 @@ class HOURS(models.Model):
         db_table = 'HOURS'
     def __str__(self):
         return self.hour_name
+
+    def delete(self, *args, **kwargs):
+        GROUPS.objects.filter(hour_id=self.hour_id).update(hour_id=None)
+        super(HOURS, self).delete(*args, **kwargs)
 
 
 class GROUPS(models.Model):

@@ -12,10 +12,130 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django import forms
 from .filters import *
 
-def searchClient(request):
-    clients_list = User.objects.all()
-    clients_filter = UserFilter(request.GET, queryset=user_list)
-    return render(request, '/clients/search.html', {'filter': clients_filter})
+class GymClassesList(ListView):
+    model=GYMCLASSES
+
+class GymClassesDelete(SuccessMessageMixin, DeleteView):
+    model = GYMCLASSES
+    form = GYMCLASSES
+    fields = "__all__"
+
+    # Redireccionamos a la página principal luego de eliminar un registro o postre
+    def get_success_url(self):
+        success_message = 'Entrenador Eliminado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+        messages.success (self.request, (success_message))
+        return reverse('index gymclasses') # Redireccionamos a la vista principal 'leer'
+
+
+class GymClassesEdit(SuccessMessageMixin, UpdateView):
+    model = GYMCLASSES
+    form = GYMCLASSES
+    fields = "__all__"
+    success_message = 'Cliente Actualizado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+
+    # Redireccionamos a la página principal luego de actualizar un registro o postre
+    def get_success_url(self):
+        return reverse('index gymclases') # Redireccionamos a la vista principal 'leer'
+
+class GymClassesDetail(DetailView):
+    model=GYMCLASSES
+
+class GymClassesCreate(SuccessMessageMixin, CreateView):
+    model = GYMCLASSES
+    form = GYMCLASSES
+    fields = "__all__"
+    success_message = 'Entrenador Creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+
+    # Redireccionamos a la página principal luego de crear un registro o postre
+    def get_success_url(self):
+        return reverse('index gymclasses') # Redireccionamos a la vista principal 'leer'
+
+class GroupsList(ListView):
+    model=GROUPS
+
+class GroupsDelete(SuccessMessageMixin, DeleteView):
+    model = GROUPS
+    form = GROUPS
+    fields = "__all__"
+
+    # Redireccionamos a la página principal luego de eliminar un registro o postre
+    def get_success_url(self):
+        success_message = 'Entrenador Eliminado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+        messages.success (self.request, (success_message))
+        return reverse('index groups') # Redireccionamos a la vista principal 'leer'
+
+
+class GroupsEdit(SuccessMessageMixin, UpdateView):
+    model = GROUPS
+    form = GROUPS
+    fields = "__all__"
+    success_message = 'Cliente Actualizado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+
+    # Redireccionamos a la página principal luego de actualizar un registro o postre
+    def get_success_url(self):
+        return reverse('index groups') # Redireccionamos a la vista principal 'leer'
+
+class GroupsDetail(DetailView):
+    model=GROUPS
+
+class GroupsCreate(SuccessMessageMixin, CreateView):
+    model = GROUPS
+    form = GROUPS
+    fields = "__all__"
+    success_message = 'Entrenador Creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+
+    # Redireccionamos a la página principal luego de crear un registro o postre
+    def get_success_url(self):
+        return reverse('index groups') # Redireccionamos a la vista principal 'leer'
+
+
+class hoursCreate(SuccessMessageMixin, CreateView):
+    model = HOURS
+    form = HOURS
+    fields = "__all__"
+    success_message = 'Creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+
+    # Redireccionamos a la página principal luego de crear un registro o postre
+    def get_success_url(self):
+        return reverse('index hours') # Redireccionamos a la vista principal 'leer'
+
+class hoursDelete(SuccessMessageMixin, DeleteView):
+    model = HOURS
+    form = HOURS
+    fields = "__all__"
+
+    # Redireccionamos a la página principal luego de eliminar un registro o postre
+    def get_success_url(self):
+        success_message = 'Entrenador Eliminado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+        messages.success (self.request, (success_message))
+        return reverse('index hours') # Redireccionamos a la vista principal 'leer'
+
+class hoursView(ListView):
+    model= HOURS
+
+class weekdaysCreate(SuccessMessageMixin, CreateView):
+    model = WEEKDAYS
+    form = WEEKDAYS
+    fields = "__all__"
+    success_message = 'Creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+
+    # Redireccionamos a la página principal luego de crear un registro o postre
+    def get_success_url(self):
+        return reverse('index weekdays') # Redireccionamos a la vista principal 'leer'
+
+class weekdayDelete(SuccessMessageMixin, DeleteView):
+    model = WEEKDAYS
+    form = WEEKDAYS
+    fields = "__all__"
+
+    # Redireccionamos a la página principal luego de eliminar un registro o postre
+    def get_success_url(self):
+        success_message = 'Entrenador Eliminado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+        messages.success (self.request, (success_message))
+        return reverse('index weekdays') # Redireccionamos a la vista principal 'leer'
+
+class weekdaysView(ListView):
+    model= WEEKDAYS
 
 class clientsView(ListView):
     model=clientesView

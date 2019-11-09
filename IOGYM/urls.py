@@ -23,6 +23,38 @@ from django_filters.views import FilterView
 
 urlpatterns = [
 
+    path('admin/gymclasses/index', GymClassesList.as_view(template_name = "admin/gymclasses/index.html"), name='index gymclasses'),
+
+    path('admin/gymclasses/delete/<int:pk>', GymClassesDelete.as_view(),name='delete gymclasses'),
+
+    path('admin/gymclasses/detail/<int:pk>', GymClassesDetail.as_view(template_name = "admin/gymclasses/detail.html"), name='detail gymclasses'),
+
+    path('admin/gymclasses/edit/<int:pk>', GymClassesEdit.as_view(template_name = "admin/gymclasses/edit.html"), name='edit gymclasses'),
+
+    path('admin/gymclasses/create',GymClassesCreate.as_view(template_name = "admin/gymclasses/create.html"), name='create gymclasses'),
+
+    path('admin/groups/index', GroupsList.as_view(template_name = "admin/groups/index.html"), name='index groups'),
+
+    path('admin/groups/delete/<int:pk>', GroupsDelete.as_view(),name='gadmin/roups delete'),
+
+    path('admin/groups/detail/<int:pk>', GroupsDetail.as_view(template_name = "admin/groups/detail.html"), name='detail groups'),
+
+    path('admin/groups/edit/<int:pk>', GroupsEdit.as_view(template_name = "admin/groups/edit.html"), name='edit groups'),
+
+    path('admin/groups/create',GroupsCreate.as_view(template_name = "admin/groups/create.html"), name='create groups'),
+
+    path('admin/hours/create', hoursCreate.as_view(template_name = "admin/hours/create.html"), name='create hours'),
+
+    path('admin/hours/delete/<int:pk>', hoursDelete.as_view(),name='delete hours'),
+
+    path('admin/hours/index', hoursView.as_view(template_name="admin/hours/index.html"), name='index hours'),
+
+    path('admin/weekdays/create', weekdaysCreate.as_view(template_name = "admin/weekdays/create.html"), name='create weekdays'),
+
+    path('admin/weekdays/delete/<int:pk>', weekdayDelete.as_view(),name='delete weekays'),
+
+    path('admin/weekdays/index', weekdaysView.as_view(template_name="admin/weekdays/index.html"), name='index weekdays'),
+
     path('trainers/', FilterView.as_view(filterset_class=TrainersFilter,template_name='trainers/index.html'), name='search trainer'),
 
     path('clients/', FilterView.as_view(filterset_class=ClientsFilter,template_name='clients/index.html'), name='search client'),

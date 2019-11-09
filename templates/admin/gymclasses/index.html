@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3">
+      <img class="mr-10" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="80%">
+    </div>
+    <div class="col" align="center">
+      <h2 class="mt-5">Administración de Clases</h2>
+    </div>
+    <div class="col-3 mt-5" align="center">
+      <a type="button" class="btn btn-success" href="create">Nuevo</a>
+      <a type="button" class="btn btn-primary" href="../../admin/index">Atrás</a>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-2">
+  <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Clase</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+      <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
+      {% for gymclasses in object_list %}
+        <tr>
+          <td>{{ gymclasses.gymclass_name}}</td>
+          <td>
+            <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
+            <form method="POST" action="delete/{{gymclasses.gymclass_id}}">
+              {% csrf_token %}
+              <div class="btn-group">
+
+                <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
+                <a href="detail/{{gymclasses.gymclass_id}}" title="Ver" class="btn btn-primary">Ver </a>
+                <a href="edit/{{gymclasses.gymclass_id}}" title="Editar"class="btn btn-secondary">Editar </a>
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                  Eliminar
+                </button>
+              </div>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+</div>
+
+  <script type="text/javascript">
+    function eliminar() {
+      var x = confirm("¿Eliminar clase?\nLos grupos y membresías relacionadas con este elemento serán alteradas");
+      if (x)
+        return true;
+      else
+        return false;
+    }
+  </script>
+
+{% endblock %}

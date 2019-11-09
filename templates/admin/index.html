@@ -21,24 +21,52 @@ function goBack() {
       </div>
     </div>
 
-    <div class="row mb-5" align="center">
-      <div class="col">
-        <a href="../../clients" class="btn btn-primary">Administrar Clientes</a>
-      </div>
-      <div class="col">
-        <a href="../../trainers" class="btn btn-primary">Administrar Entrenadores</a>
-      </div>
-      <div class="col">
-        <a href="../../clients" class="btn btn-primary">Administrar Clientes x2</a>
-      </div>
-    </div>
-
     <div class="alert alert-success mt-5" role="alert">
       <h4 class="alert-heading">¡Bienvenido a IO-GYM!</h4>
       <p>Esta es la página de administración de IO-GYM. Puedes administrar los clientes, entrenadores y hacer consultas de las estadísticas de tu gimnasio. Sólo elige la opción que usted desee</p>
       <hr>
       <p class="mb-0">Si considera que hay un problema con el sistema o requiere ayuda personalizada, comuníquese con el soporte técnico de AfterByte al (+521) 341-846-7852 o envíe un correo a afterbyte@gmail.com (nos dio flojera hacer un formulario de contacto gg)</p>
   </div>
+</div>
+
+<div class="container mb-2">
+  <div class="accordion" id="accordionExample">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Configuración de gimnasio
+        </button>
+      </h2>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="card-body">
+        <a class="btn btn-primary" href="weekdays/index">Dias laborales</a>
+        <a class="btn btn-primary" href="hours/index">Horarios de clases</a>
+        <a class="btn btn-primary" href="groups/index">Grupos</a>
+        <a class="btn btn-primary" href="gymclasses/index">Clases</a>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Administración de usuarios
+        </button>
+      </h2>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+        <a href="../../clients" class="btn btn-primary">Clientes</a>
+        <a href="asistencias" class="btn btn-primary">Asistencia de Clientes</a>
+        <a href="../../trainers" class="btn btn-primary">Entrenadores</a>
+        <a href="asistencias" class="btn btn-warning">Asistencia de Entrenadores(En desarrollo)</a>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 {% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<script>
+function goBack() {
+  window.history.back()
+}
+</script>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <img class="mr-5" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="100%">
+    </div>
+    <div class="col-6 mt-5" align="center">
+      <h2>Detalles</h2>
+    </div>
+    <div class="col" align="center">
+      <!-- Botón para volver a la vista principal (Home) -->
+      <a href="#" onclick="goBack()" class="btn btn-primary mt-5">Atrás</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <p><span class="txt_negrita">ID Grupo:</span> <div class="form-control"> {{object.group_id}}</div></p>
+      <p><span class="txt_negrita">Clase:</span> <div class="form-control"> {{groups.gymclass_id}}</div></p>
+      <p><span class="txt_negrita">Hora:</span> <div class="form-control"> {{groups.hour_id}}</div></p>
+    </div>
+    <div class="col">
+      <p><span class="txt_negrita">Entrenador:</span> <div class="form-control">{{groups.trainer_id}} </div></p>
+      <p><span class="txt_negrita">Dia:</span> <div class="form-control"> {{groups.weekday_id}}</div></p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
