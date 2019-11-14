@@ -3,14 +3,52 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import *
+from clients.forms import *
 
 from django.urls import reverse
+from django.shortcuts import redirect
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
 from django import forms
 from .filters import *
+
+class MembershipList(ListView):
+    model=MEMBERSHIPS
+
+class MembershipDelete(SuccessMessageMixin, DeleteView):
+    model = MEMBERSHIPS
+    form = MEMBERSHIPS
+    fields = "__all__"
+
+    # Redireccionamos a la página principal luego de eliminar un registro o postre
+    def get_success_url(self):
+        success_message = 'Entrenador Eliminado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+        messages.success (self.request, (success_message))
+        return reverse('index membership') # Redireccionamos a la vista principal 'leer'
+
+class MembershipDetails(DetailView):
+    model=MEMBERSHIPS
+
+class MembershipEdit(SuccessMessageMixin,UpdateView):
+    form_class = MembershipForm
+    model = MEMBERSHIPS
+    success_message = 'Cliente Actualizado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+
+    # Redireccionamos a la página principal luego de actualizar un registro o postre
+    def get_success_url(self):
+        return reverse('index membership') # Redireccionamos a la vista principal 'leer'
+
+class MembershipCreate(SuccessMessageMixin,CreateView):
+    form_class = MembershipForm
+    model = MEMBERSHIPS
+    success_message = 'Entrenador Creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+
+    # Redireccionamos a la página principal luego de crear un registro o postre
+    def form_valid(self, form):
+        data = form.save()  # save form
+        return redirect('edit membership', pk=data.membership_id)
 
 class GymClassesList(ListView):
     model=GYMCLASSES
@@ -207,8 +245,12 @@ class clientsCrear(SuccessMessageMixin, CreateView):
     success_message = 'Cliente Creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
 
     # Redireccionamos a la página principal luego de crear un registro o postre
-    def get_success_url(self):
-        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+
+    def form_valid(self, form):
+        data = form.save()  # save form
+        membership=MEMBERSHIPS(client_id=CLIENTS(client_id=data.client_id))
+        membership.save()
+        return redirect('edit membership', pk=membership.membership_id)
 
 class clientsActualizar(SuccessMessageMixin, UpdateView):
     model = CLIENTS

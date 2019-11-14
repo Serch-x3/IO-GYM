@@ -6,7 +6,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-3">
-      <img class="mr-10" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="80%">
+      <img class="mr-10" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="50%">
     </div>
     <div class="col" align="center">
       <h2 class="mt-5">Administración de Entrenadores</h2>
@@ -68,10 +68,10 @@
           <th>Apellidos</th>
           <th>Fecha de nacimiento</th>
           <th>Telefono</th>
+          <th>Telefono de Emergencia</th>
           <th>Email</th>
           <th>Genero</th>
           <th>Domicilio</th>
-          <th>Telefono de Emergencia</th>
           <th>RFC</th>
           <th>Acciones</th>
         </tr>
@@ -84,10 +84,10 @@
           <td>{{ trainers.trainer_surname }}</td>
           <td>{{ trainers.trainer_birthday }}</td>
           <td>{{ trainers.trainer_phone }}</td>
+          <td>{{ trainers.trainer_emergency_phone }}</td>
           <td>{{ trainers.trainer_email }}</td>
           <td>{{ trainers.trainer_gender }}</td>
           <td>{{ trainers.trainer_address }}</td>
-          <td>{{ trainers.trainer_emergency_phone }}</td>
           <td>{{ trainers.trainer_rfc }}</td>
           <td>
             <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->

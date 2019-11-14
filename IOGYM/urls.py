@@ -22,6 +22,12 @@ from clients.filters import *
 from django_filters.views import FilterView
 
 urlpatterns = [
+    path('admin/membership/delete/<int:pk>', MembershipDelete.as_view(),name='create membership'),
+    path('admin/membership/index', MembershipList.as_view(template_name="admin/membership/index.html"),name='index membership'),
+    path('admin/membership/index', GymClassesList.as_view()),
+    path('admin/membership/detail/<int:pk>', MembershipDetails.as_view(template_name="admin/membership/details.html"),name='details membership'),
+    path('admin/membership/edit/<int:pk>', MembershipEdit.as_view(template_name="admin/membership/edit.html"),name='edit membership'),
+    path('admin/membership/create', MembershipCreate.as_view(template_name="admin/membership/create.html"),name='create membership'),
 
     path('admin/gymclasses/index', GymClassesList.as_view(template_name = "admin/gymclasses/index.html"), name='index gymclasses'),
 

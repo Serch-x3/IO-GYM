@@ -11,7 +11,7 @@ function goBack() {
 <div class="container">
     <div class="row">
       <div class="col-3">
-        <img class="mr-5" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="100%">
+        <img class="mr-5" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="50%">
       </div>
       <div class="col-6" align="center">
         <h2 class="mt-5">Administración</h2>
@@ -59,10 +59,32 @@ function goBack() {
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
       <div class="card-body">
-        <a href="../../clients" class="btn btn-primary">Clientes</a>
-        <a href="asistencias" class="btn btn-primary">Asistencia de Clientes</a>
-        <a href="../../trainers" class="btn btn-primary">Entrenadores</a>
-        <a href="asistencias" class="btn btn-warning">Asistencia de Entrenadores(En desarrollo)</a>
+        <div class="row" align="center">
+          <div class="col-6">
+            <div class="card" style="width: 18rem;">
+              <div class="card-header">
+                Clientes
+              </div>
+              <ul class="list-group list-group-flush">
+                <a href="../../clients" class="btn btn-light list-group-item">Administración de Clientes</a>
+                <a href="membership/index" class="btn btn-light list-group-item">Membresías</a>
+                <a href="asistencias" class="btn btn-light list-group-item">Asistencia de Clientes</a>
+              </ul>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card" style="width: 18rem;">
+              <div class="card-header">
+                Entrenadores
+              </div>
+              <ul class="list-group list-group-flush">
+                <a href="../../trainers" class="btn btn-light list-group-item">Administración de Entrenadores</a>
+                <a href="asistencias" class="btn btn-warning list-group-item">Asistencia de Entrenadores(En desarrollo)</a>
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
