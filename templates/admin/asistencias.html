@@ -3,53 +3,137 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<div class="row">
-  <div class="col-3">
-    <img class="mr-10" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="50%">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="40px"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="../admin/index">Inicio <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Entrenadores
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a href="../../trainers" class="dropdown-item">Administración</a>
+          <div class="dropdown-divider"></div>
+          <a href="../../trainers/registros" class="dropdown-item">Asistencia</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Clientes
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a href="../../clients" class="dropdown-item">Administración</a>
+          <div class="dropdown-divider"></div>
+          <a href="../../admin/membership/index" class="dropdown-item">Membresías</a>
+          <a href="../../admin/asistencias" class="dropdown-item">Asistencia</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Gimnasio
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a href="../../admin/gymclasses/index" class="dropdown-item">Clases</a>
+          <div class="dropdown-divider"></div>
+          <a href="../../admin/groups/index" class="dropdown-item">Grupos</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <a class="btn btn-outline-danger my-2 my-sm-0" href="../../">Salir</a>
+    </form>
   </div>
-  <div class="col" align="center">
-    <h2 class="mt-5">Asistencias de Clientes</h2>
-  </div>
-  <div class="col-3 mt-5" align="center">
-    <a type="button" class="btn btn-success" href="crear">Nuevo</a>
-    <a type="button" class="btn btn-primary" href="../admin/index">Atrás</a>
+</nav>
+
+<div class="container mt-5 mb-2">
+  <div class="row">
+    <div class="col-9">
+      <h2>Registro de asistencias de Clientes</h2>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-primary material-icons" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
+    </div>
   </div>
 </div>
-<table class="table table-striped table-hover">
-    <thead>
-      <tr>
-        <th>Nombre</th>
-        <th>Fecha y Hora</th>
-      </tr>
-    </thead>
-    <tbody>
 
-    <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
-    {% for clients in object_list %}
-      <tr>
-        <td>{{ clients.id }}</td>
-        <td>{{ clients.date }}</td>
-        <td>
-          <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
-          <form method="POST" action="eliminar/{{clients.client_id}}">
-            {% csrf_token %}
-            <div class="btn-group">
+<div class="container">
+  <div id="accordion">
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body mb-2 bg-light border border-info rounded">
+          <div class="row">
+            <div class="col">
+              <form align="center" method="get">
+                <div class="form">
+                  <div class="row">
+                    <div class="col-6">
+                      {{ filter.form.id.label_tag }}
+                    </div>
+                    <div class="col-6">
+                      {{ filter.form.date.label_tag }}
+                    </div>
+                  </div>
 
-              <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
-              <a href="detalle/{{clients.client_id}}" title="Ver" class="btn btn-primary">Ver </a>
-              <a href="editar/{{clients.client_id}}" title="Editar"class="btn btn-secondary">Editar </a>
-              <button class="btn btn-danger" onclick="return eliminar();" type="submit">
-                Eliminar
-              </button>
+                  <div class="row">
+                    <div class="col-6">
+                      {% render_field filter.form.id class="form-control" %}
+                    </div>
+                    <div class="col-6">
+                      {% render_field filter.form.date class="form-control" %}
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col" align="right">
+                    <button class="btn btn-primary mr-2 material-icons" type="submit">search</button>
+                    <a href="./" class="btn btn-warning">Limpiar</a>
+                  </div>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        </td>
-      </tr>
-    {% endfor %}
+<div class="container">
+  <div class="row">
+    <div class="col-4"></div>
 
-    </tbody>
-  </table>
+    <div class="col-4">
+      <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Fecha y Hora</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
+          {% for clients in object_list %}
+            <tr>
+              <td>{{ clients.id }}</td>
+              <td>{{ clients.date }}</td>
+            </tr>
+          {% endfor %}
+
+          </tbody>
+        </table>
+    </div>
+
+    <div class="col-4"></div>
+
+  </div>
+</div>
 
   <script type="text/javascript">
     function eliminar() {

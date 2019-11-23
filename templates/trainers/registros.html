@@ -12,7 +12,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="../admin/index">Inicio <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="../../admin/index">Inicio <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown active">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,8 +31,8 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a href="../../clients" class="dropdown-item">Administración</a>
           <div class="dropdown-divider"></div>
-          <a href="../admin/membership/index" class="dropdown-item">Membresías</a>
-          <a href="../admin/asistencias" class="dropdown-item">Asistencia</a>
+          <a href="../../admin/membership/index" class="dropdown-item">Membresías</a>
+          <a href="../../admin/asistencias" class="dropdown-item">Asistencia</a>
         </div>
       </li>
       <li class="nav-item dropdown active">
@@ -40,9 +40,9 @@
           Gimnasio
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a href="../admin/gymclasses/index" class="dropdown-item">Clases</a>
+          <a href="../../admin/gymclasses/index" class="dropdown-item">Clases</a>
           <div class="dropdown-divider"></div>
-          <a href="../admin/groups/index" class="dropdown-item">Grupos</a>
+          <a href="../../admin/groups/index" class="dropdown-item">Grupos</a>
         </div>
       </li>
     </ul>
@@ -55,49 +55,16 @@
 <div class="container mt-5 mb-2">
   <div class="row">
     <div class="col-9">
-      <h2>Administración de Entrenadores</h2>
+      <h2>Registro de asistencias de entrenadores</h2>
     </div>
     <div class="col-3">
-      <a type="button" class="btn btn-success" href="registrar">Nuevo</a>
-      <button class="btn btn-primary material-icons" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
+      <button class="float-right btn btn-primary material-icons" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
     </div>
   </div>
 </div>
 
-<div class="container mb-2">
 
-  {% if messages %}
-    {% for message in messages %}
-      {% if message.tags %}{% endif %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert" align="center">
-        {{ message }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        {% endif %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-        <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert" align="center">
-        {{ message }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        {% endif %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-        <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert" align="center">
-        {{ message }}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        {% endif %}
-    {% endfor %}
-  {% endif %}
-
-
-
+<div class="container">
   <div id="accordion">
       <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body mb-2 bg-light border border-info rounded">
@@ -108,20 +75,26 @@
                 <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
                 <div class="form">
                   <div class="row">
-                    <div class="col-6">
-                      {{ filter.form.trainer_name.label_tag }}
+                    <div class="col-4">
+                      {{ filter.form.id.label_tag }}
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                       {{ filter.form.trainer_surname.label_tag }}
+                    </div>
+                    <div class="col-4">
+                      {{ filter.form.date.label_tag }}
                     </div>
                   </div>
 
                   <div class="row">
-                    <div class="col-6">
-                      {% render_field filter.form.trainer_name class="form-control" %}
+                    <div class="col-4">
+                      {% render_field filter.form.id class="form-control" %}
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                       {% render_field filter.form.trainer_surname class="form-control" %}
+                    </div>
+                    <div class="col-4">
+                      {% render_field filter.form.date class="form-control" %}
                     </div>
                   </div>
                 </div>
@@ -137,6 +110,7 @@
         </div>
       </div>
     </div>
+  </div>
 </div>
 
 <div class="container mt-2">
@@ -146,34 +120,19 @@
           <th>Nombre</th>
           <th>Apellidos</th>
           <th>Telefono</th>
-          <th>Email</th>
-          <th>Acciones</th>
+          <th>Fecha</th>
+          <th>Descripción</th>
         </tr>
       </thead>
       <tbody>
       <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
       {% for trainers in object_list %}
         <tr>
-          <td>{{ trainers.trainer_name }}</td>
+          <td>{{ trainers.id }}</td>
           <td>{{ trainers.trainer_surname }}</td>
           <td>{{ trainers.trainer_phone }}</td>
-          <td>{{ trainers.trainer_email }}</td>
-          <td>
-            <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
-            <form method="POST" action="eliminar/{{trainers.trainer_id}}">
-              {% csrf_token %}
-              <div class="btn-group">
-
-                <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
-                <a href="consultar/{{trainers.trainer_id}}" title="Ver" class="btn btn-primary">Ver </a>
-                <a href="editar/{{trainers.trainer_id}}" title="Editar"class="btn btn-secondary">Editar </a>
-                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
-                  Eliminar
-                </button>
-              </div>
-            </form>
-
-          </td>
+          <td>{{ trainers.register_date }}</td>
+          <td>{{ trainers.description }}</td>
         </tr>
       {% endfor %}
 
@@ -183,7 +142,7 @@
 
   <script type="text/javascript">
     function eliminar() {
-      var x = confirm("¿Eliminar entrenador?");
+      var x = confirm("Eliminar Cliente ?");
       if (x)
         return true;
       else

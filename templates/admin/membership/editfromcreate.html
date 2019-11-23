@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<script>
+function goBack() {
+  window.history.back()
+}
+</script>
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <img class="mr-5" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="50%">
+    </div>
+    <div class="col-6 mt-5" align="center">
+      <h2>Editar membresía</h2>
+    </div>
+    <div class="col" align="center">
+      <a href="#" onclick="goBack()" class="btn btn-primary mt-5">Atrás</a>
+    </div>
+  </div>
+
+  <form method="post" enctype="multipart/form-data">
+    <div class="row">
+      <div class="col"></div>
+
+      <div class="col-4 mb-5" align="center">
+        <button type="submit" class="btn btn-success">Aceptar</button>
+        <a href="#" onclick="goBack()" class="btn btn-secondary">Cancelar</a>
+      </div>
+
+      <div class="col"></div>
+    </div>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        {% csrf_token %}
+        <!-- {{ form.as_p }} -->
+        <div class="form-group">
+          <label for="stock" class="txt_negrita">Cliente</label>
+          {{ form.client_id|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          <label for="stock" class="txt_negrita">Fecha de registro</label>
+          <div class="form-control">
+            {{ form.instance.register_date|date:"Y/m/d" }}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="stock" class="txt_negrita">Fecha de vencimiento</label>
+          {{ form.expiration_date|add_class:"form-control" }}
+        </div>
+        <div class="form-group">
+          <label for="stock" class="txt_negrita">Clases inscritas</label>
+          {{ form.included_classes|add_class:"form-check-input" }}
+        </div>
+      <div class="col-2"></div>
+    </div>
+  </form>
+</div>
+{% endblock %}

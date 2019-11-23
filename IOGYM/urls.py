@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from . import views
+from  clients import views
 from clients.views import *
 from django.conf.urls import url
 from clients.filters import *
@@ -67,11 +67,21 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 
-    path('admin/asistencias', clientsView.as_view(template_name = "admin/asistencias.html"), name='admin asistencias'),
+    path('admin/asistencias/', FilterView.as_view(filterset_class=ClientsAttendancesFilter,template_name='admin/asistencias.html'), name='search client Attendance'),
 
-    path('admin/index', trainersAsistencia.as_view(template_name = "admin/index.html"), name='admin index'),
+    path('admin/asistencias/', clientsView.as_view(template_name = "admin/asistencias.html"), name='admin asistencias'),
 
-    path('trainers/asistencia', trainersAsistencia.as_view(template_name = "trainers/asistencia.html"), name='trainer asistencia'),
+    path('admin/index', trainersAttendance.as_view(template_name = "admin/index.html"), name='admin index'),
+
+    path('trainers/asistencia/checkClientAttendance/<int:pk>', views.trainerChecking),
+
+    path('trainers/asistencia/', FilterView.as_view(filterset_class=TrainersFilter,template_name='trainers/asistencia.html'), name='filter trainer attendance'),
+
+    path('trainers/registros/', FilterView.as_view(filterset_class=TrainersAttendancesFilter,template_name='trainers/registros.html'), name='search client Attendance'),
+
+    path('trainers/registros/', trainerAttendanceList.as_view(template_name = "trainers/registros.html"), name='trainers registros'),
+
+    path('trainers/asistencia/', trainersAttendance.as_view(template_name = "trainers/asistencia.html"), name='trainer asistencia'),
 
     path('trainers/', trainersAdministrar.as_view(template_name = "trainers/index.html"), name='trainer administrar'),
 
@@ -83,7 +93,11 @@ urlpatterns = [
 
     path('trainers/registrar', trainersRegistrar.as_view(template_name = "trainers/registrar.html"), name='trainer registrar'),
 
-    path('', clientsAttendancesCrear.as_view(template_name = "index.html"), name='index'),
+    path('', FilterView.as_view(filterset_class=ClientsFilterForAttendance,template_name='index.html'), name='search client attendance'),
+
+    path('', clientsAttendances.as_view(template_name = "index.html"), name='index'),
+
+    path('checkClientAttendance/<int:pk>', views.clientChecking),
 
     # La ruta 'leer' en donde listamos todos los registros o clients de la Base de Datos
     path('clients/', clientsListado.as_view(template_name = "clients/index.html"), name='leer'),
@@ -93,6 +107,8 @@ urlpatterns = [
 
     # La ruta 'crear' en donde mostraremos un formulario para crear un nuevo postre o registro
     path('clients/crear', clientsCrear.as_view(template_name = "clients/crear.html"), name='crear'),
+
+    path('clients/crear/membership/<int:pk>', MembershipEditFromCreate.as_view(template_name = "admin/membership/editfromcreate.html"), name='membership from create'),
 
     # La ruta 'actualizar' en donde mostraremos un formulario para actualizar un postre o registro de la Base de Datos
     path('clients/editar/<int:pk>', clientsActualizar.as_view(template_name = "clients/actualizar.html"), name='actualizar'),

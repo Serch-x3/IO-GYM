@@ -2,22 +2,69 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="40px"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-<div class="container-fluid">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="../admin/index">Inicio <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Entrenadores
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a href="../../trainers" class="dropdown-item">Administración</a>
+          <div class="dropdown-divider"></div>
+          <a href="../../trainers/registros" class="dropdown-item">Asistencia</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Clientes
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a href="../../clients" class="dropdown-item">Administración</a>
+          <div class="dropdown-divider"></div>
+          <a href="../admin/membership/index" class="dropdown-item">Membresías</a>
+          <a href="../admin/asistencias" class="dropdown-item">Asistencia</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Gimnasio
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a href="../admin/gymclasses/index" class="dropdown-item">Clases</a>
+          <div class="dropdown-divider"></div>
+          <a href="../admin/groups/index" class="dropdown-item">Grupos</a>
+        </div>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <a class="btn btn-outline-danger my-2 my-sm-0" href="../../">Salir</a>
+    </form>
+  </div>
+</nav>
+
+<div class="container mt-5 mb-2">
   <div class="row">
+    <div class="col-9">
+      <h2>Administración de Clientes</h2>
+    </div>
     <div class="col-3">
-      <img class="mr-10" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="50%">
-    </div>
-    <div class="col" align="center">
-      <h2 class="mt-5">Administración de Clientes</h2>
-    </div>
-    <div class="col-3 mt-5" align="center">
-      <a type="button" class="btn btn-success" href="crear">Nuevo</a>
-      <a type="button" class="btn btn-primary" href="../admin/index">Atrás</a>
-      <button class="btn btn-primary material-icons" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
+    <a type="button" class="btn btn-success" href="crear">Nuevo</a>
+    <button class="btn btn-primary material-icons" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
     </div>
   </div>
 </div>
+
+
+
 <div class="container">
   <div id="accordion">
       <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
@@ -25,6 +72,8 @@
           <div class="row">
             <div class="col">
               <form align="center" method="get">
+                <h4>Buscador</h4>
+                <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
                 <div class="form">
                   <div class="row">
                     <div class="col-6">
@@ -58,17 +107,47 @@
     </div>
   </div>
 </div>
-<div class="container-fluid">
+
+
+<div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags %}{% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert" align="center">
+        {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert" align="center">
+        {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+        <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert" align="center">
+        {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+    {% endfor %}
+  {% endif %}
+
+
   <table class="table table-striped table-hover mt-2">
       <thead>
         <tr>
           <th>Nombre</th>
           <th>Apellidos</th>
-          <th>Fecha de nacimiento</th>
           <th>Telefono</th>
-          <th>Tel. Emergencia</th>
           <th>Email</th>
-          <th>Genero</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -79,11 +158,8 @@
         <tr>
           <td>{{ clients.client_name }}</td>
           <td>{{ clients.client_surname }}</td>
-          <td>{{ clients.client_birthday }}</td>
           <td>{{ clients.client_phone }}</td>
-          <td>{{ clients.client_emergency_phone }}</td>
           <td>{{ clients.client_email }}</td>
-          <td>{{ clients.client_gender }}</td>
           <td>
             <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
             <form method="POST" action="eliminar/{{clients.client_id}}">
