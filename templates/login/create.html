@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<body class="bg-dark">
+  <div class="container-fluid bg-dark">
+    <div class="row">
+      <div class="col">
+
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-12 col-sm-6 bg-dark">
+        <img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="300px" class="img-fluid mb-2">
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="card rounded-lg" style="height: 100%;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+
+              </div>
+              <div class="col-10">
+                <h1 class="card-title">Registro de usuario</h1>
+                <h5 class="card-subtitle mb-5 text-muted">Ingresa tus datos para crear una cuenta en IOGYM</h5>
+                <form action="{% url 'register' %}" method="POST" autocomplete="off">
+                  {% csrf_token %}
+
+                    <label for="{{ form.username.id_for_label }}" class="label">
+                      Nombre de usuario
+                    </label>
+                      {{ form.username|add_class:"form-control" }}
+                    <p class="help is-danger">{{ form.username.errors }}</p>
+
+
+                    <label for="{{ form.password1.id_for_label }}" class="label">
+                      Contraseña
+                    </label>
+                      {{ form.password1|add_class:"form-control" }}
+
+                    <label for="{{ form.password2.id_for_label }}" class="label">
+                      Confirmación de contraseña
+                    </label>
+                      {{ form.password2|add_class:"form-control" }}
+
+                    <button style="width: 100%;" class="btn btn-primary mt-2 mb-2">Registrar</button>
+                    <a style="width: 100%;" href="#" onclick="goBack()" class="btn btn-danger">Atrás</a>
+                    <script>
+                      function goBack() {
+                        window.history.back();
+                      }
+                    </script>
+                </form>
+
+                {% if form.errors %}
+                  <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+                        <strong>{{ form.password2.errors }}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                {% endif %}
+
+              </div>
+              <div class="col">
+
+              </div>
+            </div>
+          </div>
+          <img src="{% static "images/afterbyte_logo.png" %}" alt="iogym_logo" class="mb-1" style="display: block; margin-left: auto; margin-right: auto; width: 30%; -webkit-filter: invert(1);filter: invert(1);">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+
+{% endblock %}

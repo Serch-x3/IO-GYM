@@ -3,7 +3,8 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+{% if user.is_superuser%}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
   <a class="navbar-brand" href="#"><img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="40px"></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -47,7 +48,8 @@
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
-      <a class="btn btn-outline-danger my-2 my-sm-0" href="../../">Salir</a>
+      <a href="../../../" class="btn btn-primary mr-1">Modo de asistencia</a>
+      <a class="btn btn-danger my-2 my-sm-0" href="../../../../logout">Salir</a>
     </form>
   </div>
 </nav>
@@ -57,14 +59,14 @@
     <div class="col-9">
       <h2>Administración de Entrenadores</h2>
     </div>
-    <div class="col-3">
-      <a type="button" class="btn btn-success" href="registrar">Nuevo</a>
-      <button class="btn btn-primary material-icons" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
+    <div class="col-3" align="right">
+      <a type="button" class="btn btn-success mb-1" href="registrar">Nuevo</a>
+      <button class="btn btn-primary material-icons mb-1" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
     </div>
   </div>
 </div>
 
-<div class="container mb-2">
+<div class="container">
 
   {% if messages %}
     {% for message in messages %}
@@ -140,45 +142,47 @@
 </div>
 
 <div class="container mt-2">
-  <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Apellidos</th>
-          <th>Telefono</th>
-          <th>Email</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-      <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
-      {% for trainers in object_list %}
-        <tr>
-          <td>{{ trainers.trainer_name }}</td>
-          <td>{{ trainers.trainer_surname }}</td>
-          <td>{{ trainers.trainer_phone }}</td>
-          <td>{{ trainers.trainer_email }}</td>
-          <td>
-            <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
-            <form method="POST" action="eliminar/{{trainers.trainer_id}}">
-              {% csrf_token %}
-              <div class="btn-group">
+  <div class="table-responsive-lg">
+    <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Telefono</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
+        {% for trainers in object_list %}
+          <tr>
+            <td>{{ trainers.trainer_name }}</td>
+            <td>{{ trainers.trainer_surname }}</td>
+            <td>{{ trainers.trainer_phone }}</td>
+            <td>{{ trainers.trainer_email }}</td>
+            <td>
+              <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
+              <form method="POST" action="eliminar/{{trainers.trainer_id}}">
+                {% csrf_token %}
+                <div class="btn-group">
 
-                <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
-                <a href="consultar/{{trainers.trainer_id}}" title="Ver" class="btn btn-primary">Ver </a>
-                <a href="editar/{{trainers.trainer_id}}" title="Editar"class="btn btn-secondary">Editar </a>
-                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
-                  Eliminar
-                </button>
-              </div>
-            </form>
+                  <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
+                  <a href="consultar/{{trainers.trainer_id}}" title="Ver" class="btn btn-primary">Ver </a>
+                  <a href="editar/{{trainers.trainer_id}}" title="Editar"class="btn btn-secondary">Editar </a>
+                  <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                    Eliminar
+                  </button>
+                </div>
+              </form>
 
-          </td>
-        </tr>
-      {% endfor %}
+            </td>
+          </tr>
+        {% endfor %}
 
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+  </div>
 </div>
 
   <script type="text/javascript">
@@ -190,5 +194,43 @@
         return false;
     }
   </script>
+{% else%}
+<body class="bg-dark">
+  <div class="container-fluid bg-dark">
+    <div class="row">
+      <div class="col">
+
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-12 col-sm-6 bg-dark">
+        <img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="300px" class="img-fluid mb-2">
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="card rounded-lg" style="height: 100%;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+
+              </div>
+              <div class="col-10">
+                <h1 class="card-title">No tienes acceso a esta página</h1>
+                <h5 class="card-subtitle mb-5 mt-5 text-muted">Su usuario no es usuario de administrador.</h5>
+                <h5 class="card-subtitle mb-5 text-muted">Para acceder a esta página debe de iniciar sesión con la cuenta administrador</h5>
+                <a style="width: 100%;" href="../../../../logout" class="btn btn-primary">Cerrar sesión</a>
+
+              </div>
+              <div class="col">
+
+              </div>
+            </div>
+          </div>
+          <img src="{% static "images/afterbyte_logo.png" %}" alt="iogym_logo" class="mb-1" style="display: block; margin-left: auto; margin-right: auto; width: 30%; -webkit-filter: invert(1);filter: invert(1);">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endif%}
 
 {% endblock %}

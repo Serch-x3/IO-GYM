@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-  {% if user.is_superuser%}
+
+  {% if not user.is_superuser%}
 
   {% block content %}
   {% endblock %}
@@ -35,12 +36,15 @@
 
                 </div>
                 <div class="col-10">
-                  <h1 class="card-title">No tienes acceso a esta página</h1>
-                  <h5 class="card-subtitle mb-5 mt-5 text-muted">Su usuario no es usuario de administrador.</h5>
-                  <h5 class="card-subtitle mb-5 text-muted">Para acceder a esta página debe de iniciar sesión con la cuenta administrador</h5>
-                  <a style="width: 100%;" href="../../../../logout" class="btn btn-danger">Cerrar sesión</a>
-                  <a style="width: 100%;" href="../../../../logout" class="btn btn-primary">Atrás</a>
-
+                  <h1 class="card-title">Modo de asistencia</h1>
+                  <h5 class="card-subtitle mb-5 text-muted">Para entrar a modo de asistencia debe de iniciar sesión con una cuenta secundaria (No Administrador)</h5>
+                  <a style="width: 100%;" href="../../../../logout" class="btn btn-danger mb-1">Cerrar sesión</a>
+                  <a style="width: 100%;" href="#" onclick="goBack()" class="btn btn-primary">Atrás</a>
+                  <script>
+                    function goBack() {
+                      window.history.back();
+                    }
+                  </script>
                 </div>
                 <div class="col">
 
@@ -53,7 +57,7 @@
       </div>
     </div>
   </body>
-  {% endif%}
+  {% endif %}
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

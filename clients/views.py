@@ -5,16 +5,34 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import *
 from clients.forms import *
 
+
 from django.urls import reverse
 from django.shortcuts import redirect
 
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.forms import UserCreationForm
 
 from django import forms
+from django.views import View
 from .filters import *
 from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect
+
+class RegisterLoginView(View):
+    def get(self, request):
+        return render(request, 'login/create.html', { 'form': UserCreationForm() })
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        form.is_superuser=True
+        form.is_staff=True
+        if form.is_valid():
+            user = form.save()
+            return redirect(reverse('admin index'))
+
+        return render(request, 'login/create.html', { 'form': form })
+
 
 
 class trainerAttendanceList(ListView):
@@ -68,7 +86,7 @@ class MembershipDelete(SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = 'Entrenador Eliminado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Entrenador eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
         messages.success (self.request, (success_message))
         return reverse('index membership') # Redireccionamos a la vista principal 'leer'
 
@@ -87,7 +105,7 @@ class MembershipEditFromCreate(SuccessMessageMixin,UpdateView):
 class MembershipEdit(SuccessMessageMixin,UpdateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
-    success_message = 'Membresía actualizada correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Membresía actualizada correctamente!' # Mostramos este Mensaje luego de Editar un Postre
 
     # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
@@ -96,7 +114,7 @@ class MembershipEdit(SuccessMessageMixin,UpdateView):
 class MembershipCreate(SuccessMessageMixin,CreateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
-    success_message = 'Entrenador Creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Membresía creada correctamente!' # Mostramos este Mensaje luego de Crear un Postre
 
     # Redireccionamos a la página principal luego de crear un registro o postre
     def form_valid(self, form):
@@ -113,7 +131,7 @@ class GymClassesDelete(SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = 'Clase eliminada correctamente' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Clase eliminada correctamente!' # Mostramos este Mensaje luego de Editar un Postre
         messages.success (self.request, (success_message))
         return reverse('index gymclasses') # Redireccionamos a la vista principal 'leer'
 
@@ -122,7 +140,7 @@ class GymClassesEdit(SuccessMessageMixin, UpdateView):
     model = GYMCLASSES
     form = GYMCLASSES
     fields = "__all__"
-    success_message = 'Clase actualizada correctamente' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Clase actualizada correctamente!' # Mostramos este Mensaje luego de Editar un Postre
 
     # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
@@ -135,7 +153,7 @@ class GymClassesCreate(SuccessMessageMixin, CreateView):
     model = GYMCLASSES
     form = GYMCLASSES
     fields = "__all__"
-    success_message = 'Clase creada correctamente' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Clase creada correctamente!' # Mostramos este Mensaje luego de Crear un Postre
 
     # Redireccionamos a la página principal luego de crear un registro o postre
     def get_success_url(self):
@@ -151,7 +169,7 @@ class GroupsDelete(SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = 'Grupo eliminado correctamente' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Grupo eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
         messages.success (self.request, (success_message))
         return reverse('index groups') # Redireccionamos a la vista principal 'leer'
 
@@ -160,7 +178,7 @@ class GroupsEdit(SuccessMessageMixin, UpdateView):
     model = GROUPS
     form = GROUPS
     fields = "__all__"
-    success_message = 'Grupo actualizado correctamente' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Grupo actualizado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
 
     def form_valid(self, form):
         day=form.data.get('day')
@@ -186,7 +204,7 @@ class GroupsCreate(SuccessMessageMixin, CreateView):
     model = GROUPS
     form = GROUPS
     fields = "__all__"
-    success_message = 'Grupo creado correctamente' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Grupo creado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
 
     def form_valid(self, form):
         day=form.data.get('day')
@@ -213,7 +231,7 @@ class hoursCreate(SuccessMessageMixin, CreateView):
     model = HOURS
     form = HOURS
     fields = "__all__"
-    success_message = 'Hora creada correctamente' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Hora creada correctamente!' # Mostramos este Mensaje luego de Crear un Postre
 
     # Redireccionamos a la página principal luego de crear un registro o postre
     def get_success_url(self):
@@ -226,7 +244,7 @@ class hoursDelete(SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = 'Hora eliminada correctamente' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Hora eliminada correctamente!' # Mostramos este Mensaje luego de Editar un Postre
         messages.success (self.request, (success_message))
         return reverse('index hours') # Redireccionamos a la vista principal 'leer'
 
@@ -237,7 +255,7 @@ class weekdaysCreate(SuccessMessageMixin, CreateView):
     model = WEEKDAYS
     form = WEEKDAYS
     fields = "__all__"
-    success_message = 'Día creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Día creado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
 
     # Redireccionamos a la página principal luego de crear un registro o postre
     def get_success_url(self):
@@ -250,7 +268,7 @@ class weekdayDelete(SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = 'Día eliminado correctamente' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Día eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
         messages.success (self.request, (success_message))
         return reverse('index weekdays') # Redireccionamos a la vista principal 'leer'
 
@@ -273,7 +291,7 @@ class trainersEliminar(SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = 'Entrenador Eliminado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Entrenador eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
         messages.success (self.request, (success_message))
         return reverse('trainer administrar') # Redireccionamos a la vista principal 'leer'
 
@@ -293,7 +311,7 @@ class trainersConsulta(DetailView):
 class trainersRegistrar(SuccessMessageMixin, CreateView):
     model = TRAINERS
     form_class = trainerForm
-    success_message = 'Entrenador creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Entrenador registrado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
 
     # Redireccionamos a la página principal luego de crear un registro o postre
     def get_success_url(self):
@@ -313,7 +331,7 @@ class clientsCrear(SuccessMessageMixin, CreateView):
     model = CLIENTS
     form = CLIENTS
     fields = "__all__"
-    success_message = 'Cliente Creado Correctamente !' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Cliente registrado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
 
     # Redireccionamos a la página principal luego de crear un registro o postre
 
@@ -327,7 +345,7 @@ class clientsActualizar(SuccessMessageMixin, UpdateView):
     model = CLIENTS
     form = CLIENTS
     fields = "__all__"
-    success_message = 'Cliente Actualizado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Cliente actualizado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
 
     # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
@@ -340,6 +358,6 @@ class clientsEliminar(SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = 'Cliente Eliminado Correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Cliente eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
         messages.success (self.request, (success_message))
         return reverse('leer') # Redireccionamos a la vista principal 'leer'

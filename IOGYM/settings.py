@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+from django.urls import reverse_lazy
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -39,13 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'clients',
     'widget_tweaks',
-    'daterange_filter'
+    'daterange_filter',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -110,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-mx'
 
 TIME_ZONE = 'America/Mexico_City'
 
@@ -130,3 +133,18 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/static/',
 ]
+
+LOGIN_REDIRECT_URL= reverse_lazy('admin index')
+LOGOUT_REDIRECT_URL=reverse_lazy('index')
+
+
+
+
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'SMTP.Office365.com'
+EMAIL_HOST_USER = 'alex_paz_5599@hotmail.com'
+EMAIL_HOST_PASSWORD = 'PCXrN5aP2018'
+EMAIL_PORT = 587
+PASSWORD_RESET_TIMEOUT_DAYS = 2
+DEFAULT_FROM_EMAIL = 'alex_paz_5599@hotmail.com'
