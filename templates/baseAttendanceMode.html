@@ -11,52 +11,21 @@
 </head>
 <body>
 
-  {% if not user.is_superuser%}
+  {% if user.is_authenticated %}
+    {% if not user.is_superuser%}
 
-  {% block content %}
-  {% endblock %}
+    {% block content %}
+    {% endblock %}
 
-  {% else%}
-  <body class="bg-dark">
-    <div class="container-fluid bg-dark">
-      <div class="row">
-        <div class="col">
-
-        </div>
-      </div>
-      <div class="row mt-5">
-        <div class="col-12 col-sm-6 bg-dark">
-          <img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="300px" class="img-fluid mb-2">
-        </div>
-        <div class="col-12 col-sm-6">
-          <div class="card rounded-lg" style="height: 100%;">
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-
-                </div>
-                <div class="col-10">
-                  <h1 class="card-title">Modo de asistencia</h1>
-                  <h5 class="card-subtitle mb-5 text-muted">Para entrar a modo de asistencia debe de iniciar sesión con una cuenta secundaria (No Administrador)</h5>
-                  <a style="width: 100%;" href="../../../../logout" class="btn btn-danger mb-1">Cerrar sesión</a>
-                  <a style="width: 100%;" href="#" onclick="goBack()" class="btn btn-primary">Atrás</a>
-                  <script>
-                    function goBack() {
-                      window.history.back();
-                    }
-                  </script>
-                </div>
-                <div class="col">
-
-                </div>
-              </div>
-            </div>
-            <img src="{% static "images/afterbyte_logo.png" %}" alt="iogym_logo" class="mb-1" style="display: block; margin-left: auto; margin-right: auto; width: 30%; -webkit-filter: invert(1);filter: invert(1);">
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+    {% else%}
+    <script type="text/javascript">
+      window.location.replace('../../../../admin/attendancemode');
+    </script>
+    {% endif %}
+  {%else%}
+  <script type="text/javascript">
+    window.location.replace('accounts/login');
+  </script>
   {% endif %}
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

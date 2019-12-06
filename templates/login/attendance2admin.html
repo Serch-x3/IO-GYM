@@ -1,9 +1,7 @@
-
-{% extends 'baseForLogin.html' %}
+{% extends 'baseAttendanceMode.html' %}
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
-
 <body class="bg-dark">
   <div class="container-fluid bg-dark">
     <div class="row">
@@ -23,19 +21,16 @@
 
               </div>
               <div class="col-10">
-                <h1 class="card-title">Reestablecer Contraseña</h1>
-                <h5 class="card-subtitle mb-5 text-muted">Hemos enviado un correo de recuperación de contraseña. Revisa tu correo y accede al link. El link sólo tiene validez por 2 días. ¡Apresurate!</h5>
-                  <a href="../../../accounts/login" style="width: 100%;"class="btn btn-danger mt-2 mb-2">Volver</a>
-
-                {% if form.errors %}
-                  <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    <strong>¡No se ha iniciado sesión!</strong> Revise los datos. El usuario o la contraseña es incorrecta.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                {% endif %}
-
+                <h1 class="card-title">Modo Administrador</h1>
+                <h5 class="card-subtitle mb-5 text-muted">El modo administrador es un modo para la administración de clientes, entrenadores y demás registros del gimnasio.</h5>
+                <h5 class="card-subtitle mb-5 text-muted">Para entrar a modo administrador debe de iniciar sesión con una cuenta de tipo Administrador</h5>
+                <a style="width: 100%;" href="../../../../logout" class="btn btn-danger mb-1">Continuar a Modo Administrador</a>
+                <a style="width: 100%;" href="../" class="btn btn-primary">Volver a Modo Asistencia</a>
+                <script>
+                  function goBack() {
+                    window.history.back();
+                  }
+                </script>
               </div>
               <div class="col">
 

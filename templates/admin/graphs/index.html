@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container-fluid">
+  <h1>Estadísticas</h1>
+
+
+
+
+  <div class="accordion" id="accordionExample" width="100%">
+    <div class="row">
+      <div class="col-12 col-lg-2">
+        <div class="btn-group-vertical mt-5">
+            <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Estadísticas generales
+            </button>
+            <button class="btn btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Flujo de Clientes
+            </button>
+            <button class="btn btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Este año
+            </button>
+            <button class="btn btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              Ultimo año
+            </button>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-10">
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+          <div class="card-body">
+            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+            <h1>Estadísticas Generales</h1>
+            <canvas id="myChart"></canvas>
+            <script>
+              var ctx = document.getElementById('myChart').getContext('2d');
+              var myChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                      labels: ['Clientes', 'Entrenadores', 'Clases', 'Grupos','Membresias Activas','Membresias Vencidas'],
+                      datasets: [{
+                          label: '# de registros',
+                          data: {{general}},
+                          backgroundColor: [
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 2
+                      }]
+                  },
+                  options: {
+                      scales: {
+                          yAxes: [{
+                              ticks: {
+                                  beginAtZero: true
+                              }
+                          }]
+                      }
+                  }
+              });
+              </script>
+            </div>
+        </div>
+
+
+
+
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+          <div class="card-body">
+            <h1>Flujo de Clientes</h1>
+            Promedio de asistencia por días de la semana
+            <div class="form-group">
+
+              <label for="exampleFormControlSelect1">Desde</label>
+              <select class="form-control" id="selectClientSince">
+                <option>--Seleccionar--</option>
+                <option onclick="setCData()" value="1">Último mes</option>
+                <option onclick="setCData()" value="2">Últimos 3 meses</option>
+                <option onclick="setCData()" value="3">Últimos 6 meses</option>
+                <option onclick="setCData()" value="4">Último año</option>
+              </select>
+            </div>
+            <canvas id="ClientsFlow"></canvas>
+            <script>
+            var clientgraphdata=0;
+            function setCData(){
+              cs2=document.getElementById('selectClientSince');
+              if(cs2.options[cs2.selectedIndex].value==1){
+                  clientgraphdata={{ clientAvgPerDayLastMonth|safe }}
+              }
+              else if (cs2.options[cs2.selectedIndex].value==2) {
+                  clientgraphdata={{ clientAvgPerDayLast3Month|safe }}
+              }
+              else if (cs2.options[cs2.selectedIndex].value==3) {
+                  clientgraphdata={{ clientAvgPerDayLast6Month|safe }}
+              }
+              else{
+                  clientgraphdata={{ clientAvgPerDayLastYear|safe }}
+              }
+              addData(cc,clientgraphdata);
+            }
+
+            function addData(chart, data) {
+                chart.data.datasets[0].data = data;
+                chart.update();
+            }
+
+
+            var ccx = document.getElementById('ClientsFlow').getContext('2d');
+            var cc = new Chart(ccx, {
+                type: 'bar',
+                data: {
+                    labels: ['Domingo', 'Lunes', 'Martes','Miércoles','Jueves','Viernes','Sábado'],
+                    datasets: [{
+                        label: 'Promedio de asistencia',
+                        data: [0],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+            </script>
+
+          </div>
+        </div>
+
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+          <div class="card-body">
+            <h1>Este Año {% now 'Y' %}</h1>
+
+            <div class="form-group">
+
+              <label for="exampleFormControlSelect1">Categoría</label>
+              <select class="form-control" id="selectTS">
+                <option>--Seleccionar--</option>
+                <option onclick="setTYData()" value="1">Total de asistencias de clientes</option>
+                <option onclick="setTYData()" value="2">Nuevos Clientes</option>
+              </select>
+            </div>
+
+            <canvas id="ThisYear"></canvas>
+            <script>
+
+              var TSgraphdata=0;
+              function setTYData(){
+                cs2=document.getElementById('selectTS');
+                if(cs2.options[cs2.selectedIndex].value==1){
+                    TSgraphdata={{ clientAvgPerMonthLastYear|safe }}
+                }
+                else if (cs2.options[cs2.selectedIndex].value==2) {
+                    TSgraphdata={{ newClientsPerMonthThisYear|safe }}
+                }
+                else{
+                    TSgraphdata={{ clientAvgPerDayLast6Month|safe }}
+                }
+                addData(thisYear,TSgraphdata);
+              }
+
+              var tyx = document.getElementById('ThisYear').getContext('2d');
+              var thisYear = new Chart(tyx, {
+                  type: 'bar',
+                  data: {
+                      labels: ['Enero', 'Febrero', 'Marzo', 'Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+                      datasets: [{
+                          label: '# de registros',
+                          data: [],
+                          backgroundColor: [
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(75, 192, 192, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)'
+                          ],
+                          borderWidth: 2
+                      }]
+                  },
+                  options: {
+                      scales: {
+                          yAxes: [{
+                              ticks: {
+                                  beginAtZero: true
+                              }
+                          }]
+                      }
+                  }
+              });
+              </script>
+          </div>
+        </div>
+
+
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+          <div class="card-body">
+            <h1>Periodo de último año: {{startThisMonthPrevYear}} - {{startThisMonth}}</h1>
+
+            <div class="form-group">
+
+              <label for="exampleFormControlSelect1">Categoría</label>
+              <select class="form-control" id="selectLS">
+                <option>--Seleccionar--</option>
+                <option onclick="setLYData()" value="1">Total de asistencias de clientes</option>
+                <option onclick="setLYData()" value="2">Nuevos Clientes</option>
+              </select>
+            </div>
+
+            <canvas id="LastYear"></canvas>
+            <script>
+
+              var LSgraphdata=0;
+              function setLYData(){
+                cs2=document.getElementById('selectLS');
+                if(cs2.options[cs2.selectedIndex].value==1){
+                    LSgraphdata={{ ClientsPerMonthLastYear|safe }}
+                }
+                else if (cs2.options[cs2.selectedIndex].value==2) {
+                    LSgraphdata={{ newClientsPerMonthLastYear|safe }}
+                }
+                else{
+                    LSgraphdata={{ clientAvgPerDayLast6Month|safe }}
+                }
+                addData(LastYear,LSgraphdata);
+              }
+
+              var lyx = document.getElementById('LastYear').getContext('2d');
+              var LastYear = new Chart(lyx, {
+                  type: 'bar',
+                  data: {
+                      labels: {{ monthsLabels|safe}},
+                      datasets: [{
+                          label: '# de registros',
+                          data: [],
+                          backgroundColor: [
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(75, 192, 192, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)'
+                          ],
+                          borderWidth: 2
+                      }]
+                  },
+                  options: {
+                      scales: {
+                          yAxes: [{
+                              ticks: {
+                                  beginAtZero: true
+                              }
+                          }]
+                      }
+                  }
+              });
+              </script>
+
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

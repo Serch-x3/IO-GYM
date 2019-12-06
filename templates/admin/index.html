@@ -46,14 +46,26 @@
             <div class="dropdown-divider"></div>
             <a href="groups/index" class="dropdown-item">Grupos</a>
             <div class="dropdown-divider"></div>
+            <a href="graphs/" class="dropdown-item">Estadísticas</a>
+            <div class="dropdown-divider"></div>
             <a href="../../login/register" class="dropdown-item">Cuentas de usuario</a>
           </div>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <h5 class="text-light mr-3">¡Hola, {{user.username}}!</h5 >
-        <a href="../" class="btn btn-primary mr-1">Modo de asistencia</a>
-        <a class="btn btn-danger my-2 my-sm-0" href="../../../../logout">Salir</a>
+        <a href="attendancemode" class="btn btn-primary mr-1">Modo de asistencia</a>
+        <a class="btn btn-danger my-2 my-sm-0" onclick="return eliminar();" href="../../../../logout">Salir</a>
+
+        <script type="text/javascript">
+          function eliminar() {
+            var x = confirm("¿Salir del sistema?");
+            if (x)
+              return true;
+            else
+              return false;
+          }
+        </script>
       </form>
     </div>
   </nav>

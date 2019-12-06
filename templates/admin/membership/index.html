@@ -3,55 +3,6 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#"><img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="40px"></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="../../admin/index">Inicio <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Entrenadores
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a href="../../trainers" class="dropdown-item">Administración</a>
-          <div class="dropdown-divider"></div>
-          <a href="../../trainers/registros" class="dropdown-item">Asistencia</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Clientes
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a href="../../clients" class="dropdown-item">Administración</a>
-          <div class="dropdown-divider"></div>
-          <a href="../../admin/membership/index" class="dropdown-item">Membresías</a>
-          <a href="../../admin/asistencias" class="dropdown-item">Asistencia</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown active">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Gimnasio
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a href="../../admin/gymclasses/index" class="dropdown-item">Clases</a>
-          <div class="dropdown-divider"></div>
-          <a href="../../admin/groups/index" class="dropdown-item">Grupos</a>
-        </div>
-      </li>
-    </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <a href="../../../" class="btn btn-primary mr-1">Modo de asistencia</a>
-      <a class="btn btn-danger my-2 my-sm-0" href="../../../../logout">Salir</a>
-    </form>
-  </div>
-</nav>
 
 <div class="container mt-5 mb-2">
   <div class="row">
@@ -95,43 +46,45 @@
     {% endfor %}
   {% endif %}
 
-  <table class="table table-striped table-hover">
-      <thead>
-        <tr>
-          <th>Cliente</th>
-          <th>Clases Incluidas</th>
-          <th>Fecha de registro</th>
-          <th>Fecha de vencimiento</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-      <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
-      {% for memberships in object_list %}
-        <tr>
-          <td>{{ memberships.client_id}}</td>
-          <td>{% for author in memberships.included_classes.all %}
-                <li>{{ author }}</li>
-              {% endfor %}</td>
-          <td>{{ memberships.register_date }}</td>
-          <td>{{ memberships.expiration_date}}</td>
-          <td>
-            <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
-            <form method="POST" action="delete/{{memberships.membership_id}}">
-              {% csrf_token %}
-              <div class="btn-group">
+  <div class="table-responsive-lg">
+    <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Clases Incluidas</th>
+            <th>Fecha de registro</th>
+            <th>Fecha de vencimiento</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+        <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
+        {% for memberships in object_list %}
+          <tr>
+            <td>{{ memberships.client_id}}</td>
+            <td>{% for author in memberships.included_classes.all %}
+                  <li>{{ author }}</li>
+                {% endfor %}</td>
+            <td>{{ memberships.register_date }}</td>
+            <td>{{ memberships.expiration_date}}</td>
+            <td>
+              <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
+              <form method="POST" action="delete/{{memberships.membership_id}}">
+                {% csrf_token %}
+                <div class="btn-group">
 
-                <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
-                <a href="detail/{{memberships.membership_id}}" title="Ver" class="btn btn-primary">Ver </a>
-                <a href="edit/{{memberships.membership_id}}" title="Editar"class="btn btn-secondary">Editar </a>
-              </div>
-            </form>
-          </td>
-        </tr>
-      {% endfor %}
+                  <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
+                  <a href="detail/{{memberships.membership_id}}" title="Ver" class="btn btn-primary">Ver </a>
+                  <a href="edit/{{memberships.membership_id}}" title="Editar"class="btn btn-secondary">Editar </a>
+                </div>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
 
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+  </div>
 </div>
 
   <script type="text/javascript">

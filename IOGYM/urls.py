@@ -25,6 +25,10 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
 
+    path('admin/graphs/',login_required(views.graphs)),
+
+    path('adminmode',login_required(views.attendance2admin)),
+    path('admin/attendancemode', login_required(views.admin2attendance), name='admin 2 attendance'),
 
     path('login/register/', views.RegisterLoginView.as_view(), name='register'),
 
