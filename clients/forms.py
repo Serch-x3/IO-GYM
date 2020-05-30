@@ -4,9 +4,6 @@ from django.contrib.auth.password_validation import validate_password
 
 
 class MembershipForm(forms.ModelForm):
-
-
-
     class Meta:
         model = MEMBERSHIPS
         fields = '__all__'

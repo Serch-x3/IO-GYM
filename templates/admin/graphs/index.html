@@ -2,37 +2,45 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
 <div class="container-fluid">
-  <h1>Estadísticas</h1>
+  <div class="mt-5">
+    <h1 class="ml-5 mt-5">Estadísticas</h1>
+  </div>
 
 
 
 
   <div class="accordion" id="accordionExample" width="100%">
     <div class="row">
-      <div class="col-12 col-lg-2">
-        <div class="btn-group-vertical mt-5">
-            <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              Estadísticas generales
+      <div class="col-12 d-flex justify-content-center">
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+          <div class="btn-group btn-group-lg" role="group" aria-label="First group">
+            <button class="btn btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+              Generales
             </button>
             <button class="btn btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
               Flujo de Clientes
             </button>
             <button class="btn btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-              Este año
+              Por mes
             </button>
             <button class="btn btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-              Ultimo año
+              Pagos
             </button>
+          </div>
         </div>
       </div>
 
-      <div class="col-12 col-lg-10">
+      <div class="col-12">
+        <div class="dropdown-divider mt-3"></div>
+      </div>
+
+      <div class="col-12">
 
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
           <div class="card-body">
-            <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
             <h1>Estadísticas Generales</h1>
             <canvas id="myChart"></canvas>
             <script>
@@ -83,16 +91,17 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
           <div class="card-body">
             <h1>Flujo de Clientes</h1>
-            Promedio de asistencia por días de la semana
+            Asistencia por días de la semana
             <div class="form-group">
 
               <label for="exampleFormControlSelect1">Desde</label>
-              <select class="form-control" id="selectClientSince">
+              <select onclick="setCData()" class="form-control" id="selectClientSince">
                 <option>--Seleccionar--</option>
                 <option onclick="setCData()" value="1">Último mes</option>
                 <option onclick="setCData()" value="2">Últimos 3 meses</option>
                 <option onclick="setCData()" value="3">Últimos 6 meses</option>
                 <option onclick="setCData()" value="4">Último año</option>
+                <option onclick="setCData()" value="5">Histórico</option>
               </select>
             </div>
             <canvas id="ClientsFlow"></canvas>
@@ -101,16 +110,19 @@
             function setCData(){
               cs2=document.getElementById('selectClientSince');
               if(cs2.options[cs2.selectedIndex].value==1){
-                  clientgraphdata={{ clientAvgPerDayLastMonth|safe }}
+                  clientgraphdata={{CFLM|safe}}
               }
               else if (cs2.options[cs2.selectedIndex].value==2) {
-                  clientgraphdata={{ clientAvgPerDayLast3Month|safe }}
+                  clientgraphdata={{CFL3M|safe }}
               }
               else if (cs2.options[cs2.selectedIndex].value==3) {
-                  clientgraphdata={{ clientAvgPerDayLast6Month|safe }}
+                  clientgraphdata={{CFL6M|safe }}
+              }
+              else if (cs2.options[cs2.selectedIndex].value==4) {
+                  clientgraphdata={{CFLY|safe }}
               }
               else{
-                  clientgraphdata={{ clientAvgPerDayLastYear|safe }}
+                  clientgraphdata={{HCLYD|safe }}
               }
               addData(cc,clientgraphdata);
             }
@@ -127,7 +139,7 @@
                 data: {
                     labels: ['Domingo', 'Lunes', 'Martes','Miércoles','Jueves','Viernes','Sábado'],
                     datasets: [{
-                        label: 'Promedio de asistencia',
+                        label: '# de asistencias',
                         data: [0],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
@@ -166,15 +178,16 @@
 
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
           <div class="card-body">
-            <h1>Este Año {% now 'Y' %}</h1>
-
+            <h1>Datos por mes</h1>
+            <p>Los meses en que no se han encontrado registros no aparecerán en la gráfica</p>
             <div class="form-group">
 
               <label for="exampleFormControlSelect1">Categoría</label>
-              <select class="form-control" id="selectTS">
+              <select onclick="setTYData()" class="form-control" id="selectTS">
                 <option>--Seleccionar--</option>
-                <option onclick="setTYData()" value="1">Total de asistencias de clientes</option>
-                <option onclick="setTYData()" value="2">Nuevos Clientes</option>
+                <option onclick="setTYData()" value="1">Asistencias de clientes en el último año</option>
+                <option onclick="setTYData()" value="2">Histórico de asistencias de clientes</option>
+                <option onclick="setTYData()" value="3">Nuevos Clientes en el último año</option>
               </select>
             </div>
 
@@ -185,19 +198,28 @@
               function setTYData(){
                 cs2=document.getElementById('selectTS');
                 if(cs2.options[cs2.selectedIndex].value==1){
-                    TSgraphdata={{ clientAvgPerMonthLastYear|safe }}
+                    TSgraphdata={{ CFLYMData|safe }}
+                    TSLabels= {{CFLYMLabels|safe}}
                 }
                 else if (cs2.options[cs2.selectedIndex].value==2) {
-                    TSgraphdata={{ newClientsPerMonthThisYear|safe }}
+                    TSgraphdata={{ HCFMData|safe }}
+                    TSLabels={{ HCFMLabels|safe }}
                 }
                 else{
-                    TSgraphdata={{ clientAvgPerDayLast6Month|safe }}
+                    TSgraphdata={{ NCLYMData|safe }}
+                    TSgLabels={{ NCLYMLabels|safe }}
                 }
-                addData(thisYear,TSgraphdata);
+                addDataWithLabels(dataPerMonth,TSLabels,TSgraphdata);
+              }
+
+              function addDataWithLabels(chart,labels, data) {
+                  chart.data.datasets[0].data = data;
+                  chart.data.labels = labels
+                  chart.update();
               }
 
               var tyx = document.getElementById('ThisYear').getContext('2d');
-              var thisYear = new Chart(tyx, {
+              var dataPerMonth = new Chart(tyx, {
                   type: 'bar',
                   data: {
                       labels: ['Enero', 'Febrero', 'Marzo', 'Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
@@ -236,15 +258,20 @@
 
         <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
           <div class="card-body">
-            <h1>Periodo de último año: {{startThisMonthPrevYear}} - {{startThisMonth}}</h1>
+            <h1>Estadísticas de pagos
+              <button class="btn btn-danger btn-lg" type="button">
+                PRÓXIMAMENTE
+              </button>
+            </h1>
+
 
             <div class="form-group">
 
               <label for="exampleFormControlSelect1">Categoría</label>
               <select class="form-control" id="selectLS">
                 <option>--Seleccionar--</option>
-                <option onclick="setLYData()" value="1">Total de asistencias de clientes</option>
-                <option onclick="setLYData()" value="2">Nuevos Clientes</option>
+                <option onclick="setLYData()" value="1">Pagos en el último mes</option>
+                <option onclick="setLYData()" value="2">Lista de pagos</option>
               </select>
             </div>
 
@@ -255,13 +282,13 @@
               function setLYData(){
                 cs2=document.getElementById('selectLS');
                 if(cs2.options[cs2.selectedIndex].value==1){
-                    LSgraphdata={{ ClientsPerMonthLastYear|safe }}
+                    LSgraphdata=[0,1]
                 }
                 else if (cs2.options[cs2.selectedIndex].value==2) {
-                    LSgraphdata={{ newClientsPerMonthLastYear|safe }}
+                    LSgraphdata=[0,1]
                 }
                 else{
-                    LSgraphdata={{ clientAvgPerDayLast6Month|safe }}
+                    LSgraphdata= [0,1]
                 }
                 addData(LastYear,LSgraphdata);
               }
@@ -270,7 +297,7 @@
               var LastYear = new Chart(lyx, {
                   type: 'bar',
                   data: {
-                      labels: {{ monthsLabels|safe}},
+                      labels: ['PROXIMAMENTE','PAGOS'],
                       datasets: [{
                           label: '# de registros',
                           data: [],

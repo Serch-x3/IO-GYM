@@ -55,6 +55,9 @@ function goBack() {
         <div class="form-group">
           <label for="stock" class="txt_negrita">Clases inscritas</label>
           {{ form.included_classes|add_class:"form-check-input" }}
+          {% for error in form.included_classes.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
         </div>
       <div class="col-2"></div>
     </div>

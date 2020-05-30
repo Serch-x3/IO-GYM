@@ -22,15 +22,53 @@
       <div class="col-8">
         {% csrf_token %}
         <!-- {{ form.as_p }} -->
-        {% for field in form.visible_fields %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field|add_class:'form-control' }}
-            {% for error in field.errors %}
-              <span class="help-block">{{ error }}</span>
-            {% endfor %}
-          </div>
-        {% endfor %}
+        <div class="form-group">
+          <label for="">Nombre</label>
+          {{ form.client_name|add_class:"form-control" }}
+        </div>
+
+        <div class="form-group">
+          <label for="">Apellidos</label>
+          {{ form.client_surname|add_class:"form-control" }}
+        </div>
+
+        <div class="form-group">
+          <label for="">Fecha de nacimiento</label>
+          <input class="form-control" type="date" name="client_birthday" required id="id_client_birthday" value="{{form.client_birthday.value|date:"Y-m-d"}}">
+        </div>
+
+        <div class="form-group">
+          <label for="">Teléfono. <br> <small>Formato: (XXX-XXX-XXXX)</small></label>
+          <input class="form-control" type="tel" name="client_phone" id="id_client_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.client_phone.value}}">
+          {% for error in form.client_phone.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <label for="">Teléfono de emergencia. <br> <small>Formato: (XXX-XXX-XXXX)</small></label>
+          <input class="form-control" type="tel" name="client_emergency_phone" id="id_client_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.client_emergency_phone.value}}">
+          {% for error in form.client_emergency_phone.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <label for="">Email</label>
+          {{ form.client_email|add_class:"form-control" }}
+        </div>
+
+        <div class="form-group">
+          <label for="">Género</label>
+          {{ form.client_gender|add_class:"form-control" }}
+        </div>
+
+        <div class="form-group">
+          <label for="">Información Médica</label><br>
+          <small>Ingrese datos médicos del cliente que considere importantes para cuidar su salud.</small>
+          {{ form.client_medical_info|add_class:"form-control" }}
+        </div>
+
       </div>
       <div class="col-2"></div>
     </div>
@@ -47,4 +85,5 @@
     </div>
   </form>
 </div>
+
 {% endblock %}

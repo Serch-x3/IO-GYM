@@ -35,31 +35,14 @@
             <div class="col-2">
               <label for="">Día</label>
             </div>
-            <div class="col-2">
-              <select type="text" class="form-control" name="day">
-                <option>Lunes</option>
-                <option>Martes</option>
-                <option>Miercoles</option>
-                <option>Jueves</option>
-                <option>Viernes</option>
-                <option>Sábado</option>
-                <option>Domingo</option>
-              </select>
+            <div class="col-3">
+              {{ form.weekday|add_class:"form-control" }}
             </div>
-            <div class="col-2">
-              <label for="">Hora</label>
+            <div class="col-3">
+              <label for="">Hora (24 Hrs)</label>
             </div>
-            <div class="col-2">
-              <input class="form-control" type="number" name="hour" max=12 min=1 value=1>
-            </div>
-            <div class="col-2">
-              <input class="form-control" type="number" name="minutes" max=59 min=0 value=0>
-            </div>
-            <div class="col-2">
-              <select type="submit" class="form-control" name="ampm">
-                <option>AM</option>
-                <option>PM</option>
-              </select>
+            <div class="col-3">
+              <input class="form-control" type="time" name="hour" max=12 min=1 value=1>
             </div>
           </div>
         </div>

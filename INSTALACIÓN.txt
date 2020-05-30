@@ -1,0 +1,36 @@
+GUIA DE INSTALACIÓN de IO-GYM
+
+
+
+REQUISITOS DEL SISTEMA:
+
+- Python 3.7 o superior
+- Django 3.0.6                  //pip install Django
+- django-daterange_filter       //pip install django-daterange-filter
+- widget_tweaks                 //pip install django-widget-tweaks
+- encrypted_fields              //pip install django-encrypted-fields
+
+
+PASOS DE INSTALACIÓN:
+
+1- Abra MySQL con el usuario ROOT desde Consola Terminal
+
+2- Ingrese y ejecute el código contenido en el archivo /SQLCODE.sql
+
+3- Asegúrese que en la carpeta /clients/migrations sólo contenga la subcarpeta __pycache__ y el archivo 0001_initial.py.
+   Si se encuentra otro archivo además de estos, probablemente genere problemas para realizar las migraciones
+
+4- Abra la carpeta del proyecto desde Consola o Terminal
+
+5- Ejecute los siguientes comandos
+    python manage.py makemigrations
+    python manage.py migrate
+    python manage.py createsuperuser          //Este comando es para crear una cuenta administrador de IO-GYM
+    python manage.py runserver
+
+7- Abra su navegador y acceda a localhost:8000
+
+8- Inicie sesión con la cuenta administrador de IO-GYM
+
+9- Si desea ingresar al modo de asistencia, primero deberá crear un usuario. Para ello, desde la interfaz de IO-GYM vaya a la barra de
+  navegación y seleccione GIMNASIO/Cuentas de Usuario, rellene el formulario y después podrá ingresar al modo de asistencia

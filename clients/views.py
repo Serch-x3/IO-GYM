@@ -22,159 +22,59 @@ from django.http import HttpResponseRedirect
 
 def graphs(request):
     locale.setlocale(locale.LC_ALL, 'es_MX.utf8')
-    #General gym stats
-    general=[0,0,0,0,0,0]
-    general[0]=CLIENTS.objects.count()
-    general[1]=TRAINERS.objects.count()
-    general[2]=GYMCLASSES.objects.count()
-    general[3]=GROUPS.objects.count()
-    amc=0
-    dmc=0
-    memberships=MEMBERSHIPS.objects.all()
-    for m in memberships:
-        if datetime.now().date() <= m.expiration_date:
-            amc=amc+1
-        else:
-            dmc=dmc+1
-    general[4]=amc
-    general[5]=dmc
+    general = GeneralStats.objects.first()
+    generalStats = [general.clients, general.trainers, general.groups,general.classes,general.active_memberships,general.expirated_memberships]
 
-    #Client Flow average per week days last month
-    last_month = datetime.now().date() - timedelta(days=30)
-    clientAvgPerDayLastMonth=[0,0,0,0,0,0,0] #Index 0 For Sunday
-    clientAvgPerDayLastMonth[0]=clientesView.objects.filter(date__week_day=1,date__gte=last_month).count()
-    clientAvgPerDayLastMonth[1]=clientesView.objects.filter(date__week_day=2,date__gte=last_month).count()
-    clientAvgPerDayLastMonth[2]=clientesView.objects.filter(date__week_day=3,date__gte=last_month).count()
-    clientAvgPerDayLastMonth[3]=clientesView.objects.filter(date__week_day=4,date__gte=last_month).count()
-    clientAvgPerDayLastMonth[4]=clientesView.objects.filter(date__week_day=5,date__gte=last_month).count()
-    clientAvgPerDayLastMonth[5]=clientesView.objects.filter(date__week_day=6,date__gte=last_month).count()
-    clientAvgPerDayLastMonth[6]=clientesView.objects.filter(date__week_day=7,date__gte=last_month).count()
+    cflm = CFLM.objects.first()
+    CFLMData = [cflm.sunday,cflm.monday,cflm.tuesday,cflm.wednesday,cflm.thursday,cflm.friday,cflm.saturday]
 
-    #Client Flow average per week days last 3 months
-    last_3month = datetime.now().date() - timedelta(days=90)
-    clientAvgPerDayLast3Month=[0,0,0,0,0,0,0] #Index 0 For Sunday
-    clientAvgPerDayLast3Month[0]=clientesView.objects.filter(date__week_day=1,date__gte=last_3month).count()/90
-    clientAvgPerDayLast3Month[1]=clientesView.objects.filter(date__week_day=2,date__gte=last_3month).count()/90
-    clientAvgPerDayLast3Month[2]=clientesView.objects.filter(date__week_day=3,date__gte=last_3month).count()/90
-    clientAvgPerDayLast3Month[3]=clientesView.objects.filter(date__week_day=4,date__gte=last_3month).count()/90
-    clientAvgPerDayLast3Month[4]=clientesView.objects.filter(date__week_day=5,date__gte=last_3month).count()/90
-    clientAvgPerDayLast3Month[5]=clientesView.objects.filter(date__week_day=6,date__gte=last_3month).count()/90
-    clientAvgPerDayLast3Month[6]=clientesView.objects.filter(date__week_day=7,date__gte=last_3month).count()/90
+    cfl3m = CFL3M.objects.first()
+    CFL3MData = [cfl3m.sunday,cfl3m.monday,cfl3m.tuesday,cfl3m.wednesday,cfl3m.thursday,cfl3m.friday,cfl3m.saturday]
 
+    cfl6m = CFL6M.objects.first()
+    CFL6MData = [cfl6m.sunday,cfl6m.monday,cfl6m.tuesday,cfl6m.wednesday,cfl6m.thursday,cfl6m.friday,cfl6m.saturday]
 
-    #Client Flow average per week days last 6 months
-    last_6month = datetime.now().date() - timedelta(days=183)
-    clientAvgPerDayLast6Month=[0,0,0,0,0,0,0] #Index 0 For Sunday
-    clientAvgPerDayLast6Month[0]=clientesView.objects.filter(date__week_day=1,date__gte=last_6month).count()/183
-    clientAvgPerDayLast6Month[1]=clientesView.objects.filter(date__week_day=2,date__gte=last_6month).count()/183
-    clientAvgPerDayLast6Month[2]=clientesView.objects.filter(date__week_day=3,date__gte=last_6month).count()/183
-    clientAvgPerDayLast6Month[3]=clientesView.objects.filter(date__week_day=4,date__gte=last_6month).count()/183
-    clientAvgPerDayLast6Month[4]=clientesView.objects.filter(date__week_day=5,date__gte=last_6month).count()/183
-    clientAvgPerDayLast6Month[5]=clientesView.objects.filter(date__week_day=6,date__gte=last_6month).count()/183
-    clientAvgPerDayLast6Month[6]=clientesView.objects.filter(date__week_day=7,date__gte=last_6month).count()/183
+    cfly = CFLY.objects.first()
+    CFLYData = [cfly.sunday,cfly.monday,cfly.tuesday,cfly.wednesday,cfly.thursday,cfly.friday,cfly.saturday]
 
-    #Client Flow average per week days last year
-    last_Year = datetime.now().date() - timedelta(days=365)
-    clientAvgPerDayLastYear=[0,0,0,0,0,0,0] #Index 0 For Sunday
-    clientAvgPerDayLastYear[0]=clientesView.objects.filter(date__week_day=1,date__gte=last_Year).count()/365
-    clientAvgPerDayLastYear[1]=clientesView.objects.filter(date__week_day=2,date__gte=last_Year).count()/365
-    clientAvgPerDayLastYear[2]=clientesView.objects.filter(date__week_day=3,date__gte=last_Year).count()/365
-    clientAvgPerDayLastYear[3]=clientesView.objects.filter(date__week_day=4,date__gte=last_Year).count()/365
-    clientAvgPerDayLastYear[4]=clientesView.objects.filter(date__week_day=5,date__gte=last_Year).count()/365
-    clientAvgPerDayLastYear[5]=clientesView.objects.filter(date__week_day=6,date__gte=last_Year).count()/365
-    clientAvgPerDayLastYear[6]=clientesView.objects.filter(date__week_day=7,date__gte=last_Year).count()/365
+    hclyd = HCLYD.objects.first()
+    HCLYDData = [hclyd.sunday,hclyd.monday,hclyd.tuesday,hclyd.wednesday,hclyd.thursday,hclyd.friday,hclyd.saturday]
+
+    cflym = CFLYM.objects.values_list()
+    CFLYMData = []
+    CFLYMLabels = []
+    for c in cflym:
+        CFLYMData.append(c[1])
+        CFLYMLabels.append(c[2] + ' ' + str(c[3]))
+
+    hcfm = HCFM.objects.values_list()
+    HCFMData = []
+    HCFMLabels = []
+    for c in hcfm:
+        HCFMData.append(c[1])
+        HCFMLabels.append(c[2] + ' ' + str(c[3]))
+
+    nclym = NCLYM.objects.values_list()
+    NCLYMData = []
+    NCLYMLabels = []
+    for c in nclym:
+        NCLYMData.append(c[1])
+        NCLYMLabels.append(c[2] + ' ' + str(c[3]))
 
 
-    this_year=datetime.now().date().year
-    #Client flow this_year
-    clientAvgPerMonthLastYear=[0,0,0,0,0,0,0,0,0,0,0,0] #Index 0 For January
-    clientAvgPerMonthLastYear[0]=clientesView.objects.filter(date__month=1,date__year=this_year).count()
-    clientAvgPerMonthLastYear[1]=clientesView.objects.filter(date__month=2,date__year=this_year).count()
-    clientAvgPerMonthLastYear[2]=clientesView.objects.filter(date__month=3,date__year=this_year).count()
-    clientAvgPerMonthLastYear[3]=clientesView.objects.filter(date__month=4,date__year=this_year).count()
-    clientAvgPerMonthLastYear[4]=clientesView.objects.filter(date__month=5,date__year=this_year).count()
-    clientAvgPerMonthLastYear[5]=clientesView.objects.filter(date__month=6,date__year=this_year).count()
-    clientAvgPerMonthLastYear[6]=clientesView.objects.filter(date__month=7,date__year=this_year).count()
-    clientAvgPerMonthLastYear[7]=clientesView.objects.filter(date__month=8,date__year=this_year).count()
-    clientAvgPerMonthLastYear[8]=clientesView.objects.filter(date__month=9,date__year=this_year).count()
-    clientAvgPerMonthLastYear[9]=clientesView.objects.filter(date__month=10,date__year=this_year).count()
-    clientAvgPerMonthLastYear[10]=clientesView.objects.filter(date__month=11,date__year=this_year).count()
-    clientAvgPerMonthLastYear[11]=clientesView.objects.filter(date__month=12,date__year=this_year).count()
-
-
-    #New Clients This year
-    newClientsPerMonthThisYear=[0,0,0,0,0,0,0,0,0,0,0,0] #Index 0 For January
-    newClientsPerMonthThisYear[0]=MEMBERSHIPS.objects.filter(register_date__month=1,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[1]=MEMBERSHIPS.objects.filter(register_date__month=2,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[2]=MEMBERSHIPS.objects.filter(register_date__month=3,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[3]=MEMBERSHIPS.objects.filter(register_date__month=4,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[4]=MEMBERSHIPS.objects.filter(register_date__month=5,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[5]=MEMBERSHIPS.objects.filter(register_date__month=6,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[6]=MEMBERSHIPS.objects.filter(register_date__month=7,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[7]=MEMBERSHIPS.objects.filter(register_date__month=8,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[8]=MEMBERSHIPS.objects.filter(register_date__month=9,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[9]=MEMBERSHIPS.objects.filter(register_date__month=10,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[10]=MEMBERSHIPS.objects.filter(register_date__month=11,register_date__year=this_year).count()
-    newClientsPerMonthThisYear[11]=MEMBERSHIPS.objects.filter(register_date__month=12,register_date__year=this_year).count()
-
-
-    #New Clients last year
-    startThisMonth=datetime.now().date()- timedelta(days=datetime.now().date().day)
-    startThisMonthPrevYear=datetime.now().date()- timedelta(days=datetime.now().date().day+364)
-    copy=startThisMonthPrevYear
-
-    monthsLabels=[]
-    for x in range(0,12):
-        monthsLabels.append(copy.strftime("%B") +" "+ str(copy.year))
-        copy=copy+timedelta(days=31)
-    yearAgo=MEMBERSHIPS.objects.filter(register_date__year=startThisMonthPrevYear.year,register_date__gte=startThisMonthPrevYear).values_list('register_date__month').annotate(total=Count('client_id')).order_by('register_date__month')
-    thisYear=MEMBERSHIPS.objects.filter(register_date__year=startThisMonth.year,register_date__lte=startThisMonth).values_list('register_date__month').annotate(total=Count('client_id')).order_by('register_date__month')
-
-    newClientsPerMonthLastYear=[0,0,0,0,0,0,0,0,0,0,0,0]
-    #obtain yearAgo
-    f=yearAgo.first()[0] #Number of the first month, It'll works like a index corrector
-    for x in yearAgo:
-        y=x[0] #Number of month
-        newClientsPerMonthLastYear[y-f]=x[1]
-
-    #obtain this year
-    f=12-f
-    for x in thisYear:
-        c=x[0]
-        newClientsPerMonthLastYear[c+f]=x[1]
-
-
-    #Client Flow Last year
-    yearAgoF=clientesView.objects.filter(date__year=startThisMonthPrevYear.year,date__gte=startThisMonthPrevYear).values_list('date__month').annotate(total=Count('id')).order_by('date__month')
-    thisYearF=clientesView.objects.filter(date__year=startThisMonth.year,date__lte=startThisMonth).values_list('date__month').annotate(total=Count('id')).order_by('date__month')
-
-    ClientsPerMonthLastYear=[0,0,0,0,0,0,0,0,0,0,0,0]
-    #obtain yearAgo
-    ff=yearAgo.first()[0] #Number of the first month, It'll works like a index corrector
-
-    for x in yearAgoF:
-        y=x[0] #Number of month
-        ClientsPerMonthLastYear[y-ff]=x[1]
-
-    #obtain this year
-    ff=12-ff
-    for x in thisYearF:
-        c=x[0]
-        ClientsPerMonthLastYear[c+ff]=x[1]
-    print(ClientsPerMonthLastYear)
     return render(request,'admin/graphs/index.html',{
-        'general': general,
-        'clientAvgPerDayLastMonth':clientAvgPerDayLastMonth,
-        'clientAvgPerDayLast3Month':clientAvgPerDayLast3Month,
-        'clientAvgPerDayLast6Month':clientAvgPerDayLast6Month,
-        'clientAvgPerDayLastYear':clientAvgPerDayLastYear,
-        'clientAvgPerMonthLastYear':clientAvgPerMonthLastYear,
-        'newClientsPerMonthThisYear':newClientsPerMonthThisYear,
-        'newClientsPerMonthLastYear':newClientsPerMonthLastYear,
-        'monthsLabels':monthsLabels,
-        'startThisMonth':startThisMonth,
-        'startThisMonthPrevYear':startThisMonthPrevYear,
-        'ClientsPerMonthLastYear':ClientsPerMonthLastYear,
+        'general': generalStats,
+        'CFLM': CFLMData,
+        'CFL3M': CFL3MData,
+        'CFL6M': CFL6MData,
+        'CFLY': CFLYData,
+        'HCLYD': HCLYDData,
+        'CFLYMData': CFLYMData,
+        'CFLYMLabels': CFLYMLabels,
+        'HCFMData': HCFMData,
+        'HCFMLabels': HCFMLabels,
+        'NCLYMData': NCLYMData,
+        'NCLYMLabels': NCLYMLabels
     })
 
 
@@ -359,74 +259,10 @@ class GroupsCreate(SuccessMessageMixin, CreateView):
     fields = "__all__"
     success_message = '¡Grupo creado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
 
-    def form_valid(self, form):
-        day=form.data.get('day')
-        hour=int(form.data.get('hour'))
-        if hour <10:
-            hour='0'+str(hour)
-        minutes=int(form.data.get('minutes'))
-        if minutes <10:
-            minutes='0'+str(minutes)
-        ampm=form.data.get('ampm')
-        weekdays=WEEKDAYS.objects.get_or_create(weekdays_name=day)
-        s=str(hour)+':'+str(minutes)+' '+str(ampm)
-        hours=HOURS.objects.get_or_create(hour_name=s)
-        group=GROUPS(trainer_id=TRAINERS(trainer_id=form.data.get('trainer_id')), gymclass_id= GYMCLASSES(gymclass_id=form.data.get('gymclass_id')), weekday_id=WEEKDAYS.objects.get(weekdays_name=day), hour_id=HOURS.objects.get(hour_name=s))
-        group.save()
-        return redirect('index groups')
-
     # Redireccionamos a la página principal luego de crear un registro o postre
     def get_success_url(self):
         return reverse('index groups') # Redireccionamos a la vista principal 'leer'
 
-
-class hoursCreate(SuccessMessageMixin, CreateView):
-    model = HOURS
-    form = HOURS
-    fields = "__all__"
-    success_message = '¡Hora creada correctamente!' # Mostramos este Mensaje luego de Crear un Postre
-
-    # Redireccionamos a la página principal luego de crear un registro o postre
-    def get_success_url(self):
-        return reverse('index hours') # Redireccionamos a la vista principal 'leer'
-
-class hoursDelete(SuccessMessageMixin, DeleteView):
-    model = HOURS
-    form = HOURS
-    fields = "__all__"
-
-    # Redireccionamos a la página principal luego de eliminar un registro o postre
-    def get_success_url(self):
-        success_message = '¡Hora eliminada correctamente!' # Mostramos este Mensaje luego de Editar un Postre
-        messages.success (self.request, (success_message))
-        return reverse('index hours') # Redireccionamos a la vista principal 'leer'
-
-class hoursView(ListView):
-    model= HOURS
-
-class weekdaysCreate(SuccessMessageMixin, CreateView):
-    model = WEEKDAYS
-    form = WEEKDAYS
-    fields = "__all__"
-    success_message = '¡Día creado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
-
-    # Redireccionamos a la página principal luego de crear un registro o postre
-    def get_success_url(self):
-        return reverse('index weekdays') # Redireccionamos a la vista principal 'leer'
-
-class weekdayDelete(SuccessMessageMixin, DeleteView):
-    model = WEEKDAYS
-    form = WEEKDAYS
-    fields = "__all__"
-
-    # Redireccionamos a la página principal luego de eliminar un registro o postre
-    def get_success_url(self):
-        success_message = '¡Día eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
-        messages.success (self.request, (success_message))
-        return reverse('index weekdays') # Redireccionamos a la vista principal 'leer'
-
-class weekdaysView(ListView):
-    model= WEEKDAYS
 
 class clientsView(ListView):
     model=clientesView

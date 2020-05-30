@@ -5,11 +5,15 @@
 
 <div class="container mt-5 mb-2">
   <div class="row">
-    <div class="col-9">
+    <div class="col-8">
       <h2>Consulta de datos de Cliente</h2>
     </div>
-    <div class="col-3">
-      <a href="../" class="btn btn-primary float-right">Volver</a>
+    <div class="col-4">
+      <div class="float-right">
+        <a href="../../admin/membership/detail/{{clients.client_id}}" title="Editar"class="btn btn-success">Ir a membresía</a>
+        <a href="../editar/{{clients.client_id}}" title="Editar"class="btn btn-secondary">Editar </a>
+        <a href="../" class="btn btn-primary">Volver</a>
+      </div>
     </div>
   </div>
 </div>
@@ -25,11 +29,26 @@
       <p><span class="txt_negrita">Telefono:</span> <div class="form-control">{{clients.client_phone}} </div></p>
     </div>
     <div class="col">
-    <p><span class="txt_negrita">Telefono de emergencia:</span> <div class="form-control"> {{clients.client_emergency_phone}}</div></p>
-    <p><span class="txt_negrita">Email:</span> <div class="form-control"> {{clients.client_email}}</div></p>
-    <p><span class="txt_negrita">Genero:</span> <div class="form-control"> {{clients.client_gender}}</div></p>
+      <p><span class="txt_negrita">Telefono de emergencia:</span> <div class="form-control"> {{clients.client_emergency_phone}}</div></p>
+      <p><span class="txt_negrita">Email:</span> <div class="form-control"> {{clients.client_email}}</div></p>
+      {% if clients.client_gender == 'M'%}
+        <p><span class="txt_negrita">Genero:</span> <div class="form-control"> Masculino</div></p>
+      {% elif clients.client_gender == 'F'%}
+        <p><span class="txt_negrita">Genero:</span> <div class="form-control"> Femenino</div></p>
+      {% else%}
+        <p><span class="txt_negrita">Genero:</span> <div class="form-control"> No binario</div></p>
+      {% endif%}
     </div>
   </div>
+  <div class="row">
+    <div class="col">
+      <p><span class="txt_negrita">Información médica: </span> <div class="form-control"> {{clients.client_medical_info}} </div></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
 
+    </div>
+  </div>
 </div>
 {% endblock %}

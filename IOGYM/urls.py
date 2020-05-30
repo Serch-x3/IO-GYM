@@ -70,18 +70,6 @@ urlpatterns = [
 
     path('admin/groups/create', login_required(GroupsCreate.as_view(template_name = "admin/groups/create.html")), name='create groups'),
 
-    path('admin/hours/create', login_required(hoursCreate.as_view(template_name = "admin/hours/create.html")), name='create hours'),
-
-    path('admin/hours/delete/<int:pk>', login_required(hoursDelete.as_view()),name='delete hours'),
-
-    path('admin/hours/index', login_required(hoursView.as_view(template_name="admin/hours/index.html")), name='index hours'),
-
-    path('admin/weekdays/create', login_required(weekdaysCreate.as_view(template_name = "admin/weekdays/create.html")), name='create weekdays'),
-
-    path('admin/weekdays/delete/<int:pk>', login_required(weekdayDelete.as_view()),name='delete weekays'),
-
-    path('admin/weekdays/index', login_required(weekdaysView.as_view(template_name="admin/weekdays/index.html")), name='index weekdays'),
-
     path('trainers/', login_required(FilterView.as_view(filterset_class=TrainersFilter,template_name='trainers/index.html')), name='search trainer'),
 
     path('clients/', login_required(FilterView.as_view(filterset_class=ClientsFilter,template_name='clients/index.html')), name='search client'),
