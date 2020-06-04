@@ -7,7 +7,7 @@ from model_utils import Choices
 import time
 from datetime import datetime, timedelta
 from django.shortcuts import get_list_or_404, get_object_or_404
-from encrypted_fields import fields
+from fernet_fields import fields
 # Create your models here.
 
 class GeneralStats(models.Model):
@@ -244,7 +244,7 @@ class TRAINERS(models.Model):
     trainer_gender = models.CharField(choices=options, max_length=1, blank=True, null=True, verbose_name='Género')
     trainer_address = models.CharField(max_length=60, blank=True, null=True, verbose_name='Dirección')
     trainer_rfc = models.CharField(validators=[MinLengthValidator(12)], max_length=13, blank=True, null=True, verbose_name='RFC')
-    trainer_password = fields.EncryptedCharField(max_length=40, blank=True, verbose_name='Contraseña')
+    trainer_password = fields.EncryptedTextField(max_length=40, blank=True, verbose_name='Contraseña')
 
     class Meta:
         managed = True

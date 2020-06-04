@@ -201,13 +201,13 @@
                     TSgraphdata={{ CFLYMData|safe }}
                     TSLabels= {{CFLYMLabels|safe}}
                 }
-                else if (cs2.options[cs2.selectedIndex].value==2) {
+                else if(cs2.options[cs2.selectedIndex].value==2) {
                     TSgraphdata={{ HCFMData|safe }}
                     TSLabels={{ HCFMLabels|safe }}
                 }
                 else{
                     TSgraphdata={{ NCLYMData|safe }}
-                    TSgLabels={{ NCLYMLabels|safe }}
+                    TSLabels={{ NCLYMLabels|safe }}
                 }
                 addDataWithLabels(dataPerMonth,TSLabels,TSgraphdata);
               }

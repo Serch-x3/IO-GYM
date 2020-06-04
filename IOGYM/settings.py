@@ -45,14 +45,9 @@ INSTALLED_APPS = [
     'clients',
     'widget_tweaks',
     'daterange_filter',
-    'encrypted_fields'
 ]
 
-# A list of hex-encoded 32 byte keys
-# You only need one unless/until rotating keys
-FIELD_ENCRYPTION_KEYS = [
-    "f164ec6bd6fbc4aef5647abc15199da0f9badcc1d2127bde2087ae0d794a9a0b"
-]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

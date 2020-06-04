@@ -57,10 +57,14 @@ def graphs(request):
     nclym = NCLYM.objects.values_list()
     NCLYMData = []
     NCLYMLabels = []
+
     for c in nclym:
         NCLYMData.append(c[1])
         NCLYMLabels.append(c[2] + ' ' + str(c[3]))
 
+    print("--------------------------------------------------")
+    print(NCLYMData)
+    print("--------------------------------------------------")
 
     return render(request,'admin/graphs/index.html',{
         'general': generalStats,

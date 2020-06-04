@@ -35,7 +35,7 @@
         <!-- {{ form.as_p }} -->
         <div class="form-group">
           <label for="stock" class="txt_negrita">Cliente</label>
-          {{ form.client_id|add_class:"form-control" }}
+          <input class="form-control" disabled value="{{object.client_id}}"type="text" name="" value="">
         </div>
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de registro</label>
@@ -44,7 +44,8 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="stock" class="txt_negrita">Fecha de vencimiento</label>
+          <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
+          <input disabled class="form-control mb-1" type="date" value="{{form.expiration_date.value|date:'Y-m-d'}}">
           {{ form.expiration_date|add_class:"form-control" }}
         </div>
         <div class="form-group">
