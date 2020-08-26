@@ -35,25 +35,38 @@
         <!-- {{ form.as_p }} -->
         <div class="form-group">
           <label for="stock" class="txt_negrita">Cliente</label>
-          <input class="form-control" disabled value="{{object.client_id}}"type="text" name="" value="">
+          <select class="form-control" name="client_id" id="id_client_id" readonly>
+            <option value="{{form.client_id.initial}}" selected>{{ form.instance.client_id }}</option>
+          </select>
+          {% for error in form.client_id.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
         </div>
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de registro</label>
-          <div class="form-control">
-            {{ form.instance.register_date|date:"Y/m/d" }}
-          </div>
+          <input class="form-control" type="text" name="register_date" value="{{ form.instance.register_date|date:"Y/m/d" }}" id="id_register_id" readonly>
+          {% for error in form.register_date.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
         </div>
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
           <input disabled class="form-control mb-1" type="date" value="{{form.expiration_date.value|date:'Y-m-d'}}">
           {{ form.expiration_date|add_class:"form-control" }}
+          {% for error in form.expiration_date.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
         </div>
         <div class="form-group">
           <label for="stock" class="txt_negrita">Clases inscritas</label>
           {{ form.included_classes|add_class:"form-check-input" }}
+          {% for error in form.included_classes.errors %}
+            <span class="help-block">{{ error }}</span>
+          {% endfor %}
         </div>
       <div class="col-2"></div>
     </div>
   </form>
 </div>
+
 {% endblock %}
