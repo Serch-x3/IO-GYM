@@ -90,8 +90,8 @@ DATABASES = {
         'NAME': 'IOGYM',
         'USER': 'djangoDB',
         'PASSWORD':'AfterByte',
-        'HOST':'localhost',
-        'PORT':'',
+        'HOST':'173.18.0.1',
+        'PORT':'3307',
     }
 }
 
