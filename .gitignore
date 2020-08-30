@@ -2,4 +2,8 @@
 .env
 #Ingore python cache 
 .pyc
-
+__pycache__/
+# Only for Development only
+ */migrations/*
+ !**/migrations
+# !**/migrations/_init_.py
