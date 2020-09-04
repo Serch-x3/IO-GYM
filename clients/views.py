@@ -21,7 +21,7 @@ from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect
 
 def graphs(request):
-    locale.setlocale(locale.LC_ALL, 'es_MX.utf8')
+    
     general = GeneralStats.objects.first()
     generalStats = [general.clients, general.trainers, general.groups,general.classes,general.active_memberships,general.expirated_memberships]
 

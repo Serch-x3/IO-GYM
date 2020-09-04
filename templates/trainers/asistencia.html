@@ -3,13 +3,13 @@
 {% load widget_tweaks %}
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#"><img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="30px"></a>
+  <a class="navbar-brand" href="#"><img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="30px">  Modo Asistencia</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav ml-auto">
       <li class="nav-item active">
         <a class="nav-link" href="../../adminmode">Administrador <span class="sr-only">(current)</span></a>
       </li>
@@ -17,20 +17,70 @@
         <a class="nav-link" href="../../">Cliente</a>
       </li>
       <li class="nav-item active">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop">
+          Salir
+        </button>
 
-        <a class="nav-link btn btn-danger " onclick="return eliminar();" href="../../logout">Cerrar</a>
+        <script type="text/javascript">
+          function logout() {
+            window.location.href = "../../../../logout";
+          }
+        </script>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      {% render_field filter.form.trainer_name class="form-control mr-3" placeholder="Nombre" %}
-      {% render_field filter.form.trainer_surname class="form-control" placeholder="Apellidos"%}
-      <button class="btn btn-outline-primary ml-2 mr-2 material-icons" type="submit">search</button>
-      <a href="./" class="btn btn-outline-warning">Limpiar</a>
-    </form>
   </div>
 </nav>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">¿Salir del sistema?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Se cerrará sesión de {{user.username}}. Podrá acceder al modo asistencia una vez inicie sesión con este mismo usuario. Mientras no sea así, el sistema se mantendrá cerrado en este dispositivo.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="logout()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="container">
   <h2 align="center" class="mt-5">Ingreso de entrenador</h2>
+
+  <form class="form-inline my-3 justify-content-center">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <div class="form-group">
+          <input type="text" name="trainer_name" placeholder="Nombre" class="form-control mr-3" id="id_trainer_name">
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="form-group">
+          <input type="text" name="trainer_surname" placeholder="Apellidos" class="form-control" id="id_trainer_surname">
+        </div>
+      </div>
+      <!-- SHOW WHEN VIEWPORT IS MEDIUM OR HIGHER-->
+      <div class="col-12 col-md-4 d-none d-md-block">
+        <button class="btn btn-primary ml-2 material-icons" type="submit">search</button>
+        <a href="./" class="btn btn-warning">Limpiar</a>
+      </div>
+      <!-- HIDE WHEN VIEWPORT IS MEDIUM OR LOWER-->
+      <div class="col-12 col-md-4 d-md-none">
+        <button class="btn btn-primary material-icons btn-block" type="submit">search</button>
+        <a href="./" class="btn btn-warning btn-block">Limpiar</a>
+      </div>
+    </div>
+  </form>
 
   {% if messages %}
     {% for message in messages %}

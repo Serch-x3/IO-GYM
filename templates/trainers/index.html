@@ -62,27 +62,24 @@
                 <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
                 <div class="form">
                   <div class="row">
-                    <div class="col-6">
-                      {{ filter.form.trainer_name.label_tag }}
+                    <div class="col-12 col-md-6">
+                      <input type="text" name="trainer_name" class="form-control my-1" id="id_trainer_name">
                     </div>
-                    <div class="col-6">
-                      {{ filter.form.trainer_surname.label_tag }}
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-6">
-                      {% render_field filter.form.trainer_name class="form-control" %}
-                    </div>
-                    <div class="col-6">
-                      {% render_field filter.form.trainer_surname class="form-control" %}
+                    <div class="col-12 col-md-6">
+                      <input type="text" name="trainer_surname" class="form-control my-1" id="id_trainer_surname">
                     </div>
                   </div>
                 </div>
                 <div class="row mt-2">
-                  <div class="col" align="right">
+                  <!--SHOW WHEN VIEWPORT IS MD OR HIGHER-->
+                  <div class="col d-none d-md-block" align="right">
                     <button class="btn btn-primary mr-2 material-icons" type="submit">search</button>
                     <a href="./" class="btn btn-warning">Limpiar</a>
+                  </div>
+                  <!--HIDE WHEN VIEWPORT IS MD OR HIGHER -->
+                  <div class="col d-md-none">
+                    <button class="btn btn-primary mr-2 btn-block material-icons" type="submit">search</button>
+                    <a href="./" class="btn btn-warning btn-block">Limpiar</a>
                   </div>
                 </div>
               </form>

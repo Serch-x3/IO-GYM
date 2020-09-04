@@ -1,0 +1,4 @@
+a .link-hoverable:hover {
+  color: red;
+  text-shadow: 10;
+}

@@ -27,34 +27,29 @@
                 <h4>Buscador</h4>
                 <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
                 <div class="form">
-                  <div class="row">
-                    <div class="col-4">
-                      {{ filter.form.id.label_tag }}
-                    </div>
-                    <div class="col-4">
-                      {{ filter.form.trainer_surname.label_tag }}
-                    </div>
-                    <div class="col-4">
-                      {{ filter.form.date.label_tag }}
-                    </div>
-                  </div>
 
                   <div class="row">
-                    <div class="col-4">
-                      {% render_field filter.form.id class="form-control" %}
+                    <div class="col-12 col-md-4">
+                      {% render_field filter.form.id class="form-control my-1" placeholder="Nombre"%}
                     </div>
-                    <div class="col-4">
-                      {% render_field filter.form.trainer_surname class="form-control" %}
+                    <div class="col-12 col-md-4">
+                      {% render_field filter.form.trainer_surname class="form-control my-1" placeholder="Apellidos"%}
                     </div>
-                    <div class="col-4">
-                      {% render_field filter.form.date class="form-control" %}
+                    <div class="col-12 col-md-4">
+                      {% render_field filter.form.date class="form-control my-1" placeholder="Fecha"%}
                     </div>
                   </div>
                 </div>
                 <div class="row mt-2">
-                  <div class="col" align="right">
+                  <!--SHOW WHEN VIEWPORT IS MD OR HIGHER-->
+                  <div class="col d-none d-md-block" align="right">
                     <button class="btn btn-primary mr-2 material-icons" type="submit">search</button>
                     <a href="./" class="btn btn-warning">Limpiar</a>
+                  </div>
+                  <!--HIDE WHEN VIEWPORT IS MD OR HIGHER-->
+                  <div class="col d-md-none">
+                    <button class="btn btn-primary btn-block material-icons" type="submit">search</button>
+                    <a href="./" class="btn btn-warning btn-block ">Limpiar</a>
                   </div>
                 </div>
               </form>

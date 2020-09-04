@@ -53,22 +53,42 @@
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
-        <h5 class="text-light mr-3">¡Hola, {{user.username}}!</h5 >
+        <h5 class="text-light mr-3 d-none d-lg-block">¡Hola, {{user.username}}!</h5 >
         <a href="attendancemode" class="btn btn-primary mr-1">Modo de asistencia</a>
-        <a class="btn btn-danger my-2 my-sm-0" onclick="return eliminar();" href="../../../../logout">Salir</a>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop">
+          Salir
+        </button>
 
         <script type="text/javascript">
-          function eliminar() {
-            var x = confirm("¿Salir del sistema?");
-            if (x)
-              return true;
-            else
-              return false;
+          function logout() {
+            window.location.href = "../../../../logout";
           }
         </script>
       </form>
     </div>
   </nav>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">¿Salir del sistema?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Se cerrará sesión de {{user.username}}. Podrá acceder al modo administrador una vez inicie sesión con este mismo usuario. Mientras no sea así, el sistema se mantendrá cerrado en este dispositivo.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="logout()">Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="container-fluid bg-dark">
     <div class="bd-example">
@@ -106,9 +126,8 @@
     </div>
   </div>
   </div>
-<div class="text-light">
 
-</div>
+
   <div class="container mt-5">
     {% if messages %}
       {% for message in messages %}
