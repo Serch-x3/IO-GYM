@@ -9,68 +9,88 @@ function goBack() {
 }
 </script>
 
-<div class="container">
+<div class="container mt-5 mb-2">
   <div class="row">
-    <div class="col">
-      <img class="mr-5" src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" width="50%">
-    </div>
-    <div class="col-6 mt-5" align="center">
+    <div class="col-12">
       <h2>Editar membresía</h2>
     </div>
-    <div class="col" align="center">
-      <a href="#" onclick="goBack()" class="btn btn-primary mt-5">Atrás</a>
-    </div>
   </div>
+</div>
+
+<div class="container">
 
   <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="row">
-      <div class="col"></div>
 
-      <div class="col-4 mb-5" align="center">
+      <div class="col-12 mb-3 d-none d-md-block text-right">
         <button type="submit" class="btn btn-success">Aceptar</button>
-        <a href="#" onclick="goBack()" class="btn btn-secondary">Cancelar</a>
+        <a href="../index"class="btn btn-secondary">Cancelar</a>
       </div>
 
-      <div class="col"></div>
-    </div>
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-8">
-        {% csrf_token %}
-        <!-- {{ form.as_p }} -->
+      <div class="col-12 mb-3 d-md-none" align="center">
+        <button type="submit" class="btn btn-success btn-block">Aceptar</button>
+        <a href="../index"class="btn btn-secondary btn-block">Cancelar</a>
+      </div>
 
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="stock" class="txt_negrita">Cliente</label>
           <select class="form-control" name="client_id" id="id_client_id" readonly>
             <option value="{{form.client_id.initial}}" selected>{{ form.instance.client_id }}</option>
           </select>
           {% for error in form.client_id.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de registro</label>
           <input class="form-control" type="text" name="register_date" value="{{ form.instance.register_date|date:"Y/m/d" }}" id="id_register_id" readonly>
           {% for error in form.register_date.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
           <input disabled class="form-control mb-1" type="date" value="{{form.expiration_date.value|date:'Y-m-d'}}">
           {{ form.expiration_date|add_class:"form-control" }}
           {% for error in form.expiration_date.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
+
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="stock" class="txt_negrita">Clases inscritas</label>
           {{ form.included_classes|add_class:"form-check-input" }}
           {% for error in form.included_classes.errors %}
-            <span class="help-block" style="color:red;">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
-      <div class="col-2"></div>
+      </div>
     </div>
   </form>
 </div>

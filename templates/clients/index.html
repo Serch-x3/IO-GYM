@@ -3,14 +3,18 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<div class="container mt-5 mb-2">
+<div class="container mt-4 mb-2">
   <div class="row">
-    <div class="col-9">
+    <div class="col-12 col-md-9">
       <h2>Administración de Clientes</h2>
     </div>
-    <div class="col-3" align="right">
-    <a type="button" class="btn btn-success mb-1" href="crear">Nuevo</a>
-    <button class="btn btn-primary material-icons mb-1" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
+    <div class="col-12 col-md-3 d-none d-md-block" align="right">
+      <a type="button" class="btn btn-success mb-1" href="crear">Nuevo</a>
+      <button class="btn btn-primary material-icons mb-1" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
+    </div>
+    <div class="col-12 d-md-none">
+      <a type="button" class="btn btn-success btn-block mb-1" href="crear">Nuevo</a>
+      <button class="btn btn-primary btn-block material-icons mb-1" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
     </div>
   </div>
 </div>
@@ -29,10 +33,10 @@
                 <div class="form">
                   <div class="row">
                     <div class="col-12 col-md-6">
-                      <input type="text" placeholder="Nombre" name="client_name" class="form-control my-1" id="id_client_name">
+                      <input type="text" placeholder="Nombre" name="client_name" class="form-control my-1" id="id_client_name" placeholder="Nombre">
                     </div>
                     <div class="col-12 col-md-6">
-                      <input type="text" placeholder="Apellidos" name="client_surname" class="form-control my-1" id="id_client_surname">
+                      <input type="text" placeholder="Apellidos" name="client_surname" class="form-control my-1" id="id_client_surname" placeholder="Apellidos">
                     </div>
                   </div>
                 </div>
@@ -92,7 +96,7 @@
 
   <div class="table-responsive-lg">
     <table class="table table-striped table-hover mt-2">
-        <thead>
+        <thead class="thead-dark">
           <tr>
             <th>Nombre</th>
             <th>Apellidos</th>

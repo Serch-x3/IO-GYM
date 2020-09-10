@@ -3,13 +3,10 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<div class="container mt-5 mb-2">
+<div class="container mt-4 mb-2">
   <div class="row">
-    <div class="col-9">
+    <div class="col-12">
       <h2>Editar Clase</h2>
-    </div>
-    <div class="col-3">
-      <a href="../index" class="btn btn-primary float-right">Volver</a>
     </div>
   </div>
 </div>
@@ -17,33 +14,23 @@
 <div class="container">
 
   <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="row">
-      <div class="col-2"></div>
-      <div class="col-8">
-        {% csrf_token %}
-        <!-- {{ form.as_p }} -->
-        {% for field in form.visible_fields %}
-          <div class="form-group">
-            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field|add_class:'form-control' }}
-            {% for error in field.errors %}
-              <span class="help-block">{{ error }}</span>
-            {% endfor %}
-          </div>
-        {% endfor %}
+
+      <div class="col-12 col-md-8">
+          <label for="">Nombre</label>
+          <input type="text" name="gymclass_name" value="{{object.gymclass_name}}" maxlength="40" class="form-control" id="id_gymclass_name">
       </div>
-      <div class="col-2"></div>
-    </div>
 
-    <div class="row">
-      <div class="col"></div>
-
-      <div class="col-4 mb-5" align="center">
+      <div class="col-md-4 pt-4 mt-1 text-right d-none d-md-block">
         <button type="submit" class="btn btn-success">Aceptar</button>
-        <a href="../index"  class="btn btn-secondary">Cancelar</a>
+        <a href="../index" class="btn btn-secondary">Cancelar</a>
       </div>
 
-      <div class="col"></div>
+      <div class="col-12 mt-2 d-md-none">
+        <button type="submit" class="btn btn-success btn-block">Aceptar</button>
+        <a href="../index" class="btn btn-secondary btn-block">Cancelar</a>
+      </div>
     </div>
   </form>
 </div>

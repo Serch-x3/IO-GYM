@@ -5,15 +5,13 @@
 
 <div class="container mt-5 mb-2">
   <div class="row">
-    <div class="col-8">
+    <div class="col-12 col-lg-8">
       <h2>Consulta de datos de Cliente</h2>
     </div>
-    <div class="col-4">
-      <div class="float-right">
+    <div class="col-12 col-lg-4 d-none d-lg-block">
         <a href="../../admin/membership/detail/{{clients.client_id}}" title="Editar"class="btn btn-success">Ir a membresía</a>
         <a href="../editar/{{clients.client_id}}" title="Editar"class="btn btn-secondary">Editar </a>
         <a href="../" class="btn btn-primary">Volver</a>
-      </div>
     </div>
   </div>
 </div>
@@ -22,33 +20,76 @@
 
 <div class="container">
   <div class="row">
-    <div class="col">
-      <p><span class="txt_negrita">Nombre:</span> <div class="form-control"> {{object.client_name}}</div></p>
-      <p><span class="txt_negrita">Apellidos:</span> <div class="form-control"> {{clients.client_surname}}</div></p>
-      <p><span class="txt_negrita">Fecha de nacimiento:</span> <div class="form-control"> {{clients.client_birthday}}</div></p>
-      <p><span class="txt_negrita">Telefono:</span> <div class="form-control">{{clients.client_phone}} </div></p>
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <label for="">Nombre</label>
+        <div class="form-control"> {{object.client_name}}</div>
+      </div>
     </div>
-    <div class="col">
-      <p><span class="txt_negrita">Telefono de emergencia:</span> <div class="form-control"> {{clients.client_emergency_phone}}</div></p>
-      <p><span class="txt_negrita">Email:</span> <div class="form-control"> {{clients.client_email}}</div></p>
-      {% if clients.client_gender == 'M'%}
-        <p><span class="txt_negrita">Genero:</span> <div class="form-control"> Masculino</div></p>
-      {% elif clients.client_gender == 'F'%}
-        <p><span class="txt_negrita">Genero:</span> <div class="form-control"> Femenino</div></p>
-      {% else%}
-        <p><span class="txt_negrita">Genero:</span> <div class="form-control"> No binario</div></p>
-      {% endif%}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <p><span class="txt_negrita">Información médica: </span> <div class="form-control"> {{clients.client_medical_info}} </div></p>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
 
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <label for="">Apellidos</label>
+        <div class="form-control"> {{clients.client_surname}}</div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-2">
+      <div class="form-group">
+        <label for="">Fecha de nacimiento.</label>
+        <div class="form-control"> {{clients.client_birthday}}</div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-2">
+      <div class="form-group">
+        <label for="">Género.</label>
+        {% if clients.client_gender == 'M'%}
+          <div class="form-control"> Masculino</div>
+        {% elif clients.client_gender == 'F'%}
+          <div class="form-control"> Femenino</div>
+        {% else%}
+          <div class="form-control"> No binario</div>
+        {% endif%}
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group">
+        <label for="">Teléfono.</label>
+        <div class="form-control">{{clients.client_phone}} </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group">
+        <label for="">Teléfono de emergencia.</label>
+        <div class="form-control">{{clients.client_emergency_phone}} </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <label for="">Email.</label>
+        <div class="form-control">{{clients.client_email}} </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="form-group">
+        <label for="">Datos médicos.</label>
+        <div class="form-control">{{clients.client_medical_info}} </div>
+      </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-12 d-lg-none mb-4">
+      <a href="../../admin/membership/detail/{{clients.client_id}}" title="Editar"class="btn btn-success btn-block">Ir a membresía</a>
+      <a href="../editar/{{clients.client_id}}" title="Editar"class="btn btn-secondary btn-block">Editar </a>
+      <a href="../" class="btn btn-primary btn-block">Volver</a>
+    </div>
+  </div>
+
 </div>
 {% endblock %}

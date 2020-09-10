@@ -17,71 +17,143 @@
 
 <div class="container">
   <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="row">
-      <div class="col-2"></div>
-      <div class="col-8">
-        {% csrf_token %}
-        <!-- {{ form.as_p }} -->
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Nombre</label>
           {{ form.client_name|add_class:"form-control" }}
+          {% for error in form.client_name.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
         </div>
+      </div>
 
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Apellidos</label>
           {{ form.client_surname|add_class:"form-control" }}
+          {% for error in form.client_surname.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
         </div>
+      </div>
 
+      <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
-          <label for="">Fecha de nacimiento</label>
+          <label for="">Fecha de nacimiento.</label>
           <input class="form-control" type="date" name="client_birthday" required id="id_client_birthday" value="{{form.client_birthday.value|date:"Y-m-d"}}">
+          {% for error in form.client_birthday.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
         </div>
+      </div>
 
+      <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
-          <label for="">Teléfono. <br> <small>Formato: (XXX-XXX-XXXX)</small></label>
+          <label for="">Género.</label>
+          {{ form.client_gender|add_class:"form-control" }}
+          {% for error in form.client_gender.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group">
+          <label for="">Teléfono.</label>
+
           <input class="form-control" type="tel" name="client_phone" id="id_client_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.client_phone.value}}">
           {% for error in form.client_phone.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
 
+      <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
-          <label for="">Teléfono de emergencia. <br> <small>Formato: (XXX-XXX-XXXX)</small></label>
+          <label for="">Teléfono de emergencia.</label>
           <input class="form-control" type="tel" name="client_emergency_phone" id="id_client_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.client_emergency_phone.value}}">
           {% for error in form.client_emergency_phone.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
-
-        <div class="form-group">
-          <label for="">Email</label>
-          {{ form.client_email|add_class:"form-control" }}
-        </div>
-
-        <div class="form-group">
-          <label for="">Género</label>
-          {{ form.client_gender|add_class:"form-control" }}
-        </div>
-
-        <div class="form-group">
-          <label for="">Información Médica</label><br>
-          <small>Ingrese datos médicos del cliente que considere importantes para cuidar su salud.</small>
-          {{ form.client_medical_info|add_class:"form-control" }}
-        </div>
-
       </div>
-      <div class="col-2"></div>
+
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="">Email.</label>
+          {{ form.client_email|add_class:"form-control" }}
+          {% for error in form.client_email.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="form-group">
+          <label for="">Datos médicos.<br>
+            <small>Ingrese datos médicos del cliente que considere importantes para cuidar su salud.</small>
+          </label>
+          {{ form.client_medical_info|add_class:"form-control" }}
+          {% for error in form.client_medical_info.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
     </div>
 
-    <div class="row">
-      <div class="col"></div>
-
-      <div class="col-4 mb-5" align="center">
+    <div class="row mt-3 mb-5">
+      <div class="col-12 text-right d-none d-md-block">
         <button type="submit" class="btn btn-success">Aceptar</button>
         <a href="../" class="btn btn-secondary">Cancelar</a>
       </div>
 
-      <div class="col"></div>
+      <div class="col-12 d-md-none">
+        <button type="submit" class="btn btn-success btn-block">Aceptar</button>
+        <a href="../" class="btn btn-secondary btn-block">Cancelar</a>
+      </div>
     </div>
   </form>
 </div>

@@ -3,118 +3,179 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<div class="container mt-5 mb-2">
-  <div class="row">
-    <div class="col-9">
-      <h2>Registrar entrenador</h2>
-    </div>
-    <div class="col-3">
-    </div>
-  </div>
-</div>
+<div class="container mt-4">
+  <h2>Registrar entrenador</h2>
 
-
-<div class="container">
   <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="row">
-      <div class="col-2"></div>
-      <div class="col-8">
-        {% csrf_token %}
-        <!-- {{ form.as_p }} -->
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Nombre</label>
           {{ form.trainer_name|add_class:"form-control" }}
           {% for error in form.trainer_name.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
 
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Apellidos</label>
           {{ form.trainer_surname|add_class:"form-control" }}
           {% for error in form.trainer_surname.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
 
+      </div>
+
+      <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
           <label for="">Fecha de nacimiento</label>
           <input class="form-control" type="date" name="trainer_birthday" required id="id_trainer_birthday">
           {% for error in form.trainer_birthday.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
 
+      <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
-          <label for="">Teléfono. <br> <small>Formato: (XXX-XXX-XXXX)</small></label>
+          <label for="">Género</label>
+          <small class="d-lg-none">&nbsp;</small>
+          {{ form.trainer_gender|add_class:"form-control" }}
+          {% for error in form.trainer_gender.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="form-group my-auto">
+          <label for="">Teléfono. <small>Formato: (XXX-XXX-XXXX)</small></label>
           <input class="form-control" type="tel" name="trainer_phone" id="id_trainer_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444">
           {% for error in form.trainer_phone.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
 
+      <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
-          <label for="">Teléfono de emergencia. <br> <small>Formato: (XXX-XXX-XXXX)</small></label>
+          <label for="">Teléfono de emergencia. <small>Formato: (XXX-XXX-XXXX)</small></label>
           <input class="form-control" type="tel" name="trainer_emergency_phone" id="id_trainer_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444">
           {% for error in form.trainer_emergency_phone.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
 
+
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Email</label>
           {{ form.trainer_email|add_class:"form-control" }}
           {% for error in form.trainer_email.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
 
-        <div class="form-group">
-          <label for="">Género</label>
-          {{ form.trainer_gender|add_class:"form-control" }}
-          {% for error in form.trainer_gender.errors %}
-            <span class="help-block">{{ error }}</span>
-          {% endfor %}
-        </div>
-
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Dirección</label>
           {{ form.trainer_address|add_class:"form-control" }}
           {% for error in form.trainer_address.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
 
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">RFC</label>
           {{ form.trainer_rfc|add_class:"form-control" }}
           {% for error in form.trainer_rfc.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
+      </div>
 
+      <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Contraseña</label>
           {{ form.trainer_password|add_class:"form-control" }}
           {% for error in form.trainer_password.errors %}
-            <span class="help-block">{{ error }}</span>
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
           {% endfor %}
         </div>
-
       </div>
-      <div class="col-2"></div>
     </div>
 
-    <div class="row">
-      <div class="col"></div>
-
-      <div class="col-4 mb-5" align="center">
+    <div class="row mt-3 mb-5">
+      <div class="col-12 text-right d-none d-md-block">
         <button type="submit" class="btn btn-success">Aceptar</button>
         <a href="./" class="btn btn-secondary">Cancelar</a>
       </div>
 
-      <div class="col"></div>
+      <div class="col-12 d-md-none">
+        <button type="submit" class="btn btn-success btn-block">Aceptar</button>
+        <a href="./" class="btn btn-secondary btn-block">Cancelar</a>
+      </div>
     </div>
+
   </form>
 </div>
 {% endblock %}

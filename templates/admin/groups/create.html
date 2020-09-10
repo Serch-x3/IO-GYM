@@ -3,13 +3,10 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<div class="container mt-5 mb-2">
+<div class="container mt-4 mb-2">
   <div class="row">
-    <div class="col-9">
+    <div class="col-12 col-md-9">
       <h2>Registrar Grupo</h2>
-    </div>
-    <div class="col-3">
-      <a href="./index" class="btn btn-primary float-right">Volver</a>
     </div>
   </div>
 </div>
@@ -17,45 +14,81 @@
 <div class="container">
 
   <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="row">
-      <div class="col-2"></div>
-      <div class="col-8">
-        {% csrf_token %}
-        <!-- {{ form.as_p }} -->
-        <div class="form-group">
-          <label for="">Clase</label>
-          {{ form.gymclass_id|add_class:"form-control" }}
-        </div>
-        <div class="form-group">
-          <label for="">Entrenador</label>
-          {{ form.trainer_id|add_class:"form-control" }}
-        </div>
-        <div class="form-group">
-          <div class="row">
-            <div class="col-2">
-              <label for="">Día</label>
-            </div>
-            <div class="col-3">
-              {{ form.weekday|add_class:"form-control" }}
-            </div>
-            <div class="col-3">
-              <label for="">Hora (24 Hrs)</label>
-            </div>
-            <div class="col-3">
-              <input class="form-control" type="time" name="hour" max=12 min=1 value=1>
-            </div>
+
+      <div class="col-12 col-md-6 mb-2">
+        <label for="">Clase</label>
+        {{ form.gymclass_id|add_class:"form-control" }}
+        {% for error in form.gymclass_id.errors %}
+          <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+            {{error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-        </div>
+        {% endfor %}
       </div>
-      <div class="col-2"></div>
+
+      <div class="col-12 col-md-6 mb-2">
+        <label for="">Entrenador</label>
+        {{ form.trainer_id|add_class:"form-control" }}
+        {% for error in form.trainer_id.errors %}
+          <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+            {{error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="col-1 pt-2 text-right">
+        <label>Dia</label>
+      </div>
+      <div class="col-4">
+        {{ form.weekday|add_class:"form-control" }}
+        {% for error in form.weekday.errors %}
+          <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+            {{error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+
+
+
+      <div class="col-1 pt-2 text-right">
+        <label for="">Hora</label>
+      </div>
+
+      <div class="col-3">
+        <input class="form-control" type="time" name="hour" max=12 min=1 value=1>
+        {% for error in form.hour.errors %}
+          <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+            {{error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+
     </div>
 
-    <div class="row">
+    <div class="row mt-2">
       <div class="col"></div>
 
-      <div class="col-4 mb-5" align="center">
+      <div class="col-4 mb-5 d-none d-md-block" align="center">
         <button type="submit" class="btn btn-success">Aceptar</button>
         <a href="index" class="btn btn-secondary">Cancelar</a>
+      </div>
+
+      <div class="col-12 mb-5 d-md-none">
+        <button type="submit" class="btn btn-success btn-block">Aceptar</button>
+        <a href="index" class="btn btn-secondary btn-block">Cancelar</a>
       </div>
 
       <div class="col"></div>

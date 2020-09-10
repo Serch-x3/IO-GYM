@@ -15,19 +15,73 @@
 </div>
 
 <div class="container">
+
   <div class="row">
-    <div class="col">
-      <p><span class="txt_negrita">Nombre:</span> <div class="form-control"> {{object.trainer_name}}</div></p>
-      <p><span class="txt_negrita">Apellidos:</span> <div class="form-control"> {{trainers.trainer_surname}}</div></p>
-      <p><span class="txt_negrita">Fecha de nacimiento:</span> <div class="form-control"> {{trainers.trainer_birthday}}</div></p>
-      <p><span class="txt_negrita">Telefono:</span> <div class="form-control">{{trainers.trainer_phone}} </div></p>
-      <p><span class="txt_negrita">Telefono de emergencia:</span> <div class="form-control"> {{trainers.trainer_emergency_phone}}</div></p>
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <label for="">Nombre</label>
+        <div class="form-control"> {{object.trainer_name}}</div>
+      </div>
     </div>
-    <div class="col">
-      <p><span class="txt_negrita">Email:</span> <div class="form-control"> {{trainers.trainer_email}}</div></p>
-      <p><span class="txt_negrita">Genero:</span> <div class="form-control"> {{trainers.trainer_gender}}</div></p>
-      <p><span class="txt_negrita">Domicilio:</span> <div class="form-control"> {{trainers.trainer_address}}</div></p>
-      <p><span class="txt_negrita">RFC:</span> <div class="form-control"> {{trainers.trainer_rfc}}</div></p>
+
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <label for="">Apellidos</label>
+        <div class="form-control"> {{object.trainer_surname}}</div>
+      </div>
+
+    </div>
+
+    <div class="col-6 col-md-6 col-lg-2">
+      <div class="form-group">
+        <label for="">Fecha de nacimiento</label>
+        <div class="form-control"> {{object.trainer_birthday}}</div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-6 col-lg-2">
+      <div class="form-group">
+        <label for="">Género</label>
+        <small class="d-lg-none">&nbsp;</small>
+        <div class="form-control"> {{object.trainer_gender}}</div>
+      </div>
+    </div>
+
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group my-auto">
+        <label for="">Teléfono. <small>Formato: (XXX-XXX-XXXX)</small></label>
+        <div class="form-control"> {{object.trainer_phone}}</div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="form-group">
+        <label for="">Teléfono de emergencia. <small>Formato: (XXX-XXX-XXXX)</small></label>
+        <div class="form-control"> {{object.trainer_emergency_phone}}</div>
+      </div>
+    </div>
+
+
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <label for="">Email</label>
+        <div class="form-control"> {{object.trainer_email}}</div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <label for="">Dirección</label>
+        <div class="form-control"> {{object.trainer_address}}</div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="form-group">
+        <label for="">RFC</label>
+        <div class="form-control"> {{object.trainer_rfc}}</div>
+      </div>
     </div>
   </div>
 

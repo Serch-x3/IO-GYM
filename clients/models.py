@@ -143,6 +143,8 @@ class clientesView(models.Model):
         db_table = 'clientesView'
 
 class MEMBERSHIPS(models.Model):
+    def get_cancel():
+        return (datetime.now() - timedelta(days=1)).date()
     def get_today():
         return datetime.now().date()
     def get_weeks(number):
@@ -151,6 +153,7 @@ class MEMBERSHIPS(models.Model):
         return (datetime.now() + timedelta(days=number*30)).date()
     def get_years(number):
         return (datetime.now() + timedelta(days=number*365)).date()
+    cancel=get_cancel()
     today=get_today()
     oneWeek=get_weeks(1)
     oneMonth=get_months(1)
@@ -158,6 +161,7 @@ class MEMBERSHIPS(models.Model):
     sixMonth=get_months(6)
     oneYear=get_years(1)
     DATE_SELECTION = Choices(
+            (cancel, "Cancelado"),
             (today, "Visita (solo hoy)"),
             (oneWeek, "1 semana"),
             (oneMonth, "1 mes"),
@@ -169,7 +173,7 @@ class MEMBERSHIPS(models.Model):
     client_id = models.OneToOneField('CLIENTS', on_delete=models.CASCADE, db_column='client_id', blank=True, verbose_name='Cliente')
     included_classes= models.ManyToManyField('GYMCLASSES', verbose_name='Clases incluidas')
     register_date = models.DateField(auto_now_add=True, verbose_name='Fecha de registro')
-    expiration_date = models.DateField(choices=DATE_SELECTION, default=today, verbose_name='Duración', null=True, blank=True)
+    expiration_date = models.DateField(choices=DATE_SELECTION, default=today, verbose_name='Duración', null=False, blank=False)
 
     class Meta:
         managed = True
@@ -259,7 +263,7 @@ class GROUPS(models.Model):
     group_id = models.AutoField(primary_key=True)
     gymclass_id = models.ForeignKey('GYMCLASSES', models.DO_NOTHING, db_column='gymclass_id', blank=True, null=True, verbose_name='Clase')
     trainer_id = models.ForeignKey('TRAINERS', models.DO_NOTHING, db_column='trainer_id', blank=True, null=True, verbose_name='Entrenador')
-    weekday = models.CharField(unique=True, choices=options,max_length=15, verbose_name='Día')
+    weekday = models.CharField(unique=True, choices=options, max_length=15, verbose_name='Día', blank=False, null=False )
     hour = models.CharField(max_length=10, null=True, verbose_name='Hora')
     class Meta:
         managed = True
