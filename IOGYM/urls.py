@@ -27,10 +27,7 @@ urlpatterns = [
 
     path('admin/graphs/',login_required(views.graphs)),
 
-    path('adminmode',login_required(views.attendance2admin)),
-    path('admin/attendancemode', login_required(views.admin2attendance), name='admin 2 attendance'),
-
-    path('login/register/', views.RegisterLoginView.as_view(), name='register'),
+    path('login/register/', login_required(views.registerUser), name="register"),
 
     path('reset/password_reset', PasswordResetView.as_view(template_name='login/password_reset_form.html', html_email_template_name="login/password_reset_email.html"), name = 'password_reset'),
     path('reset/password_reset_done', PasswordResetDoneView.as_view(template_name='login/password_reset_done.html'), name = 'password_reset_done'),

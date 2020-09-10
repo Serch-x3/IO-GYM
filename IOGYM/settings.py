@@ -84,6 +84,9 @@ WSGI_APPLICATION = 'IOGYM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
+#173.18.0.1 DATABASE IP ADDRESS ON AFTERBYTE SERVER
+#BEFORE COMMIT, RETURN DATABASE CONFIG TO THIS VALUE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

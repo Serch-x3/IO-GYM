@@ -54,7 +54,7 @@
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <h5 class="text-light mr-3 d-none d-lg-block">¡Hola, {{user.username}}!</h5 >
-        <a href="attendancemode" class="btn btn-primary mr-1">Modo de asistencia</a>
+        <a class="btn btn-primary mr-1" href="#" data-toggle="modal" data-target="#toAdminModal">Modo de Asistencia</a>
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop">
           Salir
         </button>
@@ -90,9 +90,31 @@
     </div>
   </div>
 
-  <div class="container-fluid bg-dark">
-    <div class="bd-example">
-    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+
+  <!-- switch to Assistant Modal -->
+  <div class="modal fade" id="toAdminModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">¿Cambiar a modo asistente?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Se cerrará sesión de {{user.username}}. Deberá iniciar sesión nuevamente con la cuenta de nivel Asistente para cambiar a modo de asistencia.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="logout()">Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+
+    <div id="carouselExampleCaptions" class="carousel slide d-none d-md-block" data-ride="carousel">
       <ol class="carousel-indicators">
         <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
         <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
@@ -124,7 +146,29 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-  </div>
+
+
+    <div id="carouselExampleCaptions" class="carousel slide d-md-none" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{% static "images/banner1.png" %}" alt="iogym_logo" class="d-block w-100">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static "images/banner2.png" %}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static "images/banner3.png" %}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 
 
@@ -163,29 +207,28 @@
 
   <div class="container-fluid fixed-bottom bg-dark text-sm">
     <div class="row">
-      <div class="col-4 col-sm-3 col-md-8 mt-2 mb-2">
+      <div class="col-12 col-md-8 mt-2 mb-2 d-none d-md-block">
         <img src="{% static "images/afterbyte_logo.png" %}"  class="img-fluid" alt="AfterByte Logo" width=180px>
       </div>
-      <div class="col-4 col-sm-3 col-md-2 mt-2">
+      <div class="col-12 col-md-8 mt-2 mb-2 d-md-none text-center">
+        <img src="{% static "images/afterbyte_logo.png" %}"  class="img-fluid" alt="AfterByte Logo" width=180px>
+      </div>
+
+      <div class="col-6 col-md-2 mt-2">
         <address class="text-white-50 bg-dark" style="font-size:12px">
           <strong class="text-white">AfterByte</strong><br>
           Av. Tecnológico #100<br>
           Cd. Guzmán, Jalisco<br>
         </address>
       </div>
-      <div class="col-4 col-sm-3 col-md-2 mt-2">
+
+      <div class="col-6 col-md-2 mt-2">
         <address class="text-white-50 bg-dark" style="font-size:12px">
           <strong class="text-light">Contacto</strong><br>
           <abbr title="Phone">Teléfono:</abbr> 341-138-8480<br>
           <a class="text-info" href="mailto:afterbyte2017@gmail.com">afterbyte2017@gmail.com</a>
         </address>
       </div>
-    </div>
-    <div class="d-inline">
-
-    </div>
-    <div class="d-inline">
-
     </div>
   </div>
 </body>

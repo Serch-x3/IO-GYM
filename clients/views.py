@@ -21,7 +21,7 @@ from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect
 
 def graphs(request):
-    
+
     general = GeneralStats.objects.first()
     generalStats = [general.clients, general.trainers, general.groups,general.classes,general.active_memberships,general.expirated_memberships]
 
@@ -62,10 +62,6 @@ def graphs(request):
         NCLYMData.append(c[1])
         NCLYMLabels.append(c[2] + ' ' + str(c[3]))
 
-    print("--------------------------------------------------")
-    print(NCLYMData)
-    print("--------------------------------------------------")
-
     return render(request,'admin/graphs/index.html',{
         'general': generalStats,
         'CFLM': CFLMData,
@@ -88,20 +84,19 @@ def attendance2admin(request):
 def admin2attendance(request):
     return render(request,'login/admin2attendance.html',{})
 
-class RegisterLoginView(View):
-    def get(self, request):
-        return render(request, 'login/create.html', { 'form': UserCreationForm() })
 
-    def post(self, request):
-        form = UserCreationForm(request.POST)
-        form.is_superuser=True
-        form.is_staff=True
-        if form.is_valid():
-            user = form.save()
-            return redirect(reverse('admin index'))
+def registerUser(request):
+    if request.method == 'POST':
+        f = CustomUserCreationForm(request.POST)
+        if f.is_valid():
+            f.save()
+            messages.success(request, '¡Cuenta creada correctamente!.')
+            return redirect('register')
 
-        return render(request, 'login/create.html', { 'form': form })
+    else:
+        f = CustomUserCreationForm()
 
+    return render(request, 'login/create.html', {'form': f})
 
 
 class trainerAttendanceList(ListView):
