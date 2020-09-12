@@ -11,10 +11,20 @@
       <h2>Registro de asistencias de entrenadores</h2>
     </div>
     <div class="col-12 col-md-3 d-none d-md-block">
-      <button class="float-right btn btn-primary material-icons" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
+      <button class="float-right btn btn-primary " align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+          <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+        </svg>
+      </button>
     </div>
     <div class="col-12 col-md-3 d-md-none">
-      <button class="btn btn-primary btn-block material-icons" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">search</button>
+      <button class="btn btn-primary btn-block " data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+          <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+        </svg>
+      </button>
     </div>
   </div>
 </div>
@@ -46,12 +56,22 @@
                 <div class="row mt-2">
                   <!--SHOW WHEN VIEWPORT IS MD OR HIGHER-->
                   <div class="col d-none d-md-block" align="right">
-                    <button class="btn btn-primary mr-2 material-icons" type="submit">search</button>
+                    <button class="btn btn-primary mr-2" type="submit">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                      </svg>
+                    </button>
                     <a href="./" class="btn btn-warning">Limpiar</a>
                   </div>
                   <!--HIDE WHEN VIEWPORT IS MD OR HIGHER-->
                   <div class="col d-md-none">
-                    <button class="btn btn-primary btn-block material-icons" type="submit">search</button>
+                    <button class="btn btn-primary btn-block" type="submit">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                      </svg>
+                    </button>
                     <a href="./" class="btn btn-warning btn-block ">Limpiar</a>
                   </div>
                 </div>
@@ -76,7 +96,7 @@
         </thead>
         <tbody>
         <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
-        {% for trainers in object_list %}
+        {% for trainers in object_list|slice:":40" %}
           <tr>
             <td>{{ trainers.id }} {{ trainers.trainer_surname }}</td>
             <td>{{ trainers.register_date }}</td>

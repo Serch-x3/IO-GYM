@@ -78,13 +78,6 @@ def graphs(request):
     })
 
 
-def attendance2admin(request):
-    return render(request,'login/attendance2admin.html',{})
-
-def admin2attendance(request):
-    return render(request,'login/admin2attendance.html',{})
-
-
 def registerUser(request):
     if request.method == 'POST':
         f = CustomUserCreationForm(request.POST)

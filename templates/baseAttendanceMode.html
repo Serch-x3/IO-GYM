@@ -7,29 +7,68 @@
     <title>IOGYM</title>
     <link rel="shortcut icon" type="image/jpeg" href="{% static "images/favicon.jpeg"%}"/>
     <link rel="stylesheet" href="{% static  "css/bootstrap.css"%}">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="{%static "js/jquery-3.4.1.js" %}" charset="utf-8"></script>
     <script src="{%static "js/popper.js" %}" charset="utf-8"></script>
     <script src="{%static "js/bootstrap.js" %}" charset="utf-8"></script>
+    <script src="{%static "js/session.js" %}" charset="utf-8"></script>
 </head>
 <body>
 
   {% if user.is_authenticated %}
     {% if not user.is_superuser%}
 
-    {% block content %}
-    {% endblock %}
+      {% block content %}
+      {% endblock %}
 
     {% else%}
-    <script type="text/javascript">
-      window.location.replace('../../../../admin/attendancemode');
-    </script>
+      <script type="text/javascript">
+        window.location.replace('../../../../admin/index');
+      </script>
     {% endif %}
   {%else%}
   <script type="text/javascript">
     window.location.replace('accounts/login');
   </script>
   {% endif %}
+  <div class="modal fade" id="expiredSession" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-light font-weight-bold">
+          <h5 class="modal-title" id="staticBackdropLabel">Sesión expirada</h5>
+        </div>
+        <div class="modal-body">
+          <p>Por mucho tiempo sin actividad se ha expirado la sesión. Inicie sesión nuevamente para continuar usando IOGYM.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="location.reload();">Iniciar sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- alert of expired session modal -->
+  <div class="modal fade" id="expiredSessionAlert" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title" id="staticBackdropLabel">La sesión está a punto de expirar</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Se expirará la sesión. Recargue la página para mantener la sesión vigente.</p>
+          <div class="text-center">
+            <h1 class="mx-auto"><span id="secondsLeftSpan">30</span></h1>
+            <h5>segundos restantes</h5>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="location.reload();">Recargar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

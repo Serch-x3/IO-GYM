@@ -39,10 +39,10 @@ DELIMITER ;
 --VIEWS
 
 --for client Attendances
-CREATE VIEW clientesView AS SELECT CLIENTS.client_name AS id, CLIENT_ATTENDANCES.date AS date FROM CLIENTS, CLIENT_ATTENDANCES WHERE CLIENTS.client_id=CLIENT_ATTENDANCES.client_id;
+CREATE VIEW clientesView AS SELECT CLIENTS.client_name AS id, CLIENT_ATTENDANCES.date AS date FROM CLIENTS, CLIENT_ATTENDANCES WHERE CLIENTS.client_id=CLIENT_ATTENDANCES.client_id order by date DESC;
 
 --for Trainer Attendances
-CREATE VIEW trainerAttendanceView AS SELECT TRAINNERS.trainer_name AS id, TRAINNERS.trainer_surname AS trainer_surname, TRAINNERS.trainer_phone AS trainer_phone, TRAINNERS_ATTENDANCES.date AS register_date, TRAINNERS_ATTENDANCES.description AS description FROM TRAINNERS, TRAINNERS_ATTENDANCES WHERE TRAINNERS.trainer_id=TRAINNERS_ATTENDANCES.trainer_id;
+CREATE VIEW trainerAttendanceView AS SELECT TRAINNERS.trainer_name AS id, TRAINNERS.trainer_surname AS trainer_surname, TRAINNERS.trainer_phone AS trainer_phone, TRAINNERS_ATTENDANCES.date AS register_date, TRAINNERS_ATTENDANCES.description AS description FROM TRAINNERS, TRAINNERS_ATTENDANCES WHERE TRAINNERS.trainer_id=TRAINNERS_ATTENDANCES.trainer_id ORDER BY register_date DESC;
 
 --General stats
 CREATE VIEW GeneralStats AS SELECT * FROM (
