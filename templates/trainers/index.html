@@ -12,7 +12,7 @@
       <h2>Administración de Entrenadores</h2>
     </div>
     <div class="col-12 col-md-3 d-none d-md-block" align="right">
-      <a type="button" class="btn btn-success mb-1" href="registrar">Nuevo</a>
+      <a type="button" class="btn btn-success mb-1" href="create">Nuevo</a>
       <button class="btn btn-primary mb-1" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
         <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
@@ -21,7 +21,7 @@
       </button>
     </div>
     <div class="col-12 col-md-3 d-md-none">
-      <a type="button" class="btn btn-success btn-block mb-1" href="registrar">Nuevo</a>
+      <a type="button" class="btn btn-success btn-block mb-1" href="create">Nuevo</a>
       <button class="btn btn-primary btn-block mb-1" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
         <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
@@ -118,31 +118,36 @@
         </thead>
         <tbody>
         <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
-        {% for trainers in object_list %}
-          <tr>
-            <td>{{ trainers.trainer_name }}</td>
-            <td>{{ trainers.trainer_surname }}</td>
-            <td>{{ trainers.trainer_phone }}</td>
-            <td>{{ trainers.trainer_email }}</td>
-            <td>
-              <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
-              <form method="POST" action="eliminar/{{trainers.trainer_id}}">
-                {% csrf_token %}
-                <div class="btn-group">
+          {% if object_list|length > 0 %}
+            {% for trainers in object_list %}
+            <tr>
+                <td>{{ trainers.trainer_name }}</td>
+                <td>{{ trainers.trainer_surname }}</td>
+                <td>{{ trainers.trainer_phone }}</td>
+                <td>{{ trainers.trainer_email }}</td>
+                <td>
+                  <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
+                  <form method="POST" action="delete/{{trainers.trainer_id}}">
+                    {% csrf_token %}
+                    <div class="btn-group">
 
-                  <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
-                  <a href="consultar/{{trainers.trainer_id}}" title="Ver" class="btn btn-primary">Ver </a>
-                  <a href="editar/{{trainers.trainer_id}}" title="Editar"class="btn btn-secondary">Editar </a>
-                  <button class="btn btn-danger" onclick="return eliminar();" type="submit">
-                    Eliminar
-                  </button>
-                </div>
-              </form>
+                      <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
+                      <a href="details/{{trainers.trainer_id}}" title="Ver" class="btn btn-primary">Ver </a>
+                      <a href="edit/{{trainers.trainer_id}}" title="Editar"class="btn btn-secondary">Editar </a>
+                      <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                        Eliminar
+                      </button>
+                    </div>
+                  </form>
 
-            </td>
-          </tr>
-        {% endfor %}
-
+                </td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td class="alert-warning font-weight-bold text-center" colspan="5"><b>¡Ups! Aún no hay entrenadores registrados</b> </td>
+            </tr>
+          {% endif %}
         </tbody>
       </table>
   </div>

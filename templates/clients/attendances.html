@@ -44,17 +44,34 @@
                       {% render_field filter.form.id class="form-control my-1" placeholder="Nombre"%}
                     </div>
                     <div class="col-12 col-md-6">
-                      {% render_field filter.form.date class="form-control my-1" %}
+                      <select name="date" placeholder="Fecha" class="form-control my-1" id="id_date">
+                        <option value="" selected="">---------</option>
+                        <option value="today">Hoy</option>
+                        <option value="yesterday">Ayer</option>
+                        <option value="week">Últimos 7 días</option>
+                        <option value="month">Este mes</option>
+                        <option value="year">Este año</option>
+                      </select>
                     </div>
                   </div>
                 </div>
                 <div class="row mt-2">
                   <div class="col d-none d-md-block" align="right">
-                    <button class="btn btn-primary mr-2 material-icons" type="submit">search</button>
+                    <button class="btn btn-primary mr-2" type="submit">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                      </svg>
+                    </button>
                     <a href="./" class="btn btn-warning">Limpiar</a>
                   </div>
                   <div class="col d-md-none">
-                    <button class="btn btn-primary btn-block material-icons" type="submit">search</button>
+                    <button class="btn btn-primary btn-block" type="submit">
+                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                      </svg>
+                    </button>
                     <a href="./" class="btn btn-warning btn-block">Limpiar</a>
                   </div>
                 </div>
@@ -81,12 +98,18 @@
             </tr>
           </thead>
           <tbody>
-            {% for clients in object_list|slice:":40" %}
+            {% if object_list|length > 0 %}
+              {% for clients in object_list|slice:":40" %}
+                <tr>
+                  <td>{{ clients.id }}</td>
+                  <td>{{ clients.date }}</td>
+                </tr>
+              {% endfor %}
+            {% else %}
               <tr>
-                <td>{{ clients.id }}</td>
-                <td>{{ clients.date }}</td>
+                <td class="alert-warning" colspan="2"><b>¡Ups! Aún no hay registros</b> </td>
               </tr>
-            {% endfor %}
+            {% endif %}
           </tbody>
         </table>
       </div>

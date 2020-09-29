@@ -78,22 +78,100 @@ def graphs(request):
     })
 
 
-def registerUser(request):
+#USER VIEWS
+class UserList(ListView):
+    model = User
+
+
+def UserCreate(request):
     if request.method == 'POST':
         f = CustomUserCreationForm(request.POST)
         if f.is_valid():
             f.save()
             messages.success(request, '¡Cuenta creada correctamente!.')
-            return redirect('register')
-
+            return redirect('user index')
     else:
         f = CustomUserCreationForm()
 
-    return render(request, 'login/create.html', {'form': f})
+    return render(request, 'users/create.html', {'form': f})
 
 
+class UserDelete(SuccessMessageMixin, DeleteView):
+    model = User
+    form = User
+    fields = "__all__"
+
+    def get_success_url(self):
+        success_message = '¡Usuario eliminado correctamente!'
+        messages.success (self.request, (success_message))
+        return reverse('user index')
+
+
+def EditUser(request, pk):
+    userInfo = []
+    userInfo = User.objects.get(pk=pk)
+
+    if request.method == 'GET':
+        f = CustomUserEditFormWithPassword()
+        return render(request, 'users/edit.html', {'form':f, 'key':pk, 'userInfo':userInfo})
+
+    if request.method == 'POST':
+        print(request.POST)
+        print("-"*100)
+        print(request.POST.get('change_password','off'))
+        print('XDXD')
+
+        if request.POST.get('change_password','off') == 'on':
+            f = CustomUserEditFormWithPassword(request.POST)
+        else:
+            f = CustomUserEditForm(request.POST)
+
+        if f.is_valid():
+            f.save()
+            messages.success(request, '¡Cuenta actualizada correctamente!.')
+            return redirect('user index')
+        else:
+            return render(request, 'users/edit.html', {'form':f, 'key':pk, 'userInfo':userInfo})
+
+    else:
+        f = CustomUserEditForm()
+
+    return redirect('user index')
+
+
+class UserEdit(SuccessMessageMixin,UpdateView):
+    model = User
+    form = CustomUserCreationForm
+    fields = ['username', 'email', 'is_superuser']
+
+    def get_object(self, **kwargs):
+        return get_object_or_404(self.model, pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        success_message = '¡Usuario actualizado correctamente!'
+        messages.success (self.request, (success_message))
+        return reverse('user index')
+
+
+class UserDetail(View):
+    def get(self, request, *args, **kwargs):
+        userInfo = {
+            "username":User.objects.get(pk=kwargs['pk']).username,
+            "email":User.objects.get(pk=kwargs['pk']).email,
+            "last_login":User.objects.get(pk=kwargs['pk']).last_login,
+            "is_superuser":User.objects.get(pk=kwargs['pk']).is_superuser
+        }
+        print(userInfo)
+        print("-"*100)
+        context = {'userInfo': userInfo}
+        return render(request, 'users/details.html', context)
+
+
+
+#ATTENDANCE MODE VIEWS
 class trainerAttendanceList(ListView):
     model=trainerAttendanceView
+
 
 def trainerChecking(request,pk):
     trainer=TRAINERS.objects.get(trainer_id=pk)
@@ -115,6 +193,7 @@ def trainerChecking(request,pk):
 
     return redirect('trainer asistencia')
 
+
 def clientChecking(request,pk):
     client=MEMBERSHIPS.objects.get(client_id=pk)
     if datetime.now().date() <= client.expiration_date:
@@ -122,217 +201,239 @@ def clientChecking(request,pk):
         attendance.save()
         advice=''
         daysleft= (client.expiration_date - datetime.now().date()).days
+        client = CLIENTS.objects.get(pk=pk)
         if daysleft == 0:
             advice='Recuerda: ¡Hoy se vence tu membresía!'
-            messages.add_message(request, messages.INFO, 'Ingreso exitoso. ¡Bienvenido!' + "\n" + advice)
+            messages.add_message(request, messages.INFO, 'Ingreso exitoso. ¡Bienvenido(a) ' + client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
         else:
             advice=' Tu membresía se vence en: '+ str(daysleft)+ " días."
-            messages.add_message(request, messages.SUCCESS, 'Ingreso exitoso. ¡Bienvenido!' + "\n" + advice)
+            messages.add_message(request, messages.SUCCESS, 'Ingreso exitoso. ¡Bienvenido(a) ' + client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
     else:
         messages.add_message(request, messages.ERROR, '¡Ingreso erróneo!. Membresia vencida')
 
     return redirect("index")
 
+
+
+
+#MEMBERSHIP VIEWS
 class MembershipList(ListView):
     model=MEMBERSHIPS
+
 
 class MembershipDelete(SuccessMessageMixin, DeleteView):
     model = MEMBERSHIPS
     form = MEMBERSHIPS
     fields = "__all__"
 
-    # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = '¡Entrenador eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Entrenador eliminado correctamente!'
         messages.success (self.request, (success_message))
-        return reverse('index membership') # Redireccionamos a la vista principal 'leer'
+        return reverse('index membership')
+
 
 class MembershipDetails(DetailView):
     model=MEMBERSHIPS
 
+
 class MembershipEditFromCreate(SuccessMessageMixin,UpdateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
-    success_message = 'Cliente registrado correctamente !' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = 'Cliente registrado correctamente !'
 
-    # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
-        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+        return reverse('client index')
+
 
 class MembershipEdit(SuccessMessageMixin,UpdateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
-    success_message = '¡Membresía actualizada correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Membresía actualizada correctamente!'
 
-    # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
-        return reverse('index membership') # Redireccionamos a la vista principal 'leer'
+        return reverse('index membership')
+
 
 class MembershipCreate(SuccessMessageMixin,CreateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
-    success_message = '¡Membresía creada correctamente!' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Membresía creada correctamente!'
 
-    # Redireccionamos a la página principal luego de crear un registro o postre
     def form_valid(self, form):
-        data = form.save()  # save form
+        data = form.save()
         return redirect('edit membership', pk=data.membership_id)
 
+
+
+#GYMCLASS VIEWS
 class GymClassesList(ListView):
     model=GYMCLASSES
+
 
 class GymClassesDelete(SuccessMessageMixin, DeleteView):
     model = GYMCLASSES
     form = GYMCLASSES
     fields = "__all__"
 
-    # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = '¡Clase eliminada correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Clase eliminada correctamente!'
         messages.success (self.request, (success_message))
-        return reverse('index gymclasses') # Redireccionamos a la vista principal 'leer'
+        return reverse('index gymclasses')
 
 
 class GymClassesEdit(SuccessMessageMixin, UpdateView):
     model = GYMCLASSES
     form = GYMCLASSES
     fields = "__all__"
-    success_message = '¡Clase actualizada correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Clase actualizada correctamente!'
 
-    # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
-        return reverse('index gymclasses') # Redireccionamos a la vista principal 'leer'
+        return reverse('index gymclasses')
+
 
 class GymClassesDetail(DetailView):
     model=GYMCLASSES
+
 
 class GymClassesCreate(SuccessMessageMixin, CreateView):
     model = GYMCLASSES
     form = GYMCLASSES
     fields = "__all__"
-    success_message = '¡Clase creada correctamente!' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Clase creada correctamente!'
 
-    # Redireccionamos a la página principal luego de crear un registro o postre
     def get_success_url(self):
-        return reverse('index gymclasses') # Redireccionamos a la vista principal 'leer'
+        return reverse('index gymclasses')
 
+
+
+#GROUP VIEWS
 class GroupsList(ListView):
     model=GROUPS
+
 
 class GroupsDelete(SuccessMessageMixin, DeleteView):
     model = GROUPS
     form = GROUPS
     fields = "__all__"
 
-    # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = '¡Grupo eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Grupo eliminado correctamente!'
         messages.success (self.request, (success_message))
-        return reverse('index groups') # Redireccionamos a la vista principal 'leer'
+        return reverse('index groups')
 
 
 class GroupsEdit(SuccessMessageMixin, UpdateView):
     model = GROUPS
     form = GROUPS
     fields = "__all__"
-    success_message = '¡Grupo actualizado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Grupo actualizado correctamente!'
 
-
-    # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
-        return reverse('index groups') # Redireccionamos a la vista principal 'leer'
+        return reverse('index groups')
+
 
 class GroupsDetail(DetailView):
     model=GROUPS
+
 
 class GroupsCreate(SuccessMessageMixin, CreateView):
     model = GROUPS
     form = GROUPS
     fields = "__all__"
-    success_message = '¡Grupo creado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Grupo creado correctamente!'
 
-    # Redireccionamos a la página principal luego de crear un registro o postre
     def get_success_url(self):
-        return reverse('index groups') # Redireccionamos a la vista principal 'leer'
+        return reverse('index groups')
 
 
+
+
+#ATTENDANCE MODE?
 class clientsView(ListView):
     model=clientesView
 
 class trainersAttendance(ListView):
     model=TRAINERS
 
-class trainersAdministrar(ListView):
+
+
+#TRAINERS VIEWS
+class TrainerList(ListView):
     model=TRAINERS
 
-class trainersEliminar(SuccessMessageMixin, DeleteView):
+
+class TrainerDelete(SuccessMessageMixin, DeleteView):
     model = TRAINERS
     form = TRAINERS
     fields = "__all__"
 
-    # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = '¡Entrenador eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Entrenador eliminado correctamente!'
         messages.success (self.request, (success_message))
-        return reverse('trainer administrar') # Redireccionamos a la vista principal 'leer'
+        return reverse('trainer index')
 
 
-class trainersEditar(SuccessMessageMixin, UpdateView):
+class TrainerEdit(SuccessMessageMixin, UpdateView):
     model = TRAINERS
     form_class = trainerForm
-    success_message = '¡Entrenador actualizado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Entrenador actualizado correctamente!'
 
-    # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
-        return reverse('trainer administrar') # Redireccionamos a la vista principal 'leer'
+        return reverse('trainer index')
 
-class trainersConsulta(DetailView):
+
+class TrainerDetails(DetailView):
     model=TRAINERS
 
-class trainersRegistrar(SuccessMessageMixin, CreateView):
+
+class TrainerCreate(SuccessMessageMixin, CreateView):
     model = TRAINERS
     form_class = trainerForm
-    success_message = '¡Entrenador registrado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
+    success_message = '¡Entrenador registrado correctamente!'
 
-    # Redireccionamos a la página principal luego de crear un registro o postre
     def get_success_url(self):
-        return reverse('trainer administrar') # Redireccionamos a la vista principal 'leer'
+        return reverse('trainer index')
 
+
+
+
+#CLIENTS VIEWS
 class clientsAttendances(ListView):
     model=CLIENTS
 
 
-class clientsListado(ListView):
+class ClientList(ListView):
     model = CLIENTS
 
-class clientsDetalle(DetailView):
+
+class ClientDetails(DetailView):
     model = CLIENTS
 
-class clientsCrear(SuccessMessageMixin, CreateView):
+
+class ClientCreate(SuccessMessageMixin, CreateView):
     model = CLIENTS
     form = CLIENTS
     fields = "__all__"
-    success_message = '¡Cliente registrado correctamente!' # Mostramos este Mensaje luego de Crear un Postre
-
-    # Redireccionamos a la página principal luego de crear un registro o postre
+    success_message = '¡Cliente registrado correctamente!'
 
     def form_valid(self, form):
-        data = form.save()  # save form
+        data = form.save()
         membership=MEMBERSHIPS(client_id=CLIENTS(client_id=data.client_id))
         membership.save()
-        return redirect('membership from create', pk=membership.membership_id)
+        return redirect('edit membership from create', pk=membership.membership_id)
 
-class clientsActualizar(SuccessMessageMixin, UpdateView):
+
+class ClientEdit(SuccessMessageMixin, UpdateView):
     model = CLIENTS
     form = CLIENTS
     fields = "__all__"
-    success_message = '¡Cliente actualizado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+    success_message = '¡Cliente actualizado correctamente!'
 
-    # Redireccionamos a la página principal luego de actualizar un registro o postre
     def get_success_url(self):
-        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+        return reverse('client index')
 
-class clientsEliminar(SuccessMessageMixin, DeleteView):
+
+class ClientDelete(SuccessMessageMixin, DeleteView):
     model = CLIENTS
     form = CLIENTS
     fields = "__all__"
@@ -341,4 +442,4 @@ class clientsEliminar(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         success_message = '¡Cliente eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
         messages.success (self.request, (success_message))
-        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+        return reverse('client index') # Redireccionamos a la vista principal 'leer'

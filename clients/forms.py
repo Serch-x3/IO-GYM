@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ModelForm
 
 from clients.models import *
 from django.contrib.auth.password_validation import validate_password
@@ -74,4 +75,49 @@ class CustomUserCreationForm(forms.Form):
                 self.cleaned_data['email'],
                 self.cleaned_data['password1']
             )
+        return user
+
+
+
+
+class CustomUserEditFormWithPassword(forms.Form):
+    username = forms.CharField(label='Usuario', min_length=4, max_length=150)
+    is_superuser = forms.IntegerField(label="Admin")
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirmación de contraseña', widget=forms.PasswordInput)
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+
+        #WHEN IS BLANK OBTAIN THE CURRENT PASSWORD
+
+        if password1 != password2:
+            raise ValidationError("Las contraseñas no coiciden.")
+
+        return password2
+
+    def save(self, commit=True):
+        print("SAVING "*10)
+        user = User.objects.get(username=self.cleaned_data.get('username'))
+        pw = self.cleaned_data.get('password1')
+        isu = self.cleaned_data.get('is_superuser')
+        user.is_superuser = isu
+        if not pw == '':
+            user.set_password(pw)
+        user.save()
+        return user
+
+
+class CustomUserEditForm(forms.Form):
+    username = forms.CharField(label='Usuario', min_length=4, max_length=150)
+    is_superuser = forms.IntegerField(label="Admin")
+
+    def save(self, commit=True):
+        print("SAVING "*10)
+        user = User.objects.get(username=self.cleaned_data.get('username'))
+        isu = self.cleaned_data.get('is_superuser')
+        print(isu)
+        user.is_superuser = isu
+        user.save()
         return user

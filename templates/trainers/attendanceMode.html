@@ -154,26 +154,32 @@
         </tr>
       </thead>
       <tbody>
-        {%for clients in object_list %}
+        {% if object_list|length > 0 %}
+          {%for clients in object_list %}
+            <tr>
+              <td>{{ clients.trainer_name }} {{ clients.trainer_surname }}</td>
+              <td>
+                <form method="POST" action="checkClientAttendance/{{clients.trainer_id}}">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="col">
+                      <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="Contraseña">
+                    </div>
+                    <div class="col">
+                      <button class="btn btn-danger" type="submit" value="{{client.trainer_id}}">
+                        Ingresar
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+        {% else %}
           <tr>
-            <td>{{ clients.trainer_name }} {{ clients.trainer_surname }}</td>
-            <td>
-              <form method="POST" action="checkClientAttendance/{{clients.trainer_id}}">
-                {% csrf_token %}
-                <div class="row">
-                  <div class="col">
-                    <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="Contraseña">
-                  </div>
-                  <div class="col">
-                    <button class="btn btn-danger" type="submit" value="{{client.trainer_id}}">
-                      Ingresar
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </td>
+            <td class="alert-warning font-weight-bold text-center" colspan="2">¡Ups! No hay registros</td>
           </tr>
-        {% endfor %}
+        {% endif %}
       </tbody>
     </table>
   </div>

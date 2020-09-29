@@ -16,16 +16,6 @@ class ClientsFilterForAttendance(django_filters.FilterSet):
         model = CLIENTS
         fields = ['client_name', 'client_surname', ]
 
-class TrainersFilter(django_filters.FilterSet):
-    trainer_name=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")
-    trainer_surname=django_filters.CharFilter(lookup_expr='icontains', label="Apellidos")
-    class Meta:
-        model = TRAINERS
-        fields = ['trainer_name', 'trainer_surname', ]
-
-
-
-
 class ClientsAttendancesFilter(django_filters.FilterSet):
     id=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")
     date=django_filters.DateRangeFilter(field_name='date')
@@ -33,6 +23,16 @@ class ClientsAttendancesFilter(django_filters.FilterSet):
     class Meta:
         model = clientesView
         fields = ['id', 'date', ]
+
+
+
+class TrainersFilter(django_filters.FilterSet):
+    trainer_name=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")
+    trainer_surname=django_filters.CharFilter(lookup_expr='icontains', label="Apellidos")
+    class Meta:
+        model = TRAINERS
+        fields = ['trainer_name', 'trainer_surname', ]
+
 
 class TrainersAttendancesFilter(django_filters.FilterSet):
     id=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")

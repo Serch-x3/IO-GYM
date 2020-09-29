@@ -19,7 +19,7 @@
         -->
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="trainers/asistencia">Entrenador</a>
+        <a class="nav-link" href="trainers/attendancemode">Entrenador</a>
       </li>
       <li class="nav-item active">
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exitModal">
@@ -161,23 +161,29 @@
         <tbody>
 
         <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
-        {% for clients in object_list %}
-          <tr>
-            <td>{{ clients.client_name }} {{ clients.client_surname }}</td>
-            <td>{{ clients.client_phone }}</td>
-            <td>
-              <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
-              <form method="POST" action="checkClientAttendance/{{clients.client_id}}">
-                {% csrf_token %}
-                  <button class="btn btn-danger" type="submit" value="{{client.client_id}}">
-                    Ingresar
-                  </button>
-                </div>
-              </form>
+        {% if object_list|length > 0 %}
+          {% for clients in object_list %}
+            <tr>
+              <td>{{ clients.client_name }} {{ clients.client_surname }}</td>
+              <td>******{{ clients.client_phone|slice:"-4:" }}</td>
+              <td>
+                <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
+                <form method="POST" action="checkClientAttendance/{{clients.client_id}}">
+                  {% csrf_token %}
+                    <button class="btn btn-danger" type="submit" value="{{client.client_id}}">
+                      Ingresar
+                    </button>
+                  </div>
+                </form>
 
-            </td>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td class="alert-warning font-weight-bold text-center" colspan="3">¡Ups! No hay registros</td>
           </tr>
-        {% endfor %}
+        {% endif %}
         </tbody>
       </table>
   </div>

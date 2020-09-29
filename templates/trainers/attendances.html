@@ -49,7 +49,14 @@
                       {% render_field filter.form.trainer_surname class="form-control my-1" placeholder="Apellidos"%}
                     </div>
                     <div class="col-12 col-md-4">
-                      {% render_field filter.form.date class="form-control my-1" placeholder="Fecha"%}
+                      <select name="date" placeholder="Fecha" class="form-control my-1" id="id_date">
+                        <option value="" selected="">---------</option>
+                        <option value="today">Hoy</option>
+                        <option value="yesterday">Ayer</option>
+                        <option value="week">Últimos 7 días</option>
+                        <option value="month">Este mes</option>
+                        <option value="year">Este año</option>
+                      </select>
                     </div>
                   </div>
                 </div>
@@ -96,13 +103,19 @@
         </thead>
         <tbody>
         <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
-        {% for trainers in object_list|slice:":40" %}
+        {% if object_list|length > 0 %}
+          {% for trainers in object_list|slice:":40" %}
+            <tr>
+              <td>{{ trainers.id }} {{ trainers.trainer_surname }}</td>
+              <td>{{ trainers.register_date }}</td>
+              <td>{{ trainers.description }}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
           <tr>
-            <td>{{ trainers.id }} {{ trainers.trainer_surname }}</td>
-            <td>{{ trainers.register_date }}</td>
-            <td>{{ trainers.description }}</td>
+            <td class="alert-warning" colspan="3"><b>¡Ups! No hay registros.</b></td>
           </tr>
-        {% endfor %}
+        {% endif %}
 
         </tbody>
       </table>

@@ -24,7 +24,7 @@
 
                 <h1 class="card-title">Registro de usuario</h1>
                 <h5 class="card-subtitle text-muted ">Ingresa los datos para crear una cuenta en IOGYM</h5>
-                <form action="{% url 'register' %}" method="POST" autocomplete="off">
+                <form action="{% url 'user create' %}" method="POST" autocomplete="off">
                   {% csrf_token %}
 
                   {% if messages %}
@@ -106,7 +106,8 @@
                     </div>
                   </div>
 
-                    <button style="width: 100%;" class="btn btn-primary mt-2 mb-2">Registrar</button>
+                    <button class="btn btn-primary btn-block mt-2 mb-2">Registrar</button>
+                    <a class="btn btn-danger btn-block" href="../index">Cancelar</a>
                 </form>
 
               </div>

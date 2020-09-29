@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="container mt-5 mb-2">
+  <div class="row">
+    <div class="col-9">
+      <h2>Editar datos de Usuario</h2>
+    </div>
+    <div class="col-3">
+      <a href="../index" class="btn btn-primary float-right">Volver</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <form action="{{key}}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-12 col-md-10 form-group">
+        <label for="id_username">Usuario:</label>
+        <input type="text" name="username" maxlength="150" minlength="4" required="" id="id_username" value="{{userInfo.username}}" readonly>
+
+      </div>
+
+      <div class="col-12 form-group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="change_password" id="id_change_password">
+          <label class="form-check-label" for="exampleRadios1">Cambiar contraseña</label>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="collapse" id="password_options">
+      <div class="row">
+        <div class="col-12 col-md-6 form-group">
+          <label for="id_password1">Contraseña:</label>
+          <input type="password" name="password1" id="id_password1" required disabled>
+          {% for error in form.password1.errors %}
+          <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+            {{error}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        </div>
+
+
+        <div class="col-12 col-md-6 form-group">
+          <label for="id_password2">Confirmación de contraseña:</label>
+          <input type="password" name="password2" id="id_password2" required disabled>
+          {% for error in form.password2.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="row">
+
+      <div class="col-12 form-group">
+        <label for="">Nivel de acceso</label>
+
+        {% if userInfo.is_superuser%}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="0">
+            <label class="form-check-label" for="exampleRadios1">Asistente</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="1" checked>
+            <label class="form-check-label" for="exampleRadios2">Administrador</label>
+          </div>
+
+        {% else %}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="0" checked>
+            <label class="form-check-label" for="exampleRadios1">Asistente</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="1">
+            <label class="form-check-label" for="exampleRadios2">Administrador</label>
+          </div>
+          {% endif %}
+      </div>
+    </div>
+
+
+    <div class="row mt-3 mb-5">
+      <div class="col-12 text-right d-none d-md-block">
+        <button type="submit" class="btn btn-success">Aceptar</button>
+        <a href="../index" class="btn btn-secondary">Cancelar</a>
+      </div>
+
+      <div class="col-12 d-md-none">
+        <button type="submit" class="btn btn-success btn-block">Aceptar</button>
+        <a href="../index" class="btn btn-secondary btn-block">Cancelar</a>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  $(function(){
+    $('#id_change_password').on('click', function(){
+      if($(this).is(':checked')){
+        $('#id_password1').attr('disabled', false);
+        $('#id_password2').attr('disabled', false);
+        $('#password_options').collapse('show')
+      }
+      else {
+        $('#id_password1').attr('disabled', true);
+        $('#id_password2').attr('disabled', true);
+        $('#password_options').collapse('hide')
+      }
+    });
+  });
+</script>
+{% endblock %}
