@@ -26,8 +26,11 @@
 
     <div class="col-12 col-md-6 mb-2">
       <label for="">Entrenador</label>
-      <div class="form-control"> {{object.trainer_id}}</div>
-
+      {% if object.trainer_id == None %}
+        <div class="form-control alert-danger">Sin asignar</div>
+      {% else %}
+        <div class="form-control"> {{object.trainer_id}}</div>
+      {% endif %}
     </div>
 
     <div class="col-1 pt-2 text-right">
@@ -52,12 +55,14 @@
   <div class="row mt-2">
     <div class="col"></div>
 
-    <div class="col-4 mb-5 d-none d-md-block" align="center">
-      <a href="../index" class="btn btn-primary btn-lg mt-2">Volver</a>
+    <div class="col-4 mb-5 mt-2 d-none d-md-block" align="center">
+      <a href="{% url 'edit groups' object.group_id %}"  class="btn btn-primary">Editar</a>
+      <a href="{% url 'index groups' %}" class="btn btn-secondary">Volver</a>
     </div>
 
-    <div class="col-12 mb-5 d-md-none">
-      <a href="../index" class="btn btn-primary btn-block">Volver</a>
+    <div class="col-12 mb-5 mt-2 d-md-none">
+      <a href="{% url 'edit groups' object.group_id %}" class="btn btn-primary btn-block">Editar</a>
+      <a href="{% url 'index groups' %}" class="btn btn-secondary btn-block">Volver</a>
     </div>
 
     <div class="col"></div>

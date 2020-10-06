@@ -19,6 +19,7 @@ from django.views import View
 from .filters import *
 from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect
+from django.core.paginator import *
 
 def graphs(request):
 
@@ -168,9 +169,6 @@ class UserDetail(View):
 
 
 
-#ATTENDANCE MODE VIEWS
-class trainerAttendanceList(ListView):
-    model=trainerAttendanceView
 
 
 def trainerChecking(request,pk):
@@ -191,8 +189,34 @@ def trainerChecking(request,pk):
     else:
         messages.add_message(request, messages.ERROR, 'Contraseña incorrecta. Intente de nuevo')
 
-    return redirect('trainer asistencia')
+    return redirect('trainer attendance mode')
 
+
+
+
+def clientCheckingByRFID(request):
+    if CLIENTS.objects.filter(client_rfid = request.POST['client_rfid']).exists():
+        client = CLIENTS.objects.get(client_rfid = request.POST['client_rfid'])
+
+        membership=MEMBERSHIPS.objects.get(client_id=client.client_id)
+        if datetime.now().date() <= membership.expiration_date:
+            attendance=CLIENTS_ATTENDANCES(client_id=CLIENTS(client_id=client.client_id))
+            attendance.save()
+            advice=''
+            daysleft= (membership.expiration_date - datetime.now().date()).days
+            if daysleft == 0:
+                advice='Recuerda: ¡Hoy se vence tu membresía!'
+                messages.add_message(request, messages.INFO, 'Ingreso exitoso. ¡Bienvenido(a) ' + client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
+            else:
+                advice=' Tu membresía se vence en: '+ str(daysleft)+ " días."
+                messages.add_message(request, messages.SUCCESS, 'Ingreso exitoso. ¡Bienvenido(a) ' + client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
+        else:
+            messages.add_message(request, messages.ERROR, '¡Ingreso erróneo!. Membresia vencida')
+
+    else:
+        messages.add_message(request, messages.ERROR, '¡No se ha encontrado algún cliente con esta llave!')
+
+    return redirect('index')
 
 def clientChecking(request,pk):
     client=MEMBERSHIPS.objects.get(client_id=pk)
@@ -218,6 +242,7 @@ def clientChecking(request,pk):
 
 #MEMBERSHIP VIEWS
 class MembershipList(ListView):
+    paginate_by = 25
     model=MEMBERSHIPS
 
 
@@ -267,6 +292,7 @@ class MembershipCreate(SuccessMessageMixin,CreateView):
 
 #GYMCLASS VIEWS
 class GymClassesList(ListView):
+    paginate_by = 25
     model=GYMCLASSES
 
 
@@ -308,6 +334,7 @@ class GymClassesCreate(SuccessMessageMixin, CreateView):
 
 #GROUP VIEWS
 class GroupsList(ListView):
+    paginate_by = 25
     model=GROUPS
 
 
@@ -347,19 +374,103 @@ class GroupsCreate(SuccessMessageMixin, CreateView):
 
 
 
+#ATTENDANCE
+class clientAttendanceList(ListView):
+    model=clientAttendanceView
 
-#ATTENDANCE MODE?
-class clientsView(ListView):
-    model=clientesView
+def clientAttendanceListPages(request):
+    qs = clientAttendanceView.objects.all().order_by('-date')
+    object_list = ClientsAttendancesFilter(request.GET, queryset=qs).qs
+    page_obj = Paginator(object_list, 25)
+    page = request.GET.get('page')
+    try:
+        page_obj = page_obj.page(page)
+    except PageNotAnInteger:
+        page_obj = page_obj.page(1)
+    except EmptyPage:
+        page_obj = page_obj.page(page_obj.num_pages)
+    try:
+        filter_parameters = '&client_name='+ request.GET['client_name']
+        filter_parameters += "&client_surname=" + request.GET['client_surname']
+        filter_parameters += "&date=" + request.GET['date']
+    except:
+        filter_parameters = ''
+    return render(request, 'clients/attendances.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
 
+
+
+
+
+class trainerAttendanceList(ListView):
+    model=trainerAttendanceView
+
+def trainerAttendanceListPages(request):
+    qs = trainerAttendanceView.objects.all().order_by('-register_date')
+    object_list = TrainersAttendancesFilter(request.GET, queryset=qs).qs
+    page_obj = Paginator(object_list, 25)
+    page = request.GET.get('page')
+    try:
+        page_obj = page_obj.page(page)
+    except PageNotAnInteger:
+        page_obj = page_obj.page(1)
+    except EmptyPage:
+        page_obj = page_obj.page(page_obj.num_pages)
+    try:
+        filter_parameters = '&trainer_name='+ request.GET['trainer_name']
+        filter_parameters += "&trainer_surname=" + request.GET['trainer_surname']
+        filter_parameters += "&register_date=" + request.GET['register_date']
+    except:
+        filter_parameters = ''
+    return render(request, 'trainers/attendances.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
+
+
+
+
+#ATTENDANCE MODE
 class trainersAttendance(ListView):
     model=TRAINERS
+
+def trainersAttendancePages(request):
+    qs = TRAINERS.objects.all().order_by('trainer_id')
+    object_list = TrainersFilter(request.GET, queryset=qs).qs
+    page_obj = Paginator(object_list, 25)
+    page = request.GET.get('page')
+    try:
+        page_obj = page_obj.page(page)
+    except PageNotAnInteger:
+        page_obj = page_obj.page(1)
+    except EmptyPage:
+        page_obj = page_obj.page(page_obj.num_pages)
+    try:
+        filter_parameters = '&trainer_name='+ request.GET['trainer_name']
+        filter_parameters += "&trainer_surname=" + request.GET['trainer_surname']
+    except:
+        filter_parameters = ''
+    return render(request, 'trainers/attendanceMode.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
+
 
 
 
 #TRAINERS VIEWS
 class TrainerList(ListView):
     model=TRAINERS
+
+def TrainerListPages(request):
+    qs = TRAINERS.objects.all().order_by('trainer_id')
+    object_list = TrainersFilter(request.GET, queryset=qs).qs
+    page_obj = Paginator(object_list, 25)
+    page = request.GET.get('page')
+    try:
+        page_obj = page_obj.page(page)
+    except PageNotAnInteger:
+        page_obj = page_obj.page(1)
+    except EmptyPage:
+        page_obj = page_obj.page(page_obj.num_pages)
+    try:
+        filter_parameters = '&trainer_name='+ request.GET['trainer_name'] + "&trainer_surname=" + request.GET['trainer_surname']
+    except:
+        filter_parameters = ''
+    return render(request, 'trainers/index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
 
 
 class TrainerDelete(SuccessMessageMixin, DeleteView):
@@ -401,9 +512,44 @@ class TrainerCreate(SuccessMessageMixin, CreateView):
 class clientsAttendances(ListView):
     model=CLIENTS
 
+def clientsAttendancesPages(request):
+    qs = CLIENTS.objects.all().order_by('client_id')
+    object_list = ClientsFilter(request.GET, queryset=qs).qs
+    page_obj = Paginator(object_list, 25)
+    page = request.GET.get('page')
+    try:
+        page_obj = page_obj.page(page)
+    except PageNotAnInteger:
+        page_obj = page_obj.page(1)
+    except EmptyPage:
+        page_obj = page_obj.page(page_obj.num_pages)
+    try:
+        filter_parameters = '&client_name='+ request.GET['client_name']
+        filter_parameters += "&client_surname=" + request.GET['client_surname']
+    except:
+        filter_parameters = ''
+    return render(request, 'index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
 
 class ClientList(ListView):
     model = CLIENTS
+
+def ClientListPages(request):
+    qs = CLIENTS.objects.all().order_by('client_id')
+    object_list = ClientsFilter(request.GET, queryset=qs).qs
+    page_obj = Paginator(object_list, 25)
+    page = request.GET.get('page')
+    try:
+        page_obj = page_obj.page(page)
+    except PageNotAnInteger:
+        page_obj = page_obj.page(1)
+    except EmptyPage:
+        page_obj = page_obj.page(page_obj.num_pages)
+    try:
+        filter_parameters = 'client_rfid=' + request.GET['client_rfid'] + '&client_name='+ request.GET['client_name'] + "&client_surname=" + request.GET['client_surname']
+    except:
+        filter_parameters = ''
+
+    return render(request, 'clients/index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
 
 
 class ClientDetails(DetailView):
@@ -438,8 +584,7 @@ class ClientDelete(SuccessMessageMixin, DeleteView):
     form = CLIENTS
     fields = "__all__"
 
-    # Redireccionamos a la página principal luego de eliminar un registro o postre
     def get_success_url(self):
-        success_message = '¡Cliente eliminado correctamente!' # Mostramos este Mensaje luego de Editar un Postre
+        success_message = '¡Cliente eliminado correctamente!'
         messages.success (self.request, (success_message))
-        return reverse('client index') # Redireccionamos a la vista principal 'leer'
+        return reverse('client index')

@@ -2,6 +2,7 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
+<script src="{% static 'js/rfid.js' %}" charset="utf-8"></script>
 
 <div class="container mt-4 mb-2">
   <div class="row">
@@ -9,8 +10,8 @@
       <h2>Administración de Clientes</h2>
     </div>
     <div class="col-12 col-md-3 d-none d-md-block" align="right">
-      <a type="button" class="btn btn-success mb-1" href="create">Nuevo</a>
-      <button class="btn btn-primary mb-1" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <a type="button" class="btn btn-success mb-1" href="{% url 'client create' %}">Nuevo</a>
+      <button class="btn btn-primary mb-1" onclick="focusRFIDInput('id_client_rfid')" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
         <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
           <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -18,8 +19,8 @@
       </button>
     </div>
     <div class="col-12 d-md-none">
-      <a type="button" class="btn btn-success btn-block mb-1" href="create">Nuevo</a>
-      <button class="btn btn-primary btn-block mb-1" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+      <a type="button" class="btn btn-success btn-block mb-1" href="{% url 'client create' %}">Nuevo</a>
+      <button class="btn btn-primary btn-block mb-1" onclick="focusRFIDInput('id_client_rfid')" align="center" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
         <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
           <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -38,10 +39,23 @@
           <div class="row">
             <div class="col">
               <form align="center" method="get">
-                <h4>Buscador</h4>
-                <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
                 <div class="form">
                   <div class="row">
+                    <div class="col-12">
+                      <h4>Buscador por llave</h4>
+                      <p>Pase la llave por encima del lector.</p>
+                      <input type="password" name="client_rfid" class="form-control my-1" id="id_client_rfid" maxlength="10" oninput="checkRFID(this)" autofocus>
+                    </div>
+                  </div>
+
+                  <div class="dropdown-divider font-weight-bolder"></div>
+
+                  <div class="row">
+                    <div class="col-12">
+                      <h4>Buscador manual</h4>
+                      <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
+
+                    </div>
                     <div class="col-12 col-md-6">
                       <input type="text" placeholder="Nombre" name="client_name" class="form-control my-1" id="id_client_name" placeholder="Nombre">
                     </div>
@@ -127,21 +141,41 @@
         </thead>
         <tbody>
           {% if object_list|length > 0 %}
-            {% for clients in object_list %}
+            {% for clients in page_obj %}
               <tr>
                 <td>{{ clients.client_name }}</td>
                 <td>{{ clients.client_surname }}</td>
                 <td>{{ clients.client_phone }}</td>
                 <td>{{ clients.client_email }}</td>
                 <td>
-                  <form method="POST" action="delete/{{clients.client_id}}">
+                  <form method="POST" action="{% url 'client delete' clients.client_id %}">
                     {% csrf_token %}
                     <div class="btn-group">
-                      <a href="detalle/{{clients.client_id}}" title="Ver" class="btn btn-primary">Ver </a>
-                      <a href="editar/{{clients.client_id}}" title="Editar"class="btn btn-secondary">Editar </a>
-                      <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                      <a href="{% url 'client details' clients.client_id %}" title="Ver" class="btn btn-primary">Ver </a>
+                      <a href="{% url 'client edit' clients.client_id %}" title="Editar"class="btn btn-secondary">Editar </a>
+                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteClient{{clients.client_id}}Modal" >
                         Eliminar
                       </button>
+                    </div>
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteClient{{clients.client_id}}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header bg-danger text-light">
+                            <h5 class="modal-title" id="deleteModalLabel">¿Eliminar cliente?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Al eliminar este cliente, se borrará su membresía asignada.
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </form>
                 </td>
@@ -149,22 +183,43 @@
             {% endfor %}
           {% else %}
             <tr>
-              <td class="alert-warning font-weight-bold text-center" colspan="3">¡Ups! No hay registros</td>
+              <td class="alert-warning font-weight-bold" colspan="5">¡Ups! No hay registros</td>
             </tr>
           {% endif %}
         </tbody>
       </table>
   </div>
+
+
+  {% if page_obj.paginator.num_pages > 1%}
+    <div class="row">
+      <div class="col-12 text-center">
+        <small>Página {{ page_obj.number }} de {{page_obj.paginator.num_pages}}</small>
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            {% if page_obj.number == 2 %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page=1{{filter_parameters}}">&laquo;</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
+            {% endif%}
+          {% endif %}
+          <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
+          {% if page_obj.has_next %}
+
+            {% if page_obj.number|add:'1' ==  page_obj.paginator.num_pages %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{{filter_parameters}}">&raquo;</a></li>
+            {% endif%}
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+
 </div>
 
-  <script type="text/javascript">
-    function eliminar() {
-      var x = confirm("Eliminar Cliente ?");
-      if (x)
-        return true;
-      else
-        return false;
-    }
-  </script>
 
 {% endblock %}
