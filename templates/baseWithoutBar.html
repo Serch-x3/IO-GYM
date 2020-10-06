@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOGYM</title>
+    <link rel="shortcut icon" type="image/jpeg" href="{% static "images/favicon.jpeg"%}"/>
+    <link rel="stylesheet" href="{% static  "css/bootstrap.css"%}">
+
+    <script src="{%static "js/jquery-3.4.1.js" %}" charset="utf-8"></script>
+    <script src="{%static "js/popper.js" %}" charset="utf-8"></script>
+    <script src="{%static "js/bootstrap.js" %}" charset="utf-8"></script>
+</head>
+<body>
+  {% if user.is_superuser%}
+
+  {% block content %}
+  {% endblock %}
+
+  {% else%}
+  <body class="bg-dark">
+    <div class="container-fluid bg-dark">
+      <div class="row">
+        <div class="col">
+
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-12 col-sm-6 bg-dark">
+          <img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="300px" class="img-fluid mb-2">
+        </div>
+        <div class="col-12 col-sm-6">
+          <div class="card rounded-lg" style="height: 100%;">
+            <div class="card-body">
+              <div class="row">
+                <div class="col">
+
+                </div>
+                <div class="col-10">
+                  <h1 class="card-title">No tienes acceso a esta página</h1>
+                  <h5 class="card-subtitle mb-5 mt-5 text-muted">Su usuario no es usuario de administrador.</h5>
+                  <h5 class="card-subtitle mb-5 text-muted">Para acceder a esta página debe de iniciar sesión con la cuenta administrador</h5>
+                  <a style="width: 100%;" href="../../../../logout" class="btn btn-danger">Cerrar sesión</a>
+                  <a style="width: 100%;" href="../../../../" class="btn btn-primary mt-2">Atrás</a>
+
+                </div>
+                <div class="col">
+
+                </div>
+              </div>
+            </div>
+            <img src="{% static "images/afterbyte_logo.png" %}" alt="iogym_logo" class="mb-1" style="display: block; margin-left: auto; margin-right: auto; width: 30%; -webkit-filter: invert(1);filter: invert(1);">
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  {% endif%}
+</body>
+</html>

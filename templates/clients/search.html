@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+<div class="container-fluid">
+
+  <form class="form-inline mt-5" method="get">
+    {{ filter.form.as_p }}
+    <button class="btn btn-primary" type="submit">Search</button>
+  </form>
+</div>
+
+  <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellidos</th>
+          <th>Fecha de nacimiento</th>
+          <th>Telefono</th>
+          <th>Tel. Emergencia</th>
+          <th>Email</th>
+          <th>Genero</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
+      {% for clients in object_list %}
+        <tr>
+          <td>{{ clients.client_name }}</td>
+          <td>{{ clients.client_surname }}</td>
+          <td>{{ clients.client_birthday }}</td>
+          <td>{{ clients.client_phone }}</td>
+          <td>{{ clients.client_emergency_phone }}</td>
+          <td>{{ clients.client_email }}</td>
+          <td>{{ clients.client_gender }}</td>
+          <td>
+            <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
+            <form method="POST" action="eliminar/{{clients.client_id}}">
+              {% csrf_token %}
+              <div class="btn-group">
+
+                <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
+                <a href="detalle/{{clients.client_id}}" title="Ver" class="btn btn-primary">Ver </a>
+                <a href="editar/{{clients.client_id}}" title="Editar"class="btn btn-secondary">Editar </a>
+                <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                  Eliminar
+                </button>
+              </div>
+            </form>
+
+          </td>
+        </tr>
+      {% endfor %}
+
+      </tbody>
+    </table>
+
+    <script type="text/javascript">
+      function eliminar() {
+        var x = confirm("Eliminar Cliente ?");
+        if (x)
+          return true;
+        else
+          return false;
+      }
+    </script>
+
+  {% endblock %}

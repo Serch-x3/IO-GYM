@@ -56,22 +56,24 @@
           </tr>
         </thead>
         <tbody>
-        {% for memberships in page_obj %}
+        <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
+        {% for memberships in object_list %}
           <tr>
             <td>{{ memberships.client_id}}</td>
-            <td>
-              {% for class in memberships.included_classes.all %}
-                {{ class }},
-              {% endfor %}
-            </td>
+            <td>{% for author in memberships.included_classes.all %}
+                  {{ author }},
+                {% endfor %}</td>
             <td>{{ memberships.register_date }}</td>
             <td>{{ memberships.expiration_date}}</td>
             <td>
-              <form>
+              <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
+              <form method="POST" action="delete/{{memberships.membership_id}}">
                 {% csrf_token %}
                 <div class="btn-group">
-                  <a href="{% url 'details membership' memberships.membership_id %}" title="Ver" class="btn btn-primary">Ver </a>
-                  <a href="{% url 'edit membership' memberships.membership_id %}" title="Editar" class="btn btn-secondary">Editar </a>
+
+                  <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
+                  <a href="details/{{memberships.membership_id}}" title="Ver" class="btn btn-primary">Ver </a>
+                  <a href="edit/{{memberships.membership_id}}" title="Editar"class="btn btn-secondary">Editar </a>
                 </div>
               </form>
             </td>
@@ -81,34 +83,16 @@
         </tbody>
       </table>
   </div>
+</div>
 
-  {% if page_obj.paginator.num_pages > 1%}
-    <div class="row">
-      <div class="col-12 text-center">
-        <small>Página {{ page_obj.number }} de {{page_obj.paginator.num_pages}}</small>
-        <ul class="pagination justify-content-center">
-          {% if page_obj.has_previous %}
-            {% if page_obj.number == 2 %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
-            {% else %}
-              <li class="page-item"><a class="page-link" href="?page=1{{filter_parameters}}">&laquo;</a></li>
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
-            {% endif%}
-          {% endif %}
-          <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
-          {% if page_obj.has_next %}
-
-            {% if page_obj.number|add:'1' ==  page_obj.paginator.num_pages %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
-            {% else %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{{filter_parameters}}">&raquo;</a></li>
-            {% endif%}
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  {% endif %}
-  </div>
+  <script type="text/javascript">
+    function eliminar() {
+      var x = confirm("¿Eliminar membresía?\nEl cliente poseedor de esta membresía se le denegará el acceso posteriormente.");
+      if (x)
+        return true;
+      else
+        return false;
+    }
+  </script>
 
 {% endblock %}

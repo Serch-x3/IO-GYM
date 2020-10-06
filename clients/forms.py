@@ -20,7 +20,7 @@ class trainerForm(forms.ModelForm):
     trainer_password=forms.CharField(widget=forms.PasswordInput,validators=[validate_password],label="Contraseña")
     class Meta:
         model = TRAINERS
-        fields=('trainer_name','trainer_surname','trainer_birthday','trainer_phone','trainer_emergency_phone','trainer_email','trainer_gender','trainer_address','trainer_rfc','trainer_password','trainer_rfid')
+        fields=('trainer_name','trainer_surname','trainer_birthday','trainer_phone','trainer_emergency_phone','trainer_email','trainer_gender','trainer_address','trainer_rfc','trainer_password')
 
 class trainerFormEdit(forms.ModelForm):
 

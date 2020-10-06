@@ -2,9 +2,7 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
-<audio id="access_granted" src="{% static 'sounds/access_granted.mp3'%}" preload="auto" ></audio>
-<audio id="access_denied" src="{% static 'sounds/access_denied.mp3'%}" preload="auto" ></audio>
-<audio id="warning_alert" src="{% static 'sounds/bells.mp3'%}" preload="auto" ></audio>
+
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#"><img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="30px">  Modo Asistencia</a>
@@ -21,7 +19,7 @@
         -->
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'trainer attendance mode' %}">Entrenador</a>
+        <a class="nav-link" href="trainers/attendancemode">Entrenador</a>
       </li>
       <li class="nav-item active">
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exitModal">
@@ -30,7 +28,7 @@
 
         <script type="text/javascript">
           function logout() {
-            window.location.href = "{% url 'logout' %}";
+            window.location.href = "../../../../logout";
           }
         </script>
       </li>
@@ -84,78 +82,7 @@
 
 
 <div class="container">
-
-
-  <h2 align="center" class="my-5">Ingreso de cliente</h2>
-
-
-  {% if messages %}
-    {% for message in messages %}
-      {% if message.tags %}{% endif %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-          <div class="alert alert-success alert-dismissible fade show mt-2" role="alert" align="center">
-            <h5 class="my-3 font-weight-bold">{{ message }}</h5>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <script>
-               var sound = document.getElementById("access_granted");
-               sound.play()
-          </script>
-        {% endif %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-          <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert" align="center">
-            <h5 class="my-3 font-weight-bold">{{ message }}</h5>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <script>
-               var sound = document.getElementById("access_denied");
-               sound.play()
-          </script>
-        {% endif %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-          <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert" align="center">
-            <h5 class="my-3 font-weight-bold">{{ message }}</h5>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <script>
-               var sound = document.getElementById("warning_alert");
-               sound.play()
-          </script>
-        {% endif %}
-    {% endfor %}
-  {% endif %}
-
-  <script type="text/javascript">
-    closeAlert = setTimeout(function() {
-      $('.alert').alert('close')
-    },5000);
-  </script>
-
-  <script src="{% static 'js/rfid.js' %}" charset="utf-8"></script>
-
-
-  <form class="form-inline justify-content-center" action="{% url 'client check with rfid' %}" method="post" id="RFIDForm">
-    {% csrf_token %}
-    <div class="card text-white bg-secondary mb-3" style="max-width: 100%;">
-      <div class="card-header">Ingreso por llavero</div>
-      <div class="card-body">
-        <div class="form-group">
-          <input id="id_client_rfid" class="form-control form-control-lg" type="password" autofocus oninput="checkRFID(this)" maxlength="10" name="client_rfid" value="">
-        </div>
-      </div>
-    </div>
-  </form>
-
-  <div class="dropdown-divider my-5"></div>
-
-
-  <h4 class="text-center">Ingreso manual</h4>
+  <h2 align="center" class="mt-5">Ingreso de cliente</h2>
   <form class="form-inline my-3 justify-content-center">
     <div class="row">
       <div class="col-12 col-md-4">
@@ -191,6 +118,35 @@
     </div>
   </form>
 
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags %}{% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <div class="alert alert-success alert-dismissible fade show mt-2" role="alert" align="center">
+        {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert" align="center">
+        {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+        <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert" align="center">
+        {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endif %}
+    {% endfor %}
+  {% endif %}
 
 
   <div class="table-responsive">
@@ -198,7 +154,6 @@
         <thead class="thead-dark">
           <tr>
             <th>Nombre</th>
-            <th>Apellidos</th>
             <th>Telefono</th>
             <th>Acciones</th>
           </tr>
@@ -207,22 +162,18 @@
 
         <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
         {% if object_list|length > 0 %}
-          {% for clients in page_obj %}
+          {% for clients in object_list %}
             <tr>
-              <td>{{ clients.client_name }} </td>
-              <td>{{ clients.client_surname }}</td>
-              {% if clients.client_phone == None %}
-                <td class="alert-danger font-weight-bolder">Sin asignar</td>
-              {% else %}
-                <td>******{{ clients.client_phone|slice:"-4:" }}</td>
-              {% endif %}
+              <td>{{ clients.client_name }} {{ clients.client_surname }}</td>
+              <td>******{{ clients.client_phone|slice:"-4:" }}</td>
               <td>
                 <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
-                <form method="POST" action="{% url 'client check' clients.client_id %}">
+                <form method="POST" action="checkClientAttendance/{{clients.client_id}}">
                   {% csrf_token %}
                     <button class="btn btn-danger" type="submit" value="{{client.client_id}}">
                       Ingresar
                     </button>
+                  </div>
                 </form>
 
               </td>
@@ -230,41 +181,12 @@
           {% endfor %}
         {% else %}
           <tr>
-            <td class="alert-warning font-weight-bold text-center" colspan="4">¡Ups! No hay registros</td>
+            <td class="alert-warning font-weight-bold text-center" colspan="3">¡Ups! No hay registros</td>
           </tr>
         {% endif %}
         </tbody>
       </table>
   </div>
-
-  {% if page_obj.paginator.num_pages > 1%}
-    <div class="row">
-      <div class="col-12 text-center">
-        <small>Página {{ page_obj.number }} de {{page_obj.paginator.num_pages}}</small>
-        <ul class="pagination justify-content-center">
-          {% if page_obj.has_previous %}
-            {% if page_obj.number == 2 %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
-            {% else %}
-              <li class="page-item"><a class="page-link" href="?page=1{{filter_parameters}}">&laquo;</a></li>
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
-            {% endif%}
-          {% endif %}
-          <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
-          {% if page_obj.has_next %}
-
-            {% if page_obj.number|add:'1' ==  page_obj.paginator.num_pages %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
-            {% else %}
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
-              <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{{filter_parameters}}">&raquo;</a></li>
-            {% endif%}
-          {% endif %}
-        </ul>
-      </div>
-    </div>
-  {% endif %}
-
 </div>
 
 {% endblock %}

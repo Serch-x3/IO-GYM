@@ -9,9 +9,9 @@
       <h2>Consulta de datos de Cliente</h2>
     </div>
     <div class="col-12 col-lg-4 d-none d-lg-block">
-        <a href="{% url 'details membership' clients.client_id %}" title="Editar"class="btn btn-success">Ir a membresía</a>
-        <a href="{% url 'client edit' clients.client_id %}" title="Editar"class="btn btn-secondary">Editar </a>
-        <a href="{% url 'client index' %}" class="btn btn-primary">Volver</a>
+        <a href="../../admin/memberships/details/{{clients.client_id}}" title="Editar"class="btn btn-success">Ir a membresía</a>
+        <a href="../editar/{{clients.client_id}}" title="Editar"class="btn btn-secondary">Editar </a>
+        <a href="../" class="btn btn-primary">Volver</a>
     </div>
   </div>
 </div>
@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-md-6">
+    <div class="col-12">
       <div class="form-group">
         <label for="">Datos médicos.</label>
         <div class="form-control">{{clients.client_medical_info}} </div>

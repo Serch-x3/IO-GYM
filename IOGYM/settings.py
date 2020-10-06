@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'clients',
     'widget_tweaks',
     'daterange_filter',
-    'django_filters',
 ]
 
 
@@ -95,8 +94,7 @@ DATABASES = {
         'NAME': 'IOGYM',
         'USER': 'djangoDB',
         'PASSWORD':'AfterByte',
-        #'HOST':'173.18.0.1',
-        'HOST': 'localhost',
+        'HOST':'173.18.0.1',
         'PORT':'3307',
     }
 }
@@ -158,7 +156,7 @@ EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'SMTP.Office365.com'
 EMAIL_HOST_USER = 'alex_paz_5599@hotmail.com'
-EMAIL_HOST_PASSWORD = 'PCXrN5aP2019'
+EMAIL_HOST_PASSWORD = 'PCXrN5aP2018'
 EMAIL_PORT = 587
 PASSWORD_RESET_TIMEOUT_DAYS = 2
 DEFAULT_FROM_EMAIL = 'alex_paz_5599@hotmail.com'

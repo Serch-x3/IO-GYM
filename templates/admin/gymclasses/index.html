@@ -9,10 +9,10 @@
       <h2>Administración de Clases</h2>
     </div>
     <div class="col-md-3 d-none d-md-block">
-      <a type="button" class="btn btn-success" href="{% url 'create gymclasses' %}">Nuevo</a>
+      <a type="button" class="btn btn-success" href="create">Nuevo</a>
     </div>
     <div class="col-12 d-md-none">
-      <a type="button" class="btn btn-success btn-block" href="{% url 'create gymclasses' %}">Nuevo</a>
+      <a type="button" class="btn btn-success btn-block" href="create">Nuevo</a>
     </div>
   </div>
 </div>
@@ -66,89 +66,45 @@
               </tr>
             </thead>
             <tbody>
-              {% if object_list|length > 0 %}
-                {% for gymclasses in page_obj %}
-                  <tr>
-                    <td>{{ gymclasses.gymclass_name}}</td>
-                    <td align="right">
-                      <form method="POST" action="{% url 'delete gymclasses' gymclasses.gymclass_id %}">
-                        {% csrf_token %}
-                        <div class="btn-group">
-                          <a href="{% url 'detail gymclasses' gymclasses.gymclass_id %}" title="Ver" class="btn btn-primary">Ver </a>
-                          <a href="{% url 'edit gymclasses' gymclasses.gymclass_id %}" title="Editar"class="btn btn-secondary">Editar </a>
-                          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteGymClass{{gymclasses.gymclass_id}}Modal" >
-                            Eliminar
-                          </button>
-                        </div>
-                        <!-- Delete Modal -->
-                        <div class="modal fade" id="deleteGymClass{{gymclasses.gymclass_id}}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header bg-danger text-light">
-                                <h5 class="modal-title" id="deleteModalLabel">¿Eliminar clase?</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body text-left">
-                                Al eliminar esta clase, también se eliminarán aquellos grupos correspondiente a esta clase.
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                    </td>
-                  </tr>
-                {% endfor %}
-              {% else %}
-                <tr>
-                  <td colspan="2 alert-warning">¡Ups! No hay registros</td>
-                </tr>
-              {% endif %}
+            <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
+            {% for gymclasses in object_list %}
+              <tr>
+                <td>{{ gymclasses.gymclass_name}}</td>
+                <td align="right">
+                  <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
+                  <form method="POST" action="delete/{{gymclasses.gymclass_id}}">
+                    {% csrf_token %}
+                    <div class="btn-group">
+
+                      <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
+                      <a href="detail/{{gymclasses.gymclass_id}}" title="Ver" class="btn btn-primary">Ver </a>
+                      <a href="edit/{{gymclasses.gymclass_id}}" title="Editar"class="btn btn-secondary">Editar </a>
+                      <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                        Eliminar
+                      </button>
+                    </div>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
 
             </tbody>
           </table>
       </div>
-
-
-      {% if page_obj.paginator.num_pages > 1%}
-        <div class="row">
-          <div class="col-12 text-center">
-            <small>Página {{ page_obj.number }} de {{page_obj.paginator.num_pages}}</small>
-            <ul class="pagination justify-content-center">
-              {% if page_obj.has_previous %}
-                {% if page_obj.number == 2 %}
-                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
-                {% else %}
-                  <li class="page-item"><a class="page-link" href="?page=1{{filter_parameters}}">&laquo;</a></li>
-                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
-                {% endif%}
-              {% endif %}
-              <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
-              {% if page_obj.has_next %}
-
-                {% if page_obj.number|add:'1' ==  page_obj.paginator.num_pages %}
-                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
-                {% else %}
-                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
-                  <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{{filter_parameters}}">&raquo;</a></li>
-                {% endif%}
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-      {% endif %}
-
-
     </div>
 
     <div class="col-1 col-lg-3"> </div>
   </div>
 </div>
 
+  <script type="text/javascript">
+    function eliminar() {
+      var x = confirm("¿Eliminar clase?\nLos grupos y membresías relacionadas con este elemento serán alteradas");
+      if (x)
+        return true;
+      else
+        return false;
+    }
+  </script>
 
 {% endblock %}

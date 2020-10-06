@@ -3,16 +3,19 @@
 {% load widget_tweaks %}
 {% block content %}
 
+{% if user.is_superuser%}
+
+
 <div class="container mt-4 mb-2">
   <div class="row">
     <div class="col-12 col-md-9">
       <h2>Administración de Usuarios</h2>
     </div>
     <div class="col-12 col-md-3 d-none d-md-block" align="right">
-      <a type="button" class="btn btn-success mb-1" href="{% url 'user create' %}">Nuevo</a>
+      <a type="button" class="btn btn-success mb-1" href="../create">Nuevo</a>
     </div>
     <div class="col-12 col-md-3 d-md-none">
-      <a type="button" class="btn btn-success btn-block mb-1" href="{% url 'user create' %}">Nuevo</a>
+      <a type="button" class="btn btn-success btn-block mb-1" href="../create">Nuevo</a>
     </div>
   </div>
 </div>
@@ -73,36 +76,16 @@
             {% endif %}
             <td>
               <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o clients desde la misma tabla HTML -->
-              <form method="POST" action="{% url 'user delete' userItem.id %}">
+              <form method="POST" action="../delete/{{userItem.id}}">
                 {% csrf_token %}
                 <div class="btn-group">
 
                   <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
-                  <a href="{% url 'user details' userItem.id %}" title="Ver" class="btn btn-primary">Ver </a>
-                  <a href="{% url 'user edit' userItem.id %}" title="Editar"class="btn btn-secondary">Editar </a>
-                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser{{userItem.id}}Modal" >
+                  <a href="../details/{{userItem.id}}" title="Ver" class="btn btn-primary">Ver </a>
+                  <a href="../edit/{{userItem.id}}" title="Editar"class="btn btn-secondary">Editar </a>
+                  <button class="btn btn-danger" onclick="return eliminar();" type="submit">
                     Eliminar
                   </button>
-                </div>
-                <!-- Delete Modal -->
-                <div class="modal fade" id="deleteUser{{userItem.id}}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header bg-danger text-light">
-                        <h5 class="modal-title" id="deleteModalLabel">¿Eliminar usuario?</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        El usuario dejará de tener acceso a IO-GYM.
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </form>
 
@@ -115,5 +98,52 @@
   </div>
 </div>
 
+  <script type="text/javascript">
+    function eliminar() {
+      var x = confirm("¿Eliminar entrenador?");
+      if (x)
+        return true;
+      else
+        return false;
+    }
+  </script>
+{% else%}
+<body class="bg-dark">
+  <div class="container-fluid bg-dark">
+    <div class="row">
+      <div class="col">
+
+      </div>
+    </div>
+    <div class="row mt-5">
+      <div class="col-12 col-sm-6 bg-dark">
+        <img src="{% static "images/iogym_logo.png" %}" alt="iogym_logo" height="300px" class="img-fluid mb-2">
+      </div>
+      <div class="col-12 col-sm-6">
+        <div class="card rounded-lg" style="height: 100%;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col">
+
+              </div>
+              <div class="col-10">
+                <h1 class="card-title">No tienes acceso a esta página</h1>
+                <h5 class="card-subtitle mb-5 mt-5 text-muted">Su usuario no es usuario de administrador.</h5>
+                <h5 class="card-subtitle mb-5 text-muted">Para acceder a esta página debe de iniciar sesión con la cuenta administrador</h5>
+                <a style="width: 100%;" href="../../../../logout" class="btn btn-primary">Cerrar sesión</a>
+
+              </div>
+              <div class="col">
+
+              </div>
+            </div>
+          </div>
+          <img src="{% static "images/afterbyte_logo.png" %}" alt="iogym_logo" class="mb-1" style="display: block; margin-left: auto; margin-right: auto; width: 30%; -webkit-filter: invert(1);filter: invert(1);">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endif%}
 
 {% endblock %}
