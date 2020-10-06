@@ -40,16 +40,15 @@
                 <h4>Buscador</h4>
                 <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
                 <div class="form">
-
                   <div class="row">
                     <div class="col-12 col-md-4">
-                      {% render_field filter.form.id class="form-control my-1" placeholder="Nombre"%}
+                      <input type="text" name="trainer_name" placeholder="Nombre(s)" class="form-control my-1" id="id_trainer_name">
                     </div>
                     <div class="col-12 col-md-4">
-                      {% render_field filter.form.trainer_surname class="form-control my-1" placeholder="Apellidos"%}
+                      <input type="text" name="trainer_surname" placeholder="Apellidos" class="form-control my-1" id="id_trainer_surname">
                     </div>
                     <div class="col-12 col-md-4">
-                      <select name="date" placeholder="Fecha" class="form-control my-1" id="id_date">
+                      <select name="register_date" class="form-control my-1" id="id_register_date">
                         <option value="" selected="">---------</option>
                         <option value="today">Hoy</option>
                         <option value="yesterday">Ayer</option>
@@ -69,7 +68,7 @@
                         <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
                       </svg>
                     </button>
-                    <a href="./" class="btn btn-warning">Limpiar</a>
+                    <a href="{% url 'trainer attendances' %}" class="btn btn-warning">Limpiar</a>
                   </div>
                   <!--HIDE WHEN VIEWPORT IS MD OR HIGHER-->
                   <div class="col d-md-none">
@@ -79,7 +78,7 @@
                         <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
                       </svg>
                     </button>
-                    <a href="./" class="btn btn-warning btn-block ">Limpiar</a>
+                    <a href="{% url 'trainer attendances' %}" class="btn btn-warning btn-block ">Limpiar</a>
                   </div>
                 </div>
               </form>
@@ -97,39 +96,62 @@
         <thead class="thead-dark">
           <tr>
             <th>Nombre</th>
+            <th>Apellidos</th>
             <th>Fecha</th>
             <th>Descripción</th>
           </tr>
         </thead>
         <tbody>
-        <!-- Recorremos los objetos o registros que tenemos en nuestra tabla 'clientss' y los listamos -->
-        {% if object_list|length > 0 %}
-          {% for trainers in object_list|slice:":40" %}
+          {% if object_list|length > 0 %}
+            {% for trainer in page_obj|slice:":40" %}
+              <tr>
+                <td>{{ trainer.trainer_name }}</td>
+                <td>{{ trainer.trainer_surname }}</td>
+                <td>{{ trainer.register_date }}</td>
+                <td>{{ trainer.description }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
             <tr>
-              <td>{{ trainers.id }} {{ trainers.trainer_surname }}</td>
-              <td>{{ trainers.register_date }}</td>
-              <td>{{ trainers.description }}</td>
+              <td class="alert-warning" colspan="4"><b>¡Ups! No hay registros.</b></td>
             </tr>
-          {% endfor %}
-        {% else %}
-          <tr>
-            <td class="alert-warning" colspan="3"><b>¡Ups! No hay registros.</b></td>
-          </tr>
-        {% endif %}
+          {% endif %}
 
         </tbody>
       </table>
   </div>
+
+
+  {% if page_obj.paginator.num_pages > 1%}
+    <div class="row">
+      <div class="col-12 text-center">
+        <small>Página {{ page_obj.number }} de {{page_obj.paginator.num_pages}}</small>
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            {% if page_obj.number == 2 %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page=1{{filter_parameters}}">&laquo;</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{{filter_parameters}}">{{ page_obj.previous_page_number }}</a></li>
+            {% endif%}
+          {% endif %}
+          <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
+          {% if page_obj.has_next %}
+
+            {% if page_obj.number|add:'1' ==  page_obj.paginator.num_pages %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
+            {% else %}
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{{filter_parameters}}">{{ page_obj.next_page_number }}</a></li>
+              <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{{filter_parameters}}">&raquo;</a></li>
+            {% endif%}
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
+
+
 </div>
 
-  <script type="text/javascript">
-    function eliminar() {
-      var x = confirm("Eliminar Cliente ?");
-      if (x)
-        return true;
-      else
-        return false;
-    }
-  </script>
 
 {% endblock %}

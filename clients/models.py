@@ -124,23 +124,25 @@ class NCLYM(models.Model):
         db_table = 'NCLYM'
 
 class trainerAttendanceView(models.Model):
-    id=models.CharField(verbose_name='Nombre'),
+    id=models.CharField(primary_key=True),
+    trainer_name=models.CharField(verbose_name='Nombre', db_column='trainer_name',max_length=40);
     trainer_surname=models.CharField(verbose_name='Apellidos', db_column='trainer_surname',max_length=40);
-    trainer_phone=models.CharField(verbose_name='Teléfono', db_column='trainer_phone',max_length=40);
-    register_date=models.DateField(verbose_name='Fecha', db_column='register_date',max_length=40);
+    register_date=models.DateField(verbose_name='Fecha', db_column='register_date');
     description=models.CharField(verbose_name='Descripción', db_column='description',max_length=40);
 
     class Meta:
         managed = False
         db_table = 'trainerAttendanceView'
 
-class clientesView(models.Model):
-    id=models.CharField(verbose_name='Cliente'),
-    date=models.DateField(verbose_name='Fecha');
+class clientAttendanceView(models.Model):
+    id = models.BigIntegerField(primary_key=True),
+    client_name=models.CharField(max_length=40, verbose_name='Nombre')
+    client_surname=models.CharField(max_length=40, verbose_name='Apellidos')
+    date=models.DateField(verbose_name='Fecha')
 
     class Meta:
         managed = False
-        db_table = 'clientesView'
+        db_table = 'clientAttendanceView'
 
 class MEMBERSHIPS(models.Model):
     def get_cancel():
@@ -213,6 +215,7 @@ class CLIENTS(models.Model):
     client_email = models.CharField(max_length=40, blank=True, null=True, validators=[emailValidator], verbose_name='Email')
     client_gender = models.CharField(choices=options,max_length=1, blank=True, null=True, verbose_name='Género')
     client_medical_info = models.CharField(max_length=200, null=True, blank=True, verbose_name='Información Médica')
+    client_rfid = models.CharField(max_length=10, blank=True, null=True, unique=True, verbose_name='Llave de acceso')
 
     class Meta:
         managed = True
@@ -249,6 +252,7 @@ class TRAINERS(models.Model):
     trainer_address = models.CharField(max_length=60, blank=True, null=True, verbose_name='Dirección')
     trainer_rfc = models.CharField(validators=[MinLengthValidator(12)], max_length=13, blank=True, null=True, verbose_name='RFC')
     trainer_password = fields.EncryptedTextField(max_length=40, blank=True, verbose_name='Contraseña')
+    trainer_rfid = models.CharField(max_length=10, blank=True, null=True, unique=True, verbose_name='Llave de acceso')
 
     class Meta:
         managed = True
@@ -263,7 +267,7 @@ class GROUPS(models.Model):
     group_id = models.AutoField(primary_key=True)
     gymclass_id = models.ForeignKey('GYMCLASSES', models.DO_NOTHING, db_column='gymclass_id', blank=True, null=True, verbose_name='Clase')
     trainer_id = models.ForeignKey('TRAINERS', models.DO_NOTHING, db_column='trainer_id', blank=True, null=True, verbose_name='Entrenador')
-    weekday = models.CharField(unique=True, choices=options, max_length=15, verbose_name='Día', blank=False, null=False )
+    weekday = models.CharField(choices=options, max_length=15, verbose_name='Día', blank=False, null=False )
     hour = models.CharField(max_length=10, null=True, verbose_name='Hora')
     class Meta:
         managed = True

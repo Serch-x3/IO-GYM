@@ -95,6 +95,7 @@ DATABASES = {
         'USER': 'djangoDB',
         'PASSWORD':'AfterByte',
         'HOST':'173.18.0.1',
+        #'HOST': 'localhost',
         'PORT':'3307',
     }
 }

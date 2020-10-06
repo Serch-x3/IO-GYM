@@ -1,44 +1,44 @@
 from django.contrib.auth.models import *
-import django_filters
+import django_filters as filters
 from .models import *
 
-class ClientsFilter(django_filters.FilterSet):
-    client_name=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")
-    client_surname=django_filters.CharFilter(lookup_expr='icontains', label="Apellidos")
+class ClientsFilter(filters.FilterSet):
+    client_name=filters.CharFilter(lookup_expr='icontains', label="Nombre")
+    client_surname=filters.CharFilter(lookup_expr='icontains', label="Apellidos")
+    client_rfid=filters.CharFilter(lookup_expr='iexact', label="Llave de acceso")
+
     class Meta:
         model = CLIENTS
-        fields = ['client_name', 'client_surname', ]
-
-class ClientsFilterForAttendance(django_filters.FilterSet):
-    client_name=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")
-    client_surname=django_filters.CharFilter(lookup_expr='icontains', label="Apellidos")
-    class Meta:
-        model = CLIENTS
-        fields = ['client_name', 'client_surname', ]
-
-class ClientsAttendancesFilter(django_filters.FilterSet):
-    id=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")
-    date=django_filters.DateRangeFilter(field_name='date')
-
-    class Meta:
-        model = clientesView
-        fields = ['id', 'date', ]
+        fields = ['client_name', 'client_surname', 'client_rfid']
 
 
-
-class TrainersFilter(django_filters.FilterSet):
-    trainer_name=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")
-    trainer_surname=django_filters.CharFilter(lookup_expr='icontains', label="Apellidos")
-    class Meta:
-        model = TRAINERS
-        fields = ['trainer_name', 'trainer_surname', ]
-
-
-class TrainersAttendancesFilter(django_filters.FilterSet):
-    id=django_filters.CharFilter(lookup_expr='icontains', label="Nombre")
-    trainer_surname=django_filters.CharFilter(lookup_expr='icontains', label="Apellidos")
-    date=django_filters.DateRangeFilter(field_name='register_date')
+class TrainersAttendancesFilter(filters.FilterSet):
+    trainer_name=filters.CharFilter(lookup_expr='icontains', label="Nombre")
+    trainer_surname=filters.CharFilter(lookup_expr='icontains', label="Apellidos")
+    register_date=filters.DateRangeFilter()
 
     class Meta:
         model = trainerAttendanceView
-        fields = ['id', 'trainer_surname','register_date', ]
+        fields = ['trainer_name','trainer_surname','register_date']
+
+
+class ClientsAttendancesFilter(filters.FilterSet):
+    client_name=filters.CharFilter(lookup_expr='icontains', label="Nombre")
+    client_surname=filters.CharFilter(lookup_expr='icontains', label="Apellidos")
+    date=filters.DateRangeFilter(field_name='date')
+
+    class Meta:
+        model = clientAttendanceView
+        fields = ['client_name', 'client_surname', 'date', ]
+
+
+
+class TrainersFilter(filters.FilterSet):
+    trainer_name=filters.CharFilter(lookup_expr='icontains', label="Nombre")
+    trainer_surname=filters.CharFilter(lookup_expr='icontains', label="Apellidos")
+    trainer_rfid=filters.CharFilter(lookup_expr='iexact', label="Llave de acceso")
+
+    class Meta:
+        model = TRAINERS
+        paginate_by = 1
+        fields = ['trainer_name', 'trainer_surname', 'trainer_rfid',]

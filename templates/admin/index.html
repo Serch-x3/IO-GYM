@@ -22,9 +22,9 @@
             Entrenadores
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a href="../../trainers" class="dropdown-item">Administración</a>
+            <a href=" {% url 'trainer index' %}" class="dropdown-item">Administración</a>
             <div class="dropdown-divider"></div>
-            <a href="../../trainers/attendances" class="dropdown-item">Asistencia</a>
+            <a href="{% url 'trainer attendances' %}" class="dropdown-item">Asistencia</a>
           </div>
         </li>
         <li class="nav-item dropdown active">
@@ -32,10 +32,10 @@
             Clientes
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a href="../../clients" class="dropdown-item">Administración</a>
+            <a href="{% url 'client index' %}" class="dropdown-item">Administración</a>
             <div class="dropdown-divider"></div>
-            <a href="memberships" class="dropdown-item">Membresías</a>
-            <a href="../clients/attendances" class="dropdown-item">Asistencia</a>
+            <a href="{% url 'index membership' %}" class="dropdown-item">Membresías</a>
+            <a href="{% url 'client attendances' %}" class="dropdown-item">Asistencia</a>
           </div>
         </li>
         <li class="nav-item dropdown active">
@@ -43,13 +43,13 @@
             Gimnasio
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a href="gymclasses" class="dropdown-item">Clases</a>
+            <a href="{% url 'index gymclasses' %}" class="dropdown-item">Clases</a>
             <div class="dropdown-divider"></div>
-            <a href="groups/index" class="dropdown-item">Grupos</a>
+            <a href="{% url 'index groups' %}" class="dropdown-item">Grupos</a>
             <div class="dropdown-divider"></div>
-            <a href="graphs/" class="dropdown-item">Estadísticas</a>
+            <a href="{% url 'graphs' %}" class="dropdown-item">Estadísticas</a>
             <div class="dropdown-divider"></div>
-            <a href="../../user/index" class="dropdown-item">Usuarios</a>
+            <a href="{% url 'user index' %}" class="dropdown-item">Usuarios</a>
           </div>
         </li>
       </ul>
@@ -62,7 +62,7 @@
 
         <script type="text/javascript">
           function logout() {
-            window.location.href = "../../../../logout";
+            window.location.href = "{% url 'logout' %}";
           }
         </script>
       </form>

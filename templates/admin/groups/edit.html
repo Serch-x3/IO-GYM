@@ -9,7 +9,7 @@
       <h2>Editar Grupo</h2>
     </div>
     <div class="col-3">
-      <a href="../index" class="btn btn-primary float-right">Volver</a>
+      <a href="{% url 'index groups' %}" class="btn btn-primary float-right">Volver</a>
     </div>
   </div>
 </div>
@@ -85,12 +85,12 @@
 
       <div class="col-4 mb-5 d-none d-md-block" align="center">
         <button type="submit" class="btn btn-success">Aceptar</button>
-        <a href="../index" class="btn btn-secondary">Cancelar</a>
+        <a href="{% url 'index groups' %}" class="btn btn-secondary">Cancelar</a>
       </div>
 
       <div class="col-12 mb-5 d-md-none">
         <button type="submit" class="btn btn-success btn-block">Aceptar</button>
-        <a href="../index" class="btn btn-secondary btn-block">Cancelar</a>
+        <a href="{% url 'index groups' %}" class="btn btn-secondary btn-block">Cancelar</a>
       </div>
 
       <div class="col"></div>

@@ -23,12 +23,12 @@
 
     {% else%}
       <script type="text/javascript">
-        window.location.replace('../../../../admin/index');
+        window.location.replace("{% url 'admin index' %}");
       </script>
     {% endif %}
   {%else%}
   <script type="text/javascript">
-    window.location.replace('accounts/login');
+    window.location.replace("{% url 'login index' %}");
   </script>
   {% endif %}
   <div class="modal fade" id="expiredSession" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

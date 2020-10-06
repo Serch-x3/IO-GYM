@@ -42,6 +42,7 @@
         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
           <div class="card-body">
             <h1>Estadísticas Generales</h1>
+
             <canvas id="myChart"></canvas>
             <script>
               var ctx = document.getElementById('myChart').getContext('2d');
@@ -78,7 +79,8 @@
                                   beginAtZero: true
                               }
                           }]
-                      }
+                      },
+                      responsive: true
                   }
               });
               </script>
