@@ -3,13 +3,14 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<div class="container mt-5 mb-2">
+<div class="container mt-3 mb-2">
   <div class="row">
     <div class="col-9">
       <h2>Ver datos de Usuario</h2>
     </div>
-    <div class="col-3">
-      <a href="{% url 'user index' %}" class="btn btn-primary float-right">Volver</a>
+    <div class="col-3 text-right d-none d-md-block">
+      <a href="{% url 'user edit' userInfo.user_id %}" class="btn btn-secondary">Editar</a>
+      <a href="{% url 'user index' %}" class="btn btn-primary">Volver</a>
     </div>
   </div>
 </div>
@@ -65,8 +66,14 @@
         </div>
 
     </div>
-
-
   </form>
+
+
+  <div class="row mb-3">
+    <div class="col-12 d-md-none">
+      <a href="{% url 'user edit' userInfo.user_id %}" class="btn btn-secondary btn-block">Editar</a>
+      <a href="{% url 'user index' %}" class="btn btn-primary btn-block">Volver</a>
+    </div>
+  </div>
 </div>
 {% endblock %}

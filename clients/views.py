@@ -156,11 +156,13 @@ class UserEdit(SuccessMessageMixin,UpdateView):
 
 class UserDetail(View):
     def get(self, request, *args, **kwargs):
+        user = User.objects.get(pk=kwargs['pk'])
         userInfo = {
-            "username":User.objects.get(pk=kwargs['pk']).username,
-            "email":User.objects.get(pk=kwargs['pk']).email,
-            "last_login":User.objects.get(pk=kwargs['pk']).last_login,
-            "is_superuser":User.objects.get(pk=kwargs['pk']).is_superuser
+            "user_id": kwargs['pk'],
+            "username":user.username,
+            "email":user.email,
+            "last_login":user.last_login,
+            "is_superuser":user.is_superuser
         }
         print(userInfo)
         print("-"*100)
@@ -383,6 +385,7 @@ def clientAttendanceListPages(request):
     object_list = ClientsAttendancesFilter(request.GET, queryset=qs).qs
     page_obj = Paginator(object_list, 25)
     page = request.GET.get('page')
+    filter_instance = {}
     try:
         page_obj = page_obj.page(page)
     except PageNotAnInteger:
@@ -390,12 +393,19 @@ def clientAttendanceListPages(request):
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
     try:
-        filter_parameters = '&client_name='+ request.GET['client_name']
+        filter_parameters = '&client_rfid='+ request.GET['client_rfid']
+
+        filter_parameters += '&client_name='+ request.GET['client_name']
+        filter_instance['client_name'] = request.GET['client_name']
+
         filter_parameters += "&client_surname=" + request.GET['client_surname']
+        filter_instance['client_surname'] = request.GET['client_surname']
+
         filter_parameters += "&date=" + request.GET['date']
+        filter_instance['date'] = request.GET['date']
     except:
         filter_parameters = ''
-    return render(request, 'clients/attendances.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
+    return render(request, 'clients/attendances.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
 
 
 
@@ -407,7 +417,7 @@ class trainerAttendanceList(ListView):
 def trainerAttendanceListPages(request):
     qs = trainerAttendanceView.objects.all().order_by('-register_date')
     object_list = TrainersAttendancesFilter(request.GET, queryset=qs).qs
-    page_obj = Paginator(object_list, 25)
+    page_obj = Paginator(object_list,25)
     page = request.GET.get('page')
     try:
         page_obj = page_obj.page(page)
@@ -415,13 +425,27 @@ def trainerAttendanceListPages(request):
         page_obj = page_obj.page(1)
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
+    filter_instance={}
     try:
-        filter_parameters = '&trainer_name='+ request.GET['trainer_name']
+        filter_parameters = '&trainer_rfid='+ request.GET['trainer_rfid']
+        filter_instance['trainer_rfid'] = request.GET['trainer_rfid']
+
+        filter_parameters += '&trainer_name='+ request.GET['trainer_name']
+        filter_instance['trainer_name'] = request.GET['trainer_name']
+
         filter_parameters += "&trainer_surname=" + request.GET['trainer_surname']
+        filter_instance['trainer_surname'] = request.GET['trainer_surname']
+
         filter_parameters += "&register_date=" + request.GET['register_date']
+        filter_instance['register_date'] = request.GET['register_date']
     except:
         filter_parameters = ''
-    return render(request, 'trainers/attendances.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
+        filter_instance['register_date'] = ''
+        filter_instance['trainer_rfid'] = ''
+        filter_instance['trainer_name'] = ''
+        filter_instance['trainer_surname'] = ''
+
+    return render(request, 'trainers/attendances.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
 
 
 
@@ -460,6 +484,7 @@ def TrainerListPages(request):
     object_list = TrainersFilter(request.GET, queryset=qs).qs
     page_obj = Paginator(object_list, 25)
     page = request.GET.get('page')
+    filter_instance = {}
     try:
         page_obj = page_obj.page(page)
     except PageNotAnInteger:
@@ -467,10 +492,13 @@ def TrainerListPages(request):
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
     try:
-        filter_parameters = '&trainer_name='+ request.GET['trainer_name'] + "&trainer_surname=" + request.GET['trainer_surname']
+        filter_parameters = '&trainer_name='+ request.GET['trainer_name']
+        filter_instance['trainer_name'] = request.GET['trainer_name']
+        filter_parameters += "&trainer_surname=" + request.GET['trainer_surname']
+        filter_instance['trainer_surname'] = request.GET['trainer_surname']
     except:
         filter_parameters = ''
-    return render(request, 'trainers/index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
+    return render(request, 'trainers/index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
 
 
 class TrainerDelete(SuccessMessageMixin, DeleteView):
@@ -517,6 +545,7 @@ def clientsAttendancesPages(request):
     object_list = ClientsFilter(request.GET, queryset=qs).qs
     page_obj = Paginator(object_list, 25)
     page = request.GET.get('page')
+    filter_instance = {}
     try:
         page_obj = page_obj.page(page)
     except PageNotAnInteger:
@@ -524,11 +553,14 @@ def clientsAttendancesPages(request):
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
     try:
-        filter_parameters = '&client_name='+ request.GET['client_name']
+        filter_parameters = '&client_rfid='+ request.GET['client_rfid']
+        filter_parameters += '&client_name='+ request.GET['client_name']
+        filter_instance['client_name'] = request.GET['client_name']
         filter_parameters += "&client_surname=" + request.GET['client_surname']
+        filter_instance['client_surname'] = request.GET['client_surname']
     except:
         filter_parameters = ''
-    return render(request, 'index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
+    return render(request, 'index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
 
 class ClientList(ListView):
     model = CLIENTS
@@ -538,6 +570,7 @@ def ClientListPages(request):
     object_list = ClientsFilter(request.GET, queryset=qs).qs
     page_obj = Paginator(object_list, 25)
     page = request.GET.get('page')
+    filter_instance = {}
     try:
         page_obj = page_obj.page(page)
     except PageNotAnInteger:
@@ -545,11 +578,17 @@ def ClientListPages(request):
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
     try:
-        filter_parameters = 'client_rfid=' + request.GET['client_rfid'] + '&client_name='+ request.GET['client_name'] + "&client_surname=" + request.GET['client_surname']
+        filter_parameters = 'client_rfid=' + request.GET['client_rfid']
+
+        filter_parameters += '&client_name='+ request.GET['client_name']
+        filter_instance['client_name'] = request.GET['client_name']
+
+        filter_parameters += "&client_surname=" + request.GET['client_surname']
+        filter_instance['client_surname'] = request.GET['client_surname']
     except:
         filter_parameters = ''
 
-    return render(request, 'clients/index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
+    return render(request, 'clients/index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
 
 
 class ClientDetails(DetailView):

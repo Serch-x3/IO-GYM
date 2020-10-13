@@ -127,6 +127,7 @@ class trainerAttendanceView(models.Model):
     id=models.CharField(primary_key=True),
     trainer_name=models.CharField(verbose_name='Nombre', db_column='trainer_name',max_length=40);
     trainer_surname=models.CharField(verbose_name='Apellidos', db_column='trainer_surname',max_length=40);
+    trainer_rfid = models.CharField(max_length=10, blank=True, null=True, unique=True, verbose_name='Llave de acceso');
     register_date=models.DateField(verbose_name='Fecha', db_column='register_date');
     description=models.CharField(verbose_name='Descripción', db_column='description',max_length=40);
 
@@ -138,6 +139,7 @@ class clientAttendanceView(models.Model):
     id = models.BigIntegerField(primary_key=True),
     client_name=models.CharField(max_length=40, verbose_name='Nombre')
     client_surname=models.CharField(max_length=40, verbose_name='Apellidos')
+    client_rfid = models.CharField(max_length=10, blank=True, null=True, unique=True, verbose_name='Llave de acceso');
     date=models.DateField(verbose_name='Fecha')
 
     class Meta:

@@ -68,47 +68,40 @@
   <div id="accordion">
       <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body mb-2 bg-light border border-info rounded">
-
-          <div class="row">
-            <div class="col">
-              <form align="center" method="get">
-                <div class="row">
-                  <div class="col-12">
-                    <h4>Buscador por llave</h4>
-                    <p>Pase la llave por encima del lector.</p>
-                    <input type="password" name="trainer_rfid" class="form-control my-1" id="id_trainer_rfid" maxlength="10" oninput="checkRFID(this)" autofocus>
-                  </div>
-                </div>
-
-                <div class="dropdown-divider font-weight-bolder"></div>
-
-                <h4>Buscador</h4>
-                <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
-                <div class="form">
-                  <div class="row">
-                    <div class="col-12 col-md-6">
-                      <input type="text" name="trainer_name" class="form-control my-1" id="id_trainer_name" placeholder="Nombre">
-                    </div>
-                    <div class="col-12 col-md-6">
-                      <input type="text" name="trainer_surname" class="form-control my-1" id="id_trainer_surname" placeholder="Apellidos">
-                    </div>
-                  </div>
-                </div>
-                <div class="row mt-2">
-                  <!--SHOW WHEN VIEWPORT IS MD OR HIGHER-->
-                  <div class="col d-none d-md-block" align="right">
-                    <button class="btn btn-primary mr-2 material-icons" type="submit">search</button>
-                    <a href="./" class="btn btn-warning">Limpiar</a>
-                  </div>
-                  <!--HIDE WHEN VIEWPORT IS MD OR HIGHER -->
-                  <div class="col d-md-none">
-                    <button class="btn btn-primary mr-2 btn-block material-icons" type="submit">search</button>
-                    <a href="./" class="btn btn-warning btn-block">Limpiar</a>
-                  </div>
-                </div>
-              </form>
+          <form align="center" method="get">
+            <div class="row">
+              <div class="col-12">
+                <h4>Buscador por llave</h4>
+                <p>Pase la llave por encima del lector.</p>
+                <input type="password" name="trainer_rfid" class="form-control my-1" id="id_trainer_rfid" maxlength="10" oninput="checkRFID(this)" autofocus>
+              </div>
             </div>
-          </div>
+
+            <div class="dropdown-divider font-weight-bolder"></div>
+
+            <h4>Buscador</h4>
+            <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <input type="text" name="trainer_name" class="form-control my-1" id="id_trainer_name" placeholder="Nombre" value='{{filter_instance.trainer_name}}'>
+              </div>
+              <div class="col-12 col-md-6">
+                <input type="text" name="trainer_surname" class="form-control my-1" id="id_trainer_surname" placeholder="Apellidos" value='{{filter_instance.trainer_surname}}'>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <!--SHOW WHEN VIEWPORT IS MD OR HIGHER-->
+              <div class="col d-none d-md-block" align="right">
+                <button class="btn btn-primary mr-2 material-icons" type="submit">Buscar</button>
+                <a href="./" class="btn btn-warning">Limpiar</a>
+              </div>
+              <!--HIDE WHEN VIEWPORT IS MD OR HIGHER -->
+              <div class="col d-md-none">
+                <button class="btn btn-primary mr-2 btn-block material-icons" type="submit">Buscar</button>
+                <a href="./" class="btn btn-warning btn-block">Limpiar</a>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -3,13 +3,14 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<div class="container mt-5 mb-2">
+<div class="container mt-3 mb-2">
   <div class="row">
-    <div class="col-9">
+    <div class="col-12 col-md-9">
       <h2>Consulta de datos de entrenador</h2>
     </div>
-    <div class="col-3">
-      <a href="{% url 'trainer index'%}" class="btn btn-primary float-right">Volver</a>
+    <div class="col-md-3 text-right d-none d-md-block">
+      <a href="{% url 'trainer edit' object.trainer_id%}" class="btn btn-secondary">Editar</a>
+      <a href="{% url 'trainer index'%}" class="btn btn-primary">Volver</a>
     </div>
   </div>
 </div>
@@ -82,6 +83,13 @@
         <label for="">RFC</label>
         <div class="form-control"> {{object.trainer_rfc}}</div>
       </div>
+    </div>
+  </div>
+
+  <div class="row d-md-none mb-3">
+    <div class="col-12">
+      <a href="{% url 'trainer edit' object.trainer_id%}" class="btn btn-secondary btn-block">Editar</a>
+      <a href="{% url 'trainer index'%}" class="btn btn-primary btn-block">Volver</a>
     </div>
   </div>
 

@@ -3,9 +3,9 @@
 {% load widget_tweaks %}
 {% block content %}
 
+<script src="{% static 'js/rfid.js' %}" charset="utf-8"></script>
 
-
-<div class="container mt-5 mb-2">
+<div class="container mt-3 mb-2">
   <div class="row">
     <div class="col-12 col-md-9">
       <h2>Registro de asistencias de entrenadores</h2>
@@ -34,56 +34,65 @@
   <div id="accordion">
       <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body mb-2 bg-light border border-info rounded">
-          <div class="row">
-            <div class="col">
-              <form align="center" method="get">
-                <h4>Buscador</h4>
-                <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
-                <div class="form">
-                  <div class="row">
-                    <div class="col-12 col-md-4">
-                      <input type="text" name="trainer_name" placeholder="Nombre(s)" class="form-control my-1" id="id_trainer_name">
-                    </div>
-                    <div class="col-12 col-md-4">
-                      <input type="text" name="trainer_surname" placeholder="Apellidos" class="form-control my-1" id="id_trainer_surname">
-                    </div>
-                    <div class="col-12 col-md-4">
-                      <select name="register_date" class="form-control my-1" id="id_register_date">
-                        <option value="" selected="">---------</option>
-                        <option value="today">Hoy</option>
-                        <option value="yesterday">Ayer</option>
-                        <option value="week">Últimos 7 días</option>
-                        <option value="month">Este mes</option>
-                        <option value="year">Este año</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mt-2">
-                  <!--SHOW WHEN VIEWPORT IS MD OR HIGHER-->
-                  <div class="col d-none d-md-block" align="right">
-                    <button class="btn btn-primary mr-2" type="submit">
-                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-                      </svg>
-                    </button>
-                    <a href="{% url 'trainer attendances' %}" class="btn btn-warning">Limpiar</a>
-                  </div>
-                  <!--HIDE WHEN VIEWPORT IS MD OR HIGHER-->
-                  <div class="col d-md-none">
-                    <button class="btn btn-primary btn-block" type="submit">
-                      <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-                      </svg>
-                    </button>
-                    <a href="{% url 'trainer attendances' %}" class="btn btn-warning btn-block ">Limpiar</a>
-                  </div>
-                </div>
-              </form>
+          <form align="center" method="get">
+            <div class="row">
+              <div class="col-12">
+                <h4>Buscador por llave</h4>
+                <p>Pase la llave por encima del lector.</p>
+                <input type="password" name="trainer_rfid" class="form-control my-1" id="id_trainer_rfid" maxlength="10" oninput="checkRFID(this)" autofocus>
+              </div>
             </div>
-          </div>
+
+            <div class="dropdown-divider font-weight-bolder"></div>
+
+            <h4>Buscador</h4>
+            <p>Rellene los campos para realizar la búsqueda. Si no desea buscar por algún campo, déjelo en blanco.</p>
+            <div class="row">
+              <div class="col-12 col-md-4">
+                <input type="text" name="trainer_name" placeholder="Nombre(s)" class="form-control my-1" id="id_trainer_name" value="{{ filter_instance.trainer_name}}">
+              </div>
+              <div class="col-12 col-md-4">
+                <input type="text" name="trainer_surname" placeholder="Apellidos" class="form-control my-1" id="id_trainer_surname" value="{{ filter_instance.trainer_surname }}">
+              </div>
+
+              <div class="col-12 col-md-4">
+                <select name="register_date" class="form-control my-1" id="id_register_date">
+                  <option value="">Cualquier fecha</option>
+                  <option value="today">Hoy</option>
+                  <option value="yesterday">Ayer</option>
+                  <option value="week">Últimos 7 días</option>
+                  <option value="month">Este mes</option>
+                  <option value="year">Este año</option>
+                </select>
+              </div>
+
+              <script type="text/javascript">
+                document.getElementById("id_register_date").value = "{{ filter_instance.register_date }}";
+              </script>
+            </div>
+            <div class="row mt-2">
+              <!--SHOW WHEN VIEWPORT IS MD OR HIGHER-->
+              <div class="col d-none d-md-block" align="right">
+                <button class="btn btn-primary mr-2" type="submit">
+                  <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                  </svg>
+                </button>
+                <a href="{% url 'trainer attendances' %}" class="btn btn-warning">Limpiar</a>
+              </div>
+              <!--HIDE WHEN VIEWPORT IS MD OR HIGHER-->
+              <div class="col d-md-none">
+                <button class="btn btn-primary btn-block" type="submit">
+                  <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+                  </svg>
+                </button>
+                <a href="{% url 'trainer attendances' %}" class="btn btn-warning btn-block ">Limpiar</a>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ class ClientsFilter(filters.FilterSet):
 class TrainersAttendancesFilter(filters.FilterSet):
     trainer_name=filters.CharFilter(lookup_expr='icontains', label="Nombre")
     trainer_surname=filters.CharFilter(lookup_expr='icontains', label="Apellidos")
+    trainer_rfid=filters.CharFilter(lookup_expr='iexact', label="Llave de acceso")
     register_date=filters.DateRangeFilter()
 
     class Meta:
@@ -25,6 +26,7 @@ class TrainersAttendancesFilter(filters.FilterSet):
 class ClientsAttendancesFilter(filters.FilterSet):
     client_name=filters.CharFilter(lookup_expr='icontains', label="Nombre")
     client_surname=filters.CharFilter(lookup_expr='icontains', label="Apellidos")
+    client_rfid=filters.CharFilter(lookup_expr='iexact', label="Llave de acceso")
     date=filters.DateRangeFilter(field_name='date')
 
     class Meta:
