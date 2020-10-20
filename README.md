@@ -61,31 +61,31 @@ Si se encuentra otro archivo además de estos, probablemente genere problemas pa
 
   Deberia abrir una nueva ventana con el Proyecto
   ## Docker
-  Se incluye un docker-compose para poder correr en contendor la aplicación.
+  Se incluye un docker-compose para poder correr en contenedor la aplicación.
   ### Requerimientos
  - Docker
  - Docker-compose
 
 Se crearan 2 contenedores
-IOGYM-APP donde se continen la aplicacion.
+IOGYM-APP donde se contiene la aplicacion.
 IOGYM-DB Donde se localiza la base de datos.
 
-1.- Crear el archivo docker.env con las siguientes varibles de entorno y ponerlo en la misma carpeta que el docker-compose
+1.- Crear el archivo docker.env con las siguientes variables de entorno y ponerlo en la misma carpeta que el docker-compose
  
     MYSQL_ROOT_PASSWORD="DatabasePawsword"
     MYSQL_USER="djangoDB"
     MYSQL_PASSWORD="USERPASWORD"
     MYSQL_DATABASE="IOGYM"
-modificando los dos password a su prefetencia.
+modificando los dos password a su preferencia.
 
 2.- Ejecutar el siguiente comando en terminal
     
     docker-compose up -d 
 
-3.- Una vez verificado que se creadon los contenedores entraremos al contenedor de la aplicacion:   
+3.- Una vez verificado que se creadon los contenedores entraremos al contenedor de la aplicación:   
 
         docker exec -it IOGYM-APP bash
-4.- Ejecutar el paso 3 de la instalacion
+4.- Ejecutar el paso 3 de la instalación
 
 5.- Salir del contenedor con exit
 
@@ -98,9 +98,9 @@ modificando los dos password a su prefetencia.
 
   ### FAQ
   #### Tengo ocupado el puerto 8000 puedo cambiarlo por otro?
-  Si , al ejecutar el comando runserver se puede defirnir el puerto donde ejecutarlo con la siguiente sintaxis.
+  Si , al ejecutar el comando runserver se puede definir el puerto donde ejecutarlo con la siguiente sintaxis.
 
         python manage.py runserver 0.0.0.0:xxxx
 
-Siendo XXXX el puerto donde se quiera ejecutar la aplicacion.
+Siendo XXXX el puerto donde se quiera ejecutar la aplicación.
 
