@@ -51,7 +51,7 @@ function goBack() {
 
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de registro</label>
-          <input class="form-control" type="text" name="register_date" value="{{ form.instance.register_date|date:"Y/m/d" }}" id="id_register_id" readonly>
+          <input class="form-control" type="text" name="register_date" value="{{ form.instance.register_date|date:"d / N / Y" }}" id="id_register_id" readonly>
           {% for error in form.register_date.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -64,7 +64,7 @@ function goBack() {
 
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
-          <input disabled class="form-control mb-1" type="date" value="{{form.expiration_date.value|date:'Y-m-d'}}">
+          <input disabled class="form-control mb-1" type="text" value="{{form.expiration_date.value|date:'d / N / Y'}}">
           {{ form.expiration_date|add_class:"form-control" }}
           {% for error in form.expiration_date.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">

@@ -60,7 +60,7 @@
             {% if userInfo.last_login == None %}
                 Sin inicio de sesión
             {% else %}
-              {{userInfo.last_login}}
+              {{userInfo.last_login|date:'l, d N y, h:i A'}}
             {% endif %}
           </div>
         </div>

@@ -119,7 +119,10 @@
                 <tr>
                   <td>{{ client.client_name }}</td>
                   <td>{{ client.client_surname}}</td>
-                  <td>{{ client.date }}</td>
+                  {% load i18n %}
+                  {% language 'es' %}
+                    <td>{{ client.date|date:'D, d N h:i A' }}</td>
+                  {% endlanguage %}
                 </tr>
               {% endfor %}
             {% else %}

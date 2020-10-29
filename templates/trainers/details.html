@@ -36,7 +36,10 @@
     <div class="col-6 col-md-6 col-lg-2">
       <div class="form-group">
         <label for="">Fecha de nacimiento</label>
-        <div class="form-control"> {{object.trainer_birthday}}</div>
+        {% load i18n %}
+        {% language 'es' %}
+          <div class="form-control"> {{object.trainer_birthday|date:'d N Y'}}</div>
+        {% endlanguage %}
       </div>
     </div>
 

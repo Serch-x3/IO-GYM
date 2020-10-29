@@ -27,8 +27,12 @@
   <div class="row">
     <div class="col-12 col-md-6 my-2">
       <p><span class="txt_negrita">Cliente:</span> <div class="form-control"> {{object.client_id}}</div></p>
-      <p><span class="txt_negrita">Fecha de Registro:</span> <div class="form-control"> {{object.register_date}}</div></p>
-      <p><span class="txt_negrita">Fecha de vencimiento:</span> <div class="form-control"> {{object.expiration_date}}</div></p>
+
+      {% load i18n %}
+      {% language 'es' %}
+        <p><span class="txt_negrita">Fecha de Registro:</span> <div class="form-control"> {{object.register_date|date:'d / F / Y'}}</div></p>
+        <p><span class="txt_negrita">Fecha de vencimiento:</span> <div class="form-control"> {{object.expiration_date|date:'d / F / Y'}}</div></p>
+      {% endlanguage %}
     </div>
 
     <div class="col-12 col-md-6 my-2">

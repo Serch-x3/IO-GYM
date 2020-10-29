@@ -28,6 +28,13 @@ SECRET_KEY = '&@b12n86@=cy&$sbp03_qgv9*s2tx38@olmgc=a+m9@-293!mp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if not DEBUG:
+    import mimetypes
+    mimetypes.add_type("application/javascript", ".js")
+    mimetypes.add_type("text/css", ".css")
+
+
+
 ALLOWED_HOSTS = ['*']
 
 
@@ -157,7 +164,7 @@ EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'SMTP.Office365.com'
 EMAIL_HOST_USER = 'alex_paz_5599@hotmail.com'
-EMAIL_HOST_PASSWORD = 'PCXrN5aP2018'
+EMAIL_HOST_PASSWORD = 'PCXrN5aP2019'
 EMAIL_PORT = 587
 PASSWORD_RESET_TIMEOUT_DAYS = 2
 DEFAULT_FROM_EMAIL = 'alex_paz_5599@hotmail.com'

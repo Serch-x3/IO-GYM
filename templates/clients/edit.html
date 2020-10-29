@@ -83,7 +83,7 @@
         <div class="form-group">
           <label for="">Teléfono.</label>
 
-          <input class="form-control" type="tel" name="client_phone" id="id_client_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.client_phone.value}}">
+          <input class="form-control" type="tel" name="client_phone" id="id_client_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.client_phone.value|default_if_none:''}}">
           {% for error in form.client_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -98,7 +98,7 @@
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
           <label for="">Teléfono de emergencia.</label>
-          <input class="form-control" type="tel" name="client_emergency_phone" id="id_client_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.client_emergency_phone.value}}">
+          <input class="form-control" type="tel" name="client_emergency_phone" id="id_client_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.client_emergency_phone.value|default_if_none:''}}">
           {% for error in form.client_emergency_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}

@@ -1,4 +1,49 @@
-a .link-hoverable:hover {
-  color: red;
-  text-shadow: 10;
+html {
+  scroll-behavior: smooth;
+}
+
+.clock {
+  width: 92%;
+  border-radius: 7px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+  .clock-date{
+    display: block;
+    padding: 10px;
+    text-align: center;
+  }
+    .clock-date span{
+      font-size: 1rem;
+    }
+
+  .clock-body{
+    width: 100%;
+    text-align: center;
+    font-size: 3.8rem;
+  }
+    .clock-cell{
+      display: inline-block;
+      color: #FFF1FA;
+      background-color: #0F1620;
+      border-radius: 7px;
+      padding: 0 5px;
+      width: 25%;
+      margin-bottom: 15px;
+    }
+
+  .clock-message{
+    color: #DBDBDB;
+    text-align: center;
+    padding: 5px 0;
+  }
+
+@media (max-width: 992px) {
+  .clock-body{
+    width: 100%;
+    text-align: center;
+    font-size: 2.5rem;
+  }
 }

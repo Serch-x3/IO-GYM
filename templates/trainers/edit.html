@@ -18,6 +18,7 @@
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    <input type="hidden" name="trainer_id" value="{{form.instance.trainer_id}}">
     <div class="row">
       <div class="col-12 col-md-6">
         <div class="form-group">
@@ -85,7 +86,7 @@
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group my-auto">
           <label for="">Teléfono. <small>Formato: (XXX-XXX-XXXX)</small></label>
-          <input class="form-control" type="tel" name="trainer_phone" id="id_trainer_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_phone.value }}">
+          <input class="form-control" type="tel" name="trainer_phone" id="id_trainer_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_phone.value|default_if_none:"" }}">
           {% for error in form.trainer_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -100,7 +101,7 @@
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
           <label for="">Teléfono de emergencia. <small>Formato: (XXX-XXX-XXXX)</small></label>
-          <input class="form-control" type="tel" name="trainer_emergency_phone" id="id_trainer_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_emergency_phone.value }}">
+          <input class="form-control" type="tel" name="trainer_emergency_phone" id="id_trainer_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_emergency_phone.value|default_if_none:"" }}">
           {% for error in form.trainer_emergency_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -157,23 +158,56 @@
           {% endfor %}
         </div>
       </div>
+    </div>
 
-      <div class="col-12 col-md-6">
-        <div class="form-group">
-          <label for="">Contraseña</label>
-          <input class="form-control" type="password" name="trainer_password" id="id_trainer_password" value="{{ form.trainer_password.value }}">
-          {% for error in form.trainer_password.errors %}
-            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-              {{error}}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          {% endfor %}
+
+    <div class="row">
+      <div class="col-12 form-group">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="change_password" id="id_change_password">
+          <label class="form-check-label" for="exampleRadios1">Cambiar contraseña</label>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="collapse" id="password_options">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="">Contraseña</label>
+            <input class="form-control" type="password" name="trainer_password" id="id_trainer_password" required disabled>
+            {% for error in form.trainer_password.errors %}
+              <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                {{error}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="">Confirmación de contraseña</label>
+            <input type="password" name="trainer_password2" class="form-control" id="id_trainer_password2" required disabled>
+            {% for error in form.trainer_password2.errors %}
+              <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                {{error}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          </div>
         </div>
       </div>
+    </div>
 
 
+    <div class="row">
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Llave de Acceso</label>
@@ -208,4 +242,22 @@
 
   </form>
 </div>
+
+
+<script type="text/javascript">
+  $(function(){
+    $('#id_change_password').on('click', function(){
+      if($(this).is(':checked')){
+        $('#id_trainer_password').attr('disabled', false);
+        $('#id_trainer_password2').attr('disabled', false);
+        $('#password_options').collapse('show')
+      }
+      else {
+        $('#id_trainer_password').attr('disabled', true);
+        $('#id_trainer_password2').attr('disabled', true);
+        $('#password_options').collapse('hide')
+      }
+    });
+  });
+</script>
 {% endblock %}

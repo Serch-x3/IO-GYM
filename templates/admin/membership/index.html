@@ -64,8 +64,11 @@
                 {{ class }},
               {% endfor %}
             </td>
-            <td>{{ memberships.register_date }}</td>
-            <td>{{ memberships.expiration_date}}</td>
+            {% load i18n %}
+            {% language 'es' %}
+              <td>{{ memberships.register_date|date:'d N Y' }}</td>
+              <td>{{ memberships.expiration_date|date:'d N Y'}}</td>
+            {% endlanguage %}
             <td>
               <form>
                 {% csrf_token %}

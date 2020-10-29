@@ -80,9 +80,15 @@
                   <!-- Creamos 3 botones que son ver, Editar y Eliminar, nos sirven para gestionar nuestros registros o clientss -->
                   <a href="{% url 'user details' userItem.id %}" title="Ver" class="btn btn-primary">Ver </a>
                   <a href="{% url 'user edit' userItem.id %}" title="Editar"class="btn btn-secondary">Editar </a>
-                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser{{userItem.id}}Modal" >
-                    Eliminar
-                  </button>
+                  {% if user.id == userItem.id %}
+                    <span class="" tabindex="0" data-toggle="tooltip" title="No puede eliminarlo debido a que la sesión está activa.">
+                      <button class="btn btn-danger" style="pointer-events: none;" type="button" disabled>Eliminar</button>
+                    </span>
+                  {% else %}
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteUser{{userItem.id}}Modal" >
+                      Eliminar
+                    </button>
+                  {% endif %}
                 </div>
                 <!-- Delete Modal -->
                 <div class="modal fade" id="deleteUser{{userItem.id}}Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,7 +101,7 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        El usuario dejará de tener acceso a IO-GYM.
+                        El usuario <b>{{userItem.username}}</b> dejará de tener acceso a IO-GYM. Esto no eliminará a cualquier otro usuario asociado al mismo email.
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

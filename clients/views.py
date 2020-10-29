@@ -9,7 +9,6 @@ import locale
 
 from django.urls import reverse
 from django.shortcuts import redirect
-
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import UserCreationForm
@@ -117,10 +116,6 @@ def EditUser(request, pk):
         return render(request, 'users/edit.html', {'form':f, 'key':pk, 'userInfo':userInfo})
 
     if request.method == 'POST':
-        print(request.POST)
-        print("-"*100)
-        print(request.POST.get('change_password','off'))
-        print('XDXD')
 
         if request.POST.get('change_password','off') == 'on':
             f = CustomUserEditFormWithPassword(request.POST)
@@ -164,8 +159,6 @@ class UserDetail(View):
             "last_login":user.last_login,
             "is_superuser":user.is_superuser
         }
-        print(userInfo)
-        print("-"*100)
         context = {'userInfo': userInfo}
         return render(request, 'users/details.html', context)
 
@@ -512,13 +505,43 @@ class TrainerDelete(SuccessMessageMixin, DeleteView):
         return reverse('trainer index')
 
 
-class TrainerEdit(SuccessMessageMixin, UpdateView):
-    model = TRAINERS
-    form_class = trainerForm
-    success_message = '¡Entrenador actualizado correctamente!'
 
-    def get_success_url(self):
-        return reverse('trainer index')
+
+
+def TrainerEdit(request, pk):
+    trainer = get_object_or_404(TRAINERS, trainer_id=pk)
+
+    if request.method == 'POST':
+        requested = request.POST.copy()
+        if request.POST.get('change_password','off') == 'on':
+            requested.pop('change_password')
+            form = trainerFormEdit(requested, instance = trainer, initial={'trainer_id': pk})
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, '¡Entrenador actualizado correctamente!')
+                return HttpResponseRedirect(reverse('trainer index'))
+
+        else:
+            form = trainerFormEditWithoutPassword(requested, instance = trainer, initial={'trainer_id': pk})
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, '¡Entrenador actualizado correctamente!')
+                return HttpResponseRedirect(reverse('trainer index'))
+
+    elif request.method == 'GET':
+        form = trainerFormEdit(request.POST or None, instance = trainer)
+
+    return render(request, 'trainers/edit.html', {'form':form})
+
+#class TrainerEdit(SuccessMessageMixin, UpdateView):
+#    model = TRAINERS
+#    form_class = trainerForm
+#    success_message = '¡Entrenador actualizado correctamente!'
+#
+#    def get_success_url(self):
+#        return reverse('trainer index')
 
 
 class TrainerDetails(DetailView):
@@ -627,3 +650,17 @@ class ClientDelete(SuccessMessageMixin, DeleteView):
         success_message = '¡Cliente eliminado correctamente!'
         messages.success (self.request, (success_message))
         return reverse('client index')
+
+
+def Error404(request,  exception):
+    return render(request, template_name = 'errors/404.html')
+
+def Error500(request):
+    return render(request, template_name = 'errors/500.html')
+
+def java_script(request):
+    filename = request.path.strip("/")
+    print("-"*150)
+    print(filename)
+    data = open(filename, "rb").read()
+    return HttpResponse(data, mimetype="application/x-javascript")

@@ -116,7 +116,10 @@
               <tr>
                 <td>{{ trainer.trainer_name }}</td>
                 <td>{{ trainer.trainer_surname }}</td>
-                <td>{{ trainer.register_date }}</td>
+                {% load i18n %}
+                {% language 'es' %}
+                  <td>{{ trainer.register_date|date:'D, d N h:i A' }}</td>
+                {% endlanguage %}
                 <td>{{ trainer.description }}</td>
               </tr>
             {% endfor %}

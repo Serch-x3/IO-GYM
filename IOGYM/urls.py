@@ -22,6 +22,13 @@ from clients.filters import *
 from django_filters.views import FilterView
 from django.contrib.auth.views import LoginView, logout_then_login, PasswordResetDoneView,PasswordResetView, PasswordResetConfirmView,PasswordResetCompleteView
 from django.contrib.auth.decorators import login_required
+from django.conf.urls import handler404, handler500
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+handler404 = 'clients.views.Error404'
+handler500 = 'clients.views.Error500'
 
 urlpatterns = [
 
@@ -84,7 +91,7 @@ urlpatterns = [
     path('trainers/', login_required(views.TrainerListPages), name='trainer index'),
     path('trainers/create', login_required(TrainerCreate.as_view(template_name = "trainers/create.html")), name='trainer create'),
     path('trainers/delete/<int:pk>', login_required(TrainerDelete.as_view()), name='trainer delete'),
-    path('trainers/edit/<int:pk>', login_required(TrainerEdit.as_view(template_name = "trainers/edit.html")), name='trainer edit'),
+    path('trainers/edit/<int:pk>', login_required(views.TrainerEdit), name='trainer edit'),
     path('trainers/details/<int:pk>', login_required(TrainerDetails.as_view(template_name = "trainers/details.html")), name='trainer details'),
     #TRAINER ATTENDANCES
     #path('trainers/attendances/', login_required(FilterView.as_view(filterset_class=TrainersAttendancesFilter, template_name='trainers/attendances.html')), name='search trainer Attendance'),
@@ -112,5 +119,7 @@ urlpatterns = [
     path('clients/attendances/', login_required(views.clientAttendanceListPages), name='client attendances'),
     #path('clients/attendances/', views.clientsView, name = "client attendances"),
     path('checkClientAttendance/<int:pk>', login_required(views.clientChecking), name = 'client check'),
-    path('checkClientAttendanceByRFID', login_required(views.clientCheckingByRFID), name = 'client check with rfid')
-]
+    path('checkClientAttendanceByRFID', login_required(views.clientCheckingByRFID), name = 'client check with rfid'),
+
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
