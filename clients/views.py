@@ -20,7 +20,37 @@ from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect
 from django.core.paginator import *
 
-def graphs(request):
+def report(request):
+
+    def changeLanguage(data):
+        print("*"*100)
+        print(data)
+        if "January" in data:
+            data = "Enero"
+        elif "February" in data:
+            data = "Febrero"
+        elif "March" in data:
+            data = "Marzo"
+        elif "April" in data:
+            data = "Abril"
+        elif "May" in data:
+            data = "Mayo"
+        elif "June" in data:
+            data = "Junio"
+        elif "July" in data:
+            data = "Julio"
+        elif "August" in data:
+            data = "Agosto"
+        elif "September" in data:
+            data = "Septiembre"
+        elif "October" in data:
+            data = "Octubre"
+        elif "November" in data:
+            data = "Noviembre"
+        elif "December" in data:
+            data = "Diciembre"
+        print(data)
+        return data
 
     general = GeneralStats.objects.first()
     generalStats = [general.clients, general.trainers, general.groups,general.classes,general.active_memberships,general.expirated_memberships]
@@ -45,14 +75,14 @@ def graphs(request):
     CFLYMLabels = []
     for c in cflym:
         CFLYMData.append(c[1])
-        CFLYMLabels.append(c[2] + ' ' + str(c[3]))
+        CFLYMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
 
     hcfm = HCFM.objects.values_list()
     HCFMData = []
     HCFMLabels = []
     for c in hcfm:
         HCFMData.append(c[1])
-        HCFMLabels.append(c[2] + ' ' + str(c[3]))
+        HCFMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
 
     nclym = NCLYM.objects.values_list()
     NCLYMData = []
@@ -60,7 +90,95 @@ def graphs(request):
 
     for c in nclym:
         NCLYMData.append(c[1])
-        NCLYMLabels.append(c[2] + ' ' + str(c[3]))
+        NCLYMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
+
+    return render(request,'admin/graphs/report.html',{
+        'general': generalStats,
+        'CFLM': CFLMData,
+        'CFL3M': CFL3MData,
+        'CFL6M': CFL6MData,
+        'CFLY': CFLYData,
+        'HCLYD': HCLYDData,
+        'CFLYMData': CFLYMData,
+        'CFLYMLabels': CFLYMLabels,
+        'HCFMData': HCFMData,
+        'HCFMLabels': HCFMLabels,
+        'NCLYMData': NCLYMData,
+        'NCLYMLabels': NCLYMLabels
+    })
+
+
+def graphs(request):
+
+    def changeLanguage(data):
+        print("*"*100)
+        print(data)
+        if "January" in data:
+            data = "Enero"
+        elif "February" in data:
+            data = "Febrero"
+        elif "March" in data:
+            data = "Marzo"
+        elif "April" in data:
+            data = "Abril"
+        elif "May" in data:
+            data = "Mayo"
+        elif "June" in data:
+            data = "Junio"
+        elif "July" in data:
+            data = "Julio"
+        elif "August" in data:
+            data = "Agosto"
+        elif "September" in data:
+            data = "Septiembre"
+        elif "October" in data:
+            data = "Octubre"
+        elif "November" in data:
+            data = "Noviembre"
+        elif "December" in data:
+            data = "Diciembre"
+        print(data)
+        return data
+
+    general = GeneralStats.objects.first()
+    generalStats = [general.clients, general.trainers, general.groups,general.classes,general.active_memberships,general.expirated_memberships]
+
+    cflm = CFLM.objects.first()
+    CFLMData = [cflm.sunday,cflm.monday,cflm.tuesday,cflm.wednesday,cflm.thursday,cflm.friday,cflm.saturday]
+
+    cfl3m = CFL3M.objects.first()
+    CFL3MData = [cfl3m.sunday,cfl3m.monday,cfl3m.tuesday,cfl3m.wednesday,cfl3m.thursday,cfl3m.friday,cfl3m.saturday]
+
+    cfl6m = CFL6M.objects.first()
+    CFL6MData = [cfl6m.sunday,cfl6m.monday,cfl6m.tuesday,cfl6m.wednesday,cfl6m.thursday,cfl6m.friday,cfl6m.saturday]
+
+    cfly = CFLY.objects.first()
+    CFLYData = [cfly.sunday,cfly.monday,cfly.tuesday,cfly.wednesday,cfly.thursday,cfly.friday,cfly.saturday]
+
+    hclyd = HCLYD.objects.first()
+    HCLYDData = [hclyd.sunday,hclyd.monday,hclyd.tuesday,hclyd.wednesday,hclyd.thursday,hclyd.friday,hclyd.saturday]
+
+    cflym = CFLYM.objects.values_list()
+    CFLYMData = []
+    CFLYMLabels = []
+    for c in cflym:
+        CFLYMData.append(c[1])
+        CFLYMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
+
+    hcfm = HCFM.objects.values_list()
+    HCFMData = []
+    HCFMLabels = []
+    for c in hcfm:
+        HCFMData.append(c[1])
+        HCFMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
+
+    nclym = NCLYM.objects.values_list()
+    NCLYMData = []
+    NCLYMLabels = []
+
+    for c in nclym:
+        NCLYMData.append(c[1])
+        NCLYMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
 
     return render(request,'admin/graphs/index.html',{
         'general': generalStats,

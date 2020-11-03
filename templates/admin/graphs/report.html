@@ -1,0 +1,357 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+<script src="{% static 'js/Chart.js' %}"></script>
+<script src="{% static 'js/jspdf.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/addimage.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/addhtml.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/html2canvas.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/dom-to-image.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/saveReport.js' %}" charset="utf-8"></script>
+<link rel="stylesheet" href="{% static 'css/Chart.css' %}">
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+
+
+<div class="container mt-3" id='report-container'>
+  <div class="report-header">
+    <h3 class="font-weight-bold">Reporte</h3>
+  </div>
+
+  <div class="" id="report-preview">
+    <div style="width: 1080px">
+      <!-- GENERAL -->
+      <div class="chart" id="report-general">
+        <h3 class="text-center">Reporte General</h3>
+        <div class="chart-container">
+          <canvas id="chart-general"></canvas>
+        </div>
+        <div class="resume" id="resume-general">
+          <h5>Resumen:</h5>
+          <table class="table table-striped text-center">
+            <thead class="thead-dark">
+              <th>Concepto</th>
+              <th>Registros</th>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Clientes</th>
+                <td>{{general.0}}</td>
+              </tr>
+              <tr>
+                <th>Entrenadores</th>
+                <td>{{general.1}}</td>
+              </tr>
+              <tr>
+                <th>Clases registradas</th>
+                <td>{{general.2}}</td>
+              </tr>
+              <tr>
+                <th>Grupos registrados</th>
+                <td>{{general.3}}</td>
+              </tr>
+              <tr>
+                <th>Membresias activas</th>
+                <td>{{general.4}}</td>
+              </tr>
+              <tr>
+                <th>Membresias vencidas</th>
+                <td>{{general.5}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="dropdown-divider"></div>
+
+
+      <div class="chart" id="report-client">
+        <h3 class="text-center">Flujo de clientes por días de la semana </h3>
+        <p class="text-center">Datos registrados desde</p>
+        <canvas id="chart-clients"></canvas>
+        <div class="resume">
+          <h5>Resumen:</h5>
+          <table class="table table-striped text-center" id="table-clients">
+            <thead class="thead-dark">
+              <th>Día</th>
+              <th>Ultimo mes</th>
+              <th>Ultimos 3 meses</th>
+              <th>Ultimos 6 meses</th>
+              <th>Ultimo año</th>
+            </thead>
+            <tbody>
+              <tr>
+                  <th>Domingo</th>
+                  <td>data1</td>
+                  <td>data2</td>
+                  <td>data3</td>
+                  <td>data4</td>
+              </tr>
+              <tr>
+                  <th>Lunes</th>
+                  <td>data5</td>
+                  <td>data6</td>
+                  <td>data7</td>
+                  <td>data8</td>
+              </tr><tr>
+                  <th>Martes</th>
+                  <td>data9</td>
+                  <td>data10</td>
+                  <td>data11</td>
+                  <td>data12</td>
+              </tr>
+              <tr>
+                  <th>Miercoles</th>
+                  <td>data13</td>
+                  <td>data14</td>
+                  <td>data15</td>
+                  <td>data16</td>
+              </tr>
+              <tr>
+                  <th>Jueves</th>
+                  <td>data17</td>
+                  <td>data18</td>
+                  <td>data19</td>
+                  <td>data20</td>
+              </tr>
+              <tr>
+                  <th>Viernes</th>
+                  <td>data</td>
+                  <td>data</td>
+                  <td>data</td>
+                  <td>data</td>
+              </tr>
+              <tr>
+                  <th>Sábado</th>
+                  <td>data</td>
+                  <td>data</td>
+                  <td>data</td>
+                  <td>data</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <div class="dropdown-divider"></div>
+
+
+      <div class="chart" id="report-clientsByMonth">
+        <h3 class="text-center">Flujo de clientes mensual en el último año</h3>
+        <canvas id="chart-clientsByMonth"></canvas>
+        <div class="resume">
+          <h5>Resumen:</h5>
+          <table class="table table-striped text-center" id="table-clients">
+            <thead class="thead-dark">
+              <th>Mes</th>
+              <th>Registros</th>
+            </thead>
+            <tbody>
+              {% for month in CFLYMLabels%}
+              <tr>
+                <th>{{ month }}</th>
+                <td class="s-month-data">data1</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="dropdown-divider"></div>
+
+
+
+      <div class="chart" id="report-new-clients">
+        <h3 class="text-center">Nuevos clientes en el último año</h3>
+        <canvas id="chart-new-clients"></canvas>
+        <div class="resume">
+          <h5>Resumen:</h5>
+          <table class="table table-striped text-center" id="table-clients">
+            <thead class="thead-dark">
+              <th>Mes</th>
+              <th>Registros</th>
+            </thead>
+            <tbody>
+              {% for month in NCLYMLabels %}
+              <tr>
+                <th>{{ month }}</th>
+                <td class="new-clients-month-data">data1</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="controls text-center mb-4" id="buttons-preview">
+    <button type="button" name="button" class="btn btn-primary" id="downloadPdf" onclick="saveReport()">Descargar</button>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  var canvasGeneral = document.getElementById('chart-general').getContext('2d');
+  var canvasGeneralChart = new Chart(canvasGeneral, {
+      type: 'bar',
+      data: {
+          labels: ['Clientes', 'Entrenadores', 'Clases', 'Grupos','Membresias Activas','Membresias Vencidas'],
+          datasets: [{
+              label: '# de registros',
+              data: {{general}},
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 2
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          }
+      }
+  });
+
+
+
+
+
+
+  var canvasClients = document.getElementById('chart-clients').getContext('2d');
+  var canvasClientsData = {
+    labels: ['Domingo', 'Lunes', 'Martes','Miércoles','Jueves','Viernes','Sábado'],
+    datasets: [{
+      label: "Ultimo mes",
+      backgroundColor: 'transparent',
+      borderColor: 'rgba(255, 99, 132, 0.6)',
+      pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+      data: {{CFLM|safe}}
+    }, {
+      label: "Ultimos 3 meses",
+      backgroundColor: 'transparent',
+      borderColor: 'rgba(0, 136, 228, 0.6)',
+      pointBackgroundColor: 'rgba(0, 136, 228, 1)',
+      data:{{CFL3M|safe}}
+    }, {
+      label: "Ultimos 6 meses",
+      backgroundColor: 'transparent',
+      borderColor: 'rgba(255, 206, 86, 0.6)',
+      pointBackgroundColor: 'rgba(255, 206, 86, 1)',
+      data:{{CFL6M|safe}}
+    }, {
+      label: "Ultimo año",
+      backgroundColor: 'transparent',
+      borderColor: 'rgba(102, 255, 168, 0.6)',
+      pointBackgroundColor: 'rgba(102, 255, 168, 1)',
+      data:{{CFL6M|safe}}
+    }]
+  };
+
+  var canvasClientsChart = new Chart(canvasClients, {
+      type: 'radar',
+      data: canvasClientsData,
+      options: {
+          responsive: true
+      }
+  });
+  //Inserting data into clients flow table
+  var clientsTable = document.getElementById("table-clients")
+  for(i = 0; i<canvasClientsData.datasets.length; i++){
+    for(j = 0; j<7; j++){
+      clientsTable.rows[j+1].cells[i+1].innerText = canvasClientsData.datasets[i].data[j]
+    }
+  }
+
+
+
+
+  //CLIENTS FLOW PER MONTH LAST YEAR
+  var canvasClientsByMonth = document.getElementById('chart-clientsByMonth').getContext('2d');
+  var canvasClientsByMonthChart = new Chart(canvasClientsByMonth, {
+      type: 'radar',
+      data: {
+          labels: {{ CFLYMLabels|safe }},
+          datasets: [{
+              label: 'Asistencias',
+              data: {{ CFLYMData|safe }},
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 2
+          }]
+      },
+      options: {
+          responsive: true
+      }
+  });
+  var CFLYMData = {{CFLYMData|safe}}
+  var CFLYMElements = document.getElementsByClassName('s-month-data')
+  for(i=0; i< CFLYMElements.length ; i++){
+    CFLYMElements[i].innerText = CFLYMData[i]
+  }
+
+
+
+
+
+
+  //NEW CLIENTS PER MONTH LAST YEAR
+  var canvasClientsByMonth = document.getElementById('chart-new-clients').getContext('2d');
+  var canvasClientsByMonthChart = new Chart(canvasClientsByMonth, {
+      type: 'radar',
+      data: {
+          labels: {{ NCLYMLabels|safe }},
+          datasets: [{
+              label: 'Nuevos clientes',
+              data: {{ NCLYMData|safe }},
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 2
+          }]
+      },
+      options: {
+          responsive: true
+      }
+  });
+  var NCLYMData = {{ NCLYMData|safe }}
+  var NCLYMElements = document.getElementsByClassName('new-clients-month-data')
+  for(i=0; i< NCLYMElements.length ; i++){
+    NCLYMElements[i].innerText = NCLYMData[i]
+  }
+
+</script>
+{% endblock %}

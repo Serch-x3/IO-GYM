@@ -163,8 +163,8 @@ LOGOUT_REDIRECT_URL=reverse_lazy('index')
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'SMTP.Office365.com'
-EMAIL_HOST_USER = 'alex_paz_5599@hotmail.com'
-EMAIL_HOST_PASSWORD = 'PCXrN5aP2019'
+EMAIL_HOST_USER = 'iogym@outlook.com'
+EMAIL_HOST_PASSWORD = '4KjLKENxrw9lygRJO9ElLA=='
 EMAIL_PORT = 587
 PASSWORD_RESET_TIMEOUT_DAYS = 2
-DEFAULT_FROM_EMAIL = 'alex_paz_5599@hotmail.com'
+DEFAULT_FROM_EMAIL = 'iogym@outlook.com'

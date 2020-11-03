@@ -42,6 +42,7 @@ urlpatterns = [
 
     #STADISTICS
     path('admin/graphs/',login_required(views.graphs), name = 'graphs'),
+    path('admin/report/',login_required(views.report), name = 'report'),
 
 
     #USER CRUD

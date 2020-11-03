@@ -133,5 +133,5 @@ CREATE OR REPLACE VIEW HCFM AS SELECT * FROM (
 --New clients last year by months
 CREATE OR REPLACE VIEW NCLYM AS SELECT * FROM (
   (SELECT COUNT(*) AS id FROM CLIENTS) AS ID,
-  (SELECT COUNT(membership_id) AS records, MONTHNAME(register_date) AS month_number, YEAR(register_date) AS year FROM MEMBERSHIPS WHERE register_date BETWEEN SUBDATE(CURDATE(), INTERVAL 1 YEAR) AND NOW() GROUP BY MONTH(register_date),YEAR(register_date) ORDER BY YEAR(register_date)) AS RESULTS
+  (SELECT COUNT(membership_id) AS records, MONTHNAME(register_date) AS month_number, YEAR(register_date) AS year FROM MEMBERSHIPS WHERE register_date BETWEEN SUBDATE(CURDATE(), INTERVAL 1 YEAR) AND NOW() GROUP BY MONTH(register_date),YEAR(register_date) ORDER BY MONTH(register_date),YEAR(register_date)) AS RESULTS
 );

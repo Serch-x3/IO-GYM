@@ -2,7 +2,14 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="{% static 'js/Chart.js' %}"></script>
+<script src="{% static 'js/jspdf.min.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/addimage.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/addhtml.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/dom-to-image.js' %}" charset="utf-8"></script>
+<script src="{% static 'js/saveReport.js' %}" charset="utf-8"></script>
+<link rel="stylesheet" href="{% static 'css/Chart.css' %}">
+
 
 <div class="container-fluid">
 
@@ -27,6 +34,7 @@
             <button class="btn btn-secondary collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
               Pagos
             </button>
+            <a href="{% url 'report' %}" class="btn btn-secondary">Reporte</a>
           </div>
         </div>
       </div>
@@ -330,9 +338,6 @@
 
           </div>
         </div>
-
-
-
       </div>
     </div>
 
