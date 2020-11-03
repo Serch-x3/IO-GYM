@@ -18,7 +18,6 @@ import pytz
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -32,7 +31,6 @@ if not DEBUG:
     import mimetypes
     mimetypes.add_type("application/javascript", ".js")
     mimetypes.add_type("text/css", ".css")
-
 
 
 ALLOWED_HOSTS = ['*']
@@ -54,7 +52,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'daterange_filter',
 ]
-
 
 
 MIDDLEWARE = [
@@ -93,17 +90,17 @@ WSGI_APPLICATION = 'IOGYM.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 
-#173.18.0.1 DATABASE IP ADDRESS ON AFTERBYTE SERVER
-#BEFORE COMMIT, RETURN DATABASE CONFIG TO THIS VALUE
+# 173.18.0.1 DATABASE IP ADDRESS ON AFTERBYTE SERVER
+# BEFORE COMMIT, RETURN DATABASE CONFIG TO THIS VALUE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'IOGYM',
         'USER': 'djangoDB',
-        'PASSWORD':'AfterByte',
-        'HOST':'173.18.0.1',
-        #'HOST': 'localhost',
-        'PORT':'3307',
+        'PASSWORD': 'AfterByte',
+        # 'HOST':'173.18.0.1',
+        'HOST': 'localhost',
+        'PORT': '3307',
     }
 }
 
@@ -154,13 +151,11 @@ STATICFILES_DIRS = [
     '/static/',
 ]
 
-LOGIN_REDIRECT_URL= reverse_lazy('admin index')
-LOGOUT_REDIRECT_URL=reverse_lazy('index')
+LOGIN_REDIRECT_URL = reverse_lazy('admin index')
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
 
 
-
-
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'SMTP.Office365.com'
 EMAIL_HOST_USER = 'iogym@outlook.com'

@@ -20,6 +20,7 @@ from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect
 from django.core.paginator import *
 
+
 def report(request):
 
     def changeLanguage(data):
@@ -53,22 +54,28 @@ def report(request):
         return data
 
     general = GeneralStats.objects.first()
-    generalStats = [general.clients, general.trainers, general.groups,general.classes,general.active_memberships,general.expirated_memberships]
+    generalStats = [general.clients, general.trainers, general.groups,
+                    general.classes, general.active_memberships, general.expirated_memberships]
 
     cflm = CFLM.objects.first()
-    CFLMData = [cflm.sunday,cflm.monday,cflm.tuesday,cflm.wednesday,cflm.thursday,cflm.friday,cflm.saturday]
+    CFLMData = [cflm.sunday, cflm.monday, cflm.tuesday,
+                cflm.wednesday, cflm.thursday, cflm.friday, cflm.saturday]
 
     cfl3m = CFL3M.objects.first()
-    CFL3MData = [cfl3m.sunday,cfl3m.monday,cfl3m.tuesday,cfl3m.wednesday,cfl3m.thursday,cfl3m.friday,cfl3m.saturday]
+    CFL3MData = [cfl3m.sunday, cfl3m.monday, cfl3m.tuesday,
+                 cfl3m.wednesday, cfl3m.thursday, cfl3m.friday, cfl3m.saturday]
 
     cfl6m = CFL6M.objects.first()
-    CFL6MData = [cfl6m.sunday,cfl6m.monday,cfl6m.tuesday,cfl6m.wednesday,cfl6m.thursday,cfl6m.friday,cfl6m.saturday]
+    CFL6MData = [cfl6m.sunday, cfl6m.monday, cfl6m.tuesday,
+                 cfl6m.wednesday, cfl6m.thursday, cfl6m.friday, cfl6m.saturday]
 
     cfly = CFLY.objects.first()
-    CFLYData = [cfly.sunday,cfly.monday,cfly.tuesday,cfly.wednesday,cfly.thursday,cfly.friday,cfly.saturday]
+    CFLYData = [cfly.sunday, cfly.monday, cfly.tuesday,
+                cfly.wednesday, cfly.thursday, cfly.friday, cfly.saturday]
 
     hclyd = HCLYD.objects.first()
-    HCLYDData = [hclyd.sunday,hclyd.monday,hclyd.tuesday,hclyd.wednesday,hclyd.thursday,hclyd.friday,hclyd.saturday]
+    HCLYDData = [hclyd.sunday, hclyd.monday, hclyd.tuesday,
+                 hclyd.wednesday, hclyd.thursday, hclyd.friday, hclyd.saturday]
 
     cflym = CFLYM.objects.values_list()
     CFLYMData = []
@@ -92,7 +99,7 @@ def report(request):
         NCLYMData.append(c[1])
         NCLYMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
 
-    return render(request,'admin/graphs/report.html',{
+    return render(request, 'admin/graphs/report.html', {
         'general': generalStats,
         'CFLM': CFLMData,
         'CFL3M': CFL3MData,
@@ -141,22 +148,28 @@ def graphs(request):
         return data
 
     general = GeneralStats.objects.first()
-    generalStats = [general.clients, general.trainers, general.groups,general.classes,general.active_memberships,general.expirated_memberships]
+    generalStats = [general.clients, general.trainers, general.groups,
+                    general.classes, general.active_memberships, general.expirated_memberships]
 
     cflm = CFLM.objects.first()
-    CFLMData = [cflm.sunday,cflm.monday,cflm.tuesday,cflm.wednesday,cflm.thursday,cflm.friday,cflm.saturday]
+    CFLMData = [cflm.sunday, cflm.monday, cflm.tuesday,
+                cflm.wednesday, cflm.thursday, cflm.friday, cflm.saturday]
 
     cfl3m = CFL3M.objects.first()
-    CFL3MData = [cfl3m.sunday,cfl3m.monday,cfl3m.tuesday,cfl3m.wednesday,cfl3m.thursday,cfl3m.friday,cfl3m.saturday]
+    CFL3MData = [cfl3m.sunday, cfl3m.monday, cfl3m.tuesday,
+                 cfl3m.wednesday, cfl3m.thursday, cfl3m.friday, cfl3m.saturday]
 
     cfl6m = CFL6M.objects.first()
-    CFL6MData = [cfl6m.sunday,cfl6m.monday,cfl6m.tuesday,cfl6m.wednesday,cfl6m.thursday,cfl6m.friday,cfl6m.saturday]
+    CFL6MData = [cfl6m.sunday, cfl6m.monday, cfl6m.tuesday,
+                 cfl6m.wednesday, cfl6m.thursday, cfl6m.friday, cfl6m.saturday]
 
     cfly = CFLY.objects.first()
-    CFLYData = [cfly.sunday,cfly.monday,cfly.tuesday,cfly.wednesday,cfly.thursday,cfly.friday,cfly.saturday]
+    CFLYData = [cfly.sunday, cfly.monday, cfly.tuesday,
+                cfly.wednesday, cfly.thursday, cfly.friday, cfly.saturday]
 
     hclyd = HCLYD.objects.first()
-    HCLYDData = [hclyd.sunday,hclyd.monday,hclyd.tuesday,hclyd.wednesday,hclyd.thursday,hclyd.friday,hclyd.saturday]
+    HCLYDData = [hclyd.sunday, hclyd.monday, hclyd.tuesday,
+                 hclyd.wednesday, hclyd.thursday, hclyd.friday, hclyd.saturday]
 
     cflym = CFLYM.objects.values_list()
     CFLYMData = []
@@ -180,7 +193,7 @@ def graphs(request):
         NCLYMData.append(c[1])
         NCLYMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
 
-    return render(request,'admin/graphs/index.html',{
+    return render(request, 'admin/graphs/index.html', {
         'general': generalStats,
         'CFLM': CFLMData,
         'CFL3M': CFL3MData,
@@ -196,7 +209,7 @@ def graphs(request):
     })
 
 
-#USER VIEWS
+# USER VIEWS
 class UserList(ListView):
     model = User
 
@@ -221,7 +234,7 @@ class UserDelete(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         success_message = '¡Usuario eliminado correctamente!'
-        messages.success (self.request, (success_message))
+        messages.success(self.request, (success_message))
         return reverse('user index')
 
 
@@ -231,11 +244,11 @@ def EditUser(request, pk):
 
     if request.method == 'GET':
         f = CustomUserEditFormWithPassword()
-        return render(request, 'users/edit.html', {'form':f, 'key':pk, 'userInfo':userInfo})
+        return render(request, 'users/edit.html', {'form': f, 'key': pk, 'userInfo': userInfo})
 
     if request.method == 'POST':
 
-        if request.POST.get('change_password','off') == 'on':
+        if request.POST.get('change_password', 'off') == 'on':
             f = CustomUserEditFormWithPassword(request.POST)
         else:
             f = CustomUserEditForm(request.POST)
@@ -245,7 +258,7 @@ def EditUser(request, pk):
             messages.success(request, '¡Cuenta actualizada correctamente!.')
             return redirect('user index')
         else:
-            return render(request, 'users/edit.html', {'form':f, 'key':pk, 'userInfo':userInfo})
+            return render(request, 'users/edit.html', {'form': f, 'key': pk, 'userInfo': userInfo})
 
     else:
         f = CustomUserEditForm()
@@ -253,7 +266,7 @@ def EditUser(request, pk):
     return redirect('user index')
 
 
-class UserEdit(SuccessMessageMixin,UpdateView):
+class UserEdit(SuccessMessageMixin, UpdateView):
     model = User
     form = CustomUserCreationForm
     fields = ['username', 'email', 'is_superuser']
@@ -263,7 +276,7 @@ class UserEdit(SuccessMessageMixin,UpdateView):
 
     def get_success_url(self):
         success_message = '¡Usuario actualizado correctamente!'
-        messages.success (self.request, (success_message))
+        messages.success(self.request, (success_message))
         return reverse('user index')
 
 
@@ -272,91 +285,134 @@ class UserDetail(View):
         user = User.objects.get(pk=kwargs['pk'])
         userInfo = {
             "user_id": kwargs['pk'],
-            "username":user.username,
-            "email":user.email,
-            "last_login":user.last_login,
-            "is_superuser":user.is_superuser
+            "username": user.username,
+            "email": user.email,
+            "last_login": user.last_login,
+            "is_superuser": user.is_superuser
         }
         context = {'userInfo': userInfo}
         return render(request, 'users/details.html', context)
 
 
-
-
-
-def trainerChecking(request,pk):
-    trainer=TRAINERS.objects.get(trainer_id=pk)
-    password=request.POST['inputPassword']
+def trainerChecking(request, pk):
+    trainer = TRAINERS.objects.get(trainer_id=pk)
+    password = request.POST['inputPassword']
     if trainer.trainer_password == password:
-        today=datetime.now().date()
-        oldAttendance=TRAINERS_ATTENDANCES.objects.filter(trainer_id=pk,date__gte=datetime.now().replace(hour=0,minute=0,second=0).date())
+        today = datetime.now().date()
+        oldAttendance = TRAINERS_ATTENDANCES.objects.filter(
+            trainer_id=pk, date__gte=datetime.now().replace(hour=0, minute=0, second=0).date())
         print(oldAttendance.count())
         print(today)
-        if (oldAttendance.count()%2)==0 or (oldAttendance.count()==0):
-            attendance=TRAINERS_ATTENDANCES(trainer_id=TRAINERS(trainer_id=pk), description="Entrada")
-            messages.add_message(request, messages.SUCCESS, 'Ingreso exitoso. ¡Bienvenido!')
+        if (oldAttendance.count() % 2) == 0 or (oldAttendance.count() == 0):
+            attendance = TRAINERS_ATTENDANCES(
+                trainer_id=TRAINERS(trainer_id=pk), description="Entrada")
+            messages.add_message(request, messages.SUCCESS,
+                                 'Ingreso exitoso. ¡Bienvenido!')
         else:
-            attendance=TRAINERS_ATTENDANCES(trainer_id=TRAINERS(trainer_id=pk), description="Salida")
-            messages.add_message(request, messages.SUCCESS, 'Salida exitosa. ¡Hasta luego!')
+            attendance = TRAINERS_ATTENDANCES(
+                trainer_id=TRAINERS(trainer_id=pk), description="Salida")
+            messages.add_message(request, messages.SUCCESS,
+                                 'Salida exitosa. ¡Hasta luego!')
         attendance.save()
     else:
-        messages.add_message(request, messages.ERROR, 'Contraseña incorrecta. Intente de nuevo')
+        messages.add_message(request, messages.ERROR,
+                             'Contraseña incorrecta. Intente de nuevo')
 
     return redirect('trainer attendance mode')
 
 
-
-
 def clientCheckingByRFID(request):
-    if CLIENTS.objects.filter(client_rfid = request.POST['client_rfid']).exists():
-        client = CLIENTS.objects.get(client_rfid = request.POST['client_rfid'])
+    if CLIENTS.objects.filter(client_rfid=request.POST['client_rfid']).exists():
+        client = CLIENTS.objects.get(client_rfid=request.POST['client_rfid'])
 
-        membership=MEMBERSHIPS.objects.get(client_id=client.client_id)
+        membership = MEMBERSHIPS.objects.get(client_id=client.client_id)
         if datetime.now().date() <= membership.expiration_date:
-            attendance=CLIENTS_ATTENDANCES(client_id=CLIENTS(client_id=client.client_id))
+            attendance = CLIENTS_ATTENDANCES(
+                client_id=CLIENTS(client_id=client.client_id))
             attendance.save()
-            advice=''
-            daysleft= (membership.expiration_date - datetime.now().date()).days
+            advice = ''
+            daysleft = (membership.expiration_date -
+                        datetime.now().date()).days
             if daysleft == 0:
-                advice='Recuerda: ¡Hoy se vence tu membresía!'
-                messages.add_message(request, messages.INFO, 'Ingreso exitoso. ¡Bienvenido(a) ' + client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
+                advice = 'Recuerda: ¡Hoy se vence tu membresía!'
+                messages.add_message(request, messages.INFO, 'Ingreso exitoso. ¡Bienvenido(a) ' +
+                                     client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
             else:
-                advice=' Tu membresía se vence en: '+ str(daysleft)+ " días."
-                messages.add_message(request, messages.SUCCESS, 'Ingreso exitoso. ¡Bienvenido(a) ' + client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
+                advice = ' Tu membresía se vence en: ' + \
+                    str(daysleft) + " días."
+                messages.add_message(request, messages.SUCCESS, 'Ingreso exitoso. ¡Bienvenido(a) ' +
+                                     client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
         else:
-            messages.add_message(request, messages.ERROR, '¡Ingreso erróneo!. Membresia vencida')
+            messages.add_message(request, messages.ERROR,
+                                 '¡Ingreso erróneo!. Membresia vencida')
 
     else:
-        messages.add_message(request, messages.ERROR, '¡No se ha encontrado algún cliente con esta llave!')
+        messages.add_message(
+            request, messages.ERROR, '¡No se ha encontrado algún cliente con esta llave!')
 
     return redirect('index')
 
-def clientChecking(request,pk):
-    client=MEMBERSHIPS.objects.get(client_id=pk)
+
+def clientChecking(request, pk):
+    client = MEMBERSHIPS.objects.get(client_id=pk)
     if datetime.now().date() <= client.expiration_date:
-        attendance=CLIENTS_ATTENDANCES(client_id=CLIENTS(client_id=pk))
+        attendance = CLIENTS_ATTENDANCES(client_id=CLIENTS(client_id=pk))
         attendance.save()
-        advice=''
-        daysleft= (client.expiration_date - datetime.now().date()).days
+        advice = ''
+        daysleft = (client.expiration_date - datetime.now().date()).days
         client = CLIENTS.objects.get(pk=pk)
         if daysleft == 0:
-            advice='Recuerda: ¡Hoy se vence tu membresía!'
-            messages.add_message(request, messages.INFO, 'Ingreso exitoso. ¡Bienvenido(a) ' + client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
+            advice = 'Recuerda: ¡Hoy se vence tu membresía!'
+            messages.add_message(request, messages.INFO, 'Ingreso exitoso. ¡Bienvenido(a) ' +
+                                 client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
         else:
-            advice=' Tu membresía se vence en: '+ str(daysleft)+ " días."
-            messages.add_message(request, messages.SUCCESS, 'Ingreso exitoso. ¡Bienvenido(a) ' + client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
+            advice = ' Tu membresía se vence en: ' + str(daysleft) + " días."
+            messages.add_message(request, messages.SUCCESS, 'Ingreso exitoso. ¡Bienvenido(a) ' +
+                                 client.client_name + ' ' + client.client_surname + '!' + "\n" + advice)
     else:
-        messages.add_message(request, messages.ERROR, '¡Ingreso erróneo!. Membresia vencida')
+        messages.add_message(request, messages.ERROR,
+                             '¡Ingreso erróneo!. Membresia vencida')
 
     return redirect("index")
 
+# PAYMENTS VIEW
 
 
+class PaymentCreate(SuccessMessageMixin, CreateView):
+    model = PAYMENTS
+    success_message = '¡Pago registrado correctamente!'
 
-#MEMBERSHIP VIEWS
+    def get_success_url(self):
+        return reverse('index Payments')
+
+
+class PaymentList(ListView):
+    paginate_by = 25
+    model = PAYMENTS
+
+
+class PaymentEdit(SuccessMessageMixin, UpdateView):
+    model = PAYMENTS
+    success_message = '¡Pago actualizado correctamente!'
+
+    def get_success_url(self):
+        return reverse('index Payments')
+
+
+class PaymentDelete(SuccessMessageMixin, DeleteView):
+    model = PAYMENTS
+    fields = "__all__"
+
+    def get_success_url(self):
+        success_message = '¡Pago eliminado correctamente!'
+        messages.success(self.request, (success_message))
+        return reverse('index Payments')
+
+
+# MEMBERSHIP VIEWS
 class MembershipList(ListView):
     paginate_by = 25
-    model=MEMBERSHIPS
+    model = MEMBERSHIPS
 
 
 class MembershipDelete(SuccessMessageMixin, DeleteView):
@@ -366,15 +422,15 @@ class MembershipDelete(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         success_message = '¡Entrenador eliminado correctamente!'
-        messages.success (self.request, (success_message))
+        messages.success(self.request, (success_message))
         return reverse('index membership')
 
 
 class MembershipDetails(DetailView):
-    model=MEMBERSHIPS
+    model = MEMBERSHIPS
 
 
-class MembershipEditFromCreate(SuccessMessageMixin,UpdateView):
+class MembershipEditFromCreate(SuccessMessageMixin, UpdateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
     success_message = 'Cliente registrado correctamente !'
@@ -383,7 +439,7 @@ class MembershipEditFromCreate(SuccessMessageMixin,UpdateView):
         return reverse('client index')
 
 
-class MembershipEdit(SuccessMessageMixin,UpdateView):
+class MembershipEdit(SuccessMessageMixin, UpdateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
     success_message = '¡Membresía actualizada correctamente!'
@@ -392,7 +448,7 @@ class MembershipEdit(SuccessMessageMixin,UpdateView):
         return reverse('index membership')
 
 
-class MembershipCreate(SuccessMessageMixin,CreateView):
+class MembershipCreate(SuccessMessageMixin, CreateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
     success_message = '¡Membresía creada correctamente!'
@@ -402,11 +458,10 @@ class MembershipCreate(SuccessMessageMixin,CreateView):
         return redirect('edit membership', pk=data.membership_id)
 
 
-
-#GYMCLASS VIEWS
+# GYMCLASS VIEWS
 class GymClassesList(ListView):
     paginate_by = 25
-    model=GYMCLASSES
+    model = GYMCLASSES
 
 
 class GymClassesDelete(SuccessMessageMixin, DeleteView):
@@ -416,7 +471,7 @@ class GymClassesDelete(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         success_message = '¡Clase eliminada correctamente!'
-        messages.success (self.request, (success_message))
+        messages.success(self.request, (success_message))
         return reverse('index gymclasses')
 
 
@@ -431,7 +486,7 @@ class GymClassesEdit(SuccessMessageMixin, UpdateView):
 
 
 class GymClassesDetail(DetailView):
-    model=GYMCLASSES
+    model = GYMCLASSES
 
 
 class GymClassesCreate(SuccessMessageMixin, CreateView):
@@ -444,11 +499,10 @@ class GymClassesCreate(SuccessMessageMixin, CreateView):
         return reverse('index gymclasses')
 
 
-
-#GROUP VIEWS
+# GROUP VIEWS
 class GroupsList(ListView):
     paginate_by = 25
-    model=GROUPS
+    model = GROUPS
 
 
 class GroupsDelete(SuccessMessageMixin, DeleteView):
@@ -458,7 +512,7 @@ class GroupsDelete(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         success_message = '¡Grupo eliminado correctamente!'
-        messages.success (self.request, (success_message))
+        messages.success(self.request, (success_message))
         return reverse('index groups')
 
 
@@ -473,7 +527,7 @@ class GroupsEdit(SuccessMessageMixin, UpdateView):
 
 
 class GroupsDetail(DetailView):
-    model=GROUPS
+    model = GROUPS
 
 
 class GroupsCreate(SuccessMessageMixin, CreateView):
@@ -486,10 +540,10 @@ class GroupsCreate(SuccessMessageMixin, CreateView):
         return reverse('index groups')
 
 
-
-#ATTENDANCE
+# ATTENDANCE
 class clientAttendanceList(ListView):
-    model=clientAttendanceView
+    model = clientAttendanceView
+
 
 def clientAttendanceListPages(request):
     qs = clientAttendanceView.objects.all().order_by('-date')
@@ -504,9 +558,9 @@ def clientAttendanceListPages(request):
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
     try:
-        filter_parameters = '&client_rfid='+ request.GET['client_rfid']
+        filter_parameters = '&client_rfid=' + request.GET['client_rfid']
 
-        filter_parameters += '&client_name='+ request.GET['client_name']
+        filter_parameters += '&client_name=' + request.GET['client_name']
         filter_instance['client_name'] = request.GET['client_name']
 
         filter_parameters += "&client_surname=" + request.GET['client_surname']
@@ -516,19 +570,17 @@ def clientAttendanceListPages(request):
         filter_instance['date'] = request.GET['date']
     except:
         filter_parameters = ''
-    return render(request, 'clients/attendances.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
-
-
-
+    return render(request, 'clients/attendances.html', {'object_list': object_list, 'page_obj': page_obj, 'filter_parameters': filter_parameters, 'filter_instance': filter_instance})
 
 
 class trainerAttendanceList(ListView):
-    model=trainerAttendanceView
+    model = trainerAttendanceView
+
 
 def trainerAttendanceListPages(request):
     qs = trainerAttendanceView.objects.all().order_by('-register_date')
     object_list = TrainersAttendancesFilter(request.GET, queryset=qs).qs
-    page_obj = Paginator(object_list,25)
+    page_obj = Paginator(object_list, 25)
     page = request.GET.get('page')
     try:
         page_obj = page_obj.page(page)
@@ -536,15 +588,16 @@ def trainerAttendanceListPages(request):
         page_obj = page_obj.page(1)
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
-    filter_instance={}
+    filter_instance = {}
     try:
-        filter_parameters = '&trainer_rfid='+ request.GET['trainer_rfid']
+        filter_parameters = '&trainer_rfid=' + request.GET['trainer_rfid']
         filter_instance['trainer_rfid'] = request.GET['trainer_rfid']
 
-        filter_parameters += '&trainer_name='+ request.GET['trainer_name']
+        filter_parameters += '&trainer_name=' + request.GET['trainer_name']
         filter_instance['trainer_name'] = request.GET['trainer_name']
 
-        filter_parameters += "&trainer_surname=" + request.GET['trainer_surname']
+        filter_parameters += "&trainer_surname=" + \
+            request.GET['trainer_surname']
         filter_instance['trainer_surname'] = request.GET['trainer_surname']
 
         filter_parameters += "&register_date=" + request.GET['register_date']
@@ -556,14 +609,13 @@ def trainerAttendanceListPages(request):
         filter_instance['trainer_name'] = ''
         filter_instance['trainer_surname'] = ''
 
-    return render(request, 'trainers/attendances.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
+    return render(request, 'trainers/attendances.html', {'object_list': object_list, 'page_obj': page_obj, 'filter_parameters': filter_parameters, 'filter_instance': filter_instance})
 
 
-
-
-#ATTENDANCE MODE
+# ATTENDANCE MODE
 class trainersAttendance(ListView):
-    model=TRAINERS
+    model = TRAINERS
+
 
 def trainersAttendancePages(request):
     qs = TRAINERS.objects.all().order_by('trainer_id')
@@ -577,18 +629,18 @@ def trainersAttendancePages(request):
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
     try:
-        filter_parameters = '&trainer_name='+ request.GET['trainer_name']
-        filter_parameters += "&trainer_surname=" + request.GET['trainer_surname']
+        filter_parameters = '&trainer_name=' + request.GET['trainer_name']
+        filter_parameters += "&trainer_surname=" + \
+            request.GET['trainer_surname']
     except:
         filter_parameters = ''
-    return render(request, 'trainers/attendanceMode.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters})
+    return render(request, 'trainers/attendanceMode.html', {'object_list': object_list, 'page_obj': page_obj, 'filter_parameters': filter_parameters})
 
 
-
-
-#TRAINERS VIEWS
+# TRAINERS VIEWS
 class TrainerList(ListView):
-    model=TRAINERS
+    model = TRAINERS
+
 
 def TrainerListPages(request):
     qs = TRAINERS.objects.all().order_by('trainer_id')
@@ -603,13 +655,14 @@ def TrainerListPages(request):
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
     try:
-        filter_parameters = '&trainer_name='+ request.GET['trainer_name']
+        filter_parameters = '&trainer_name=' + request.GET['trainer_name']
         filter_instance['trainer_name'] = request.GET['trainer_name']
-        filter_parameters += "&trainer_surname=" + request.GET['trainer_surname']
+        filter_parameters += "&trainer_surname=" + \
+            request.GET['trainer_surname']
         filter_instance['trainer_surname'] = request.GET['trainer_surname']
     except:
         filter_parameters = ''
-    return render(request, 'trainers/index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
+    return render(request, 'trainers/index.html', {'object_list': object_list, 'page_obj': page_obj, 'filter_parameters': filter_parameters, 'filter_instance': filter_instance})
 
 
 class TrainerDelete(SuccessMessageMixin, DeleteView):
@@ -619,11 +672,8 @@ class TrainerDelete(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         success_message = '¡Entrenador eliminado correctamente!'
-        messages.success (self.request, (success_message))
+        messages.success(self.request, (success_message))
         return reverse('trainer index')
-
-
-
 
 
 def TrainerEdit(request, pk):
@@ -631,29 +681,33 @@ def TrainerEdit(request, pk):
 
     if request.method == 'POST':
         requested = request.POST.copy()
-        if request.POST.get('change_password','off') == 'on':
+        if request.POST.get('change_password', 'off') == 'on':
             requested.pop('change_password')
-            form = trainerFormEdit(requested, instance = trainer, initial={'trainer_id': pk})
+            form = trainerFormEdit(
+                requested, instance=trainer, initial={'trainer_id': pk})
 
             if form.is_valid():
                 form.save()
-                messages.success(request, '¡Entrenador actualizado correctamente!')
+                messages.success(
+                    request, '¡Entrenador actualizado correctamente!')
                 return HttpResponseRedirect(reverse('trainer index'))
 
         else:
-            form = trainerFormEditWithoutPassword(requested, instance = trainer, initial={'trainer_id': pk})
+            form = trainerFormEditWithoutPassword(
+                requested, instance=trainer, initial={'trainer_id': pk})
 
             if form.is_valid():
                 form.save()
-                messages.success(request, '¡Entrenador actualizado correctamente!')
+                messages.success(
+                    request, '¡Entrenador actualizado correctamente!')
                 return HttpResponseRedirect(reverse('trainer index'))
 
     elif request.method == 'GET':
-        form = trainerFormEdit(request.POST or None, instance = trainer)
+        form = trainerFormEdit(request.POST or None, instance=trainer)
 
-    return render(request, 'trainers/edit.html', {'form':form})
+    return render(request, 'trainers/edit.html', {'form': form})
 
-#class TrainerEdit(SuccessMessageMixin, UpdateView):
+# class TrainerEdit(SuccessMessageMixin, UpdateView):
 #    model = TRAINERS
 #    form_class = trainerForm
 #    success_message = '¡Entrenador actualizado correctamente!'
@@ -663,7 +717,7 @@ def TrainerEdit(request, pk):
 
 
 class TrainerDetails(DetailView):
-    model=TRAINERS
+    model = TRAINERS
 
 
 class TrainerCreate(SuccessMessageMixin, CreateView):
@@ -675,11 +729,10 @@ class TrainerCreate(SuccessMessageMixin, CreateView):
         return reverse('trainer index')
 
 
-
-
-#CLIENTS VIEWS
+# CLIENTS VIEWS
 class clientsAttendances(ListView):
-    model=CLIENTS
+    model = CLIENTS
+
 
 def clientsAttendancesPages(request):
     qs = CLIENTS.objects.all().order_by('client_id')
@@ -694,17 +747,19 @@ def clientsAttendancesPages(request):
     except EmptyPage:
         page_obj = page_obj.page(page_obj.num_pages)
     try:
-        filter_parameters = '&client_rfid='+ request.GET['client_rfid']
-        filter_parameters += '&client_name='+ request.GET['client_name']
+        filter_parameters = '&client_rfid=' + request.GET['client_rfid']
+        filter_parameters += '&client_name=' + request.GET['client_name']
         filter_instance['client_name'] = request.GET['client_name']
         filter_parameters += "&client_surname=" + request.GET['client_surname']
         filter_instance['client_surname'] = request.GET['client_surname']
     except:
         filter_parameters = ''
-    return render(request, 'index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
+    return render(request, 'index.html', {'object_list': object_list, 'page_obj': page_obj, 'filter_parameters': filter_parameters, 'filter_instance': filter_instance})
+
 
 class ClientList(ListView):
     model = CLIENTS
+
 
 def ClientListPages(request):
     qs = CLIENTS.objects.all().order_by('client_id')
@@ -721,7 +776,7 @@ def ClientListPages(request):
     try:
         filter_parameters = 'client_rfid=' + request.GET['client_rfid']
 
-        filter_parameters += '&client_name='+ request.GET['client_name']
+        filter_parameters += '&client_name=' + request.GET['client_name']
         filter_instance['client_name'] = request.GET['client_name']
 
         filter_parameters += "&client_surname=" + request.GET['client_surname']
@@ -729,7 +784,7 @@ def ClientListPages(request):
     except:
         filter_parameters = ''
 
-    return render(request, 'clients/index.html', {'object_list':object_list, 'page_obj':page_obj, 'filter_parameters':filter_parameters, 'filter_instance':filter_instance})
+    return render(request, 'clients/index.html', {'object_list': object_list, 'page_obj': page_obj, 'filter_parameters': filter_parameters, 'filter_instance': filter_instance})
 
 
 class ClientDetails(DetailView):
@@ -744,7 +799,7 @@ class ClientCreate(SuccessMessageMixin, CreateView):
 
     def form_valid(self, form):
         data = form.save()
-        membership=MEMBERSHIPS(client_id=CLIENTS(client_id=data.client_id))
+        membership = MEMBERSHIPS(client_id=CLIENTS(client_id=data.client_id))
         membership.save()
         return redirect('edit membership from create', pk=membership.membership_id)
 
@@ -766,15 +821,17 @@ class ClientDelete(SuccessMessageMixin, DeleteView):
 
     def get_success_url(self):
         success_message = '¡Cliente eliminado correctamente!'
-        messages.success (self.request, (success_message))
+        messages.success(self.request, (success_message))
         return reverse('client index')
 
 
 def Error404(request,  exception):
-    return render(request, template_name = 'errors/404.html')
+    return render(request, template_name='errors/404.html')
+
 
 def Error500(request):
-    return render(request, template_name = 'errors/500.html')
+    return render(request, template_name='errors/500.html')
+
 
 def java_script(request):
     filename = request.path.strip("/")
