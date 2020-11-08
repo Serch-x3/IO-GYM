@@ -9,10 +9,10 @@
       <h2>Administración de Pagos</h2>
     </div>
     <div class="col-md-3 d-none d-md-block">
-      <a type="button" class="btn btn-success" href="{% url 'create gymclasses' %}">Nuevo</a>
+      <a type="button" class="btn btn-success" href="{% url 'create payment' %}">Nuevo</a>
     </div>
     <div class="col-12 d-md-none">
-      <a type="button" class="btn btn-success btn-block" href="{% url 'create gymclasses' %}">Nuevo</a>
+      <a type="button" class="btn btn-success btn-block" href="{% url 'create payment' %}">Nuevo</a>
     </div>
   </div>
 </div>
@@ -71,19 +71,19 @@
                 {% for payments in page_obj %}
                   <tr>
                     <td>{{ payments.payment_description}}</td>
-                    <td>{{ payments.cost}}</td>
+                    <td>$ {{ payments.payment_cost}}</td>
                     <td align="right">
-                      <form method="POST" action="{% url 'delete gymclasses' gymclasses.gymclass_id %}">
+                      <form method="POST" action="">
                         {% csrf_token %}
                         <div class="btn-group">
-                          <a href="{% url 'detail gymclasses' gymclasses.gymclass_id %}" title="Ver" class="btn btn-primary">Ver </a>
-                          <a href="{% url 'edit gymclasses' gymclasses.gymclass_id %}" title="Editar"class="btn btn-secondary">Editar </a>
-                          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteGymClass{{gymclasses.gymclass_id}}Modal" >
+                          <a href="{% url 'details payment' payments.payment_id %}" title="Detalles" class="btn btn-primary">Ver</a>
+                          <a href="{% url 'edit payment' payments.payment_id %}" title="Editar"class="btn btn-secondary">Editar </a>
+                          <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletepayment{{payment.payment_id}}Modal" >
                             Eliminar
                           </button>
                         </div>
                         <!-- Delete Modal -->
-                         <div class="modal fade" id="deleteGymClass{{gymclasses.gymclass_id}}Modal" tabindex="0" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                         <div class="modal fade" id="deletepayment{{payment.payment_id}}Modal" tabindex="0" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                               <div class="modal-header bg-danger text-light">
@@ -108,7 +108,7 @@
                 {% endfor %}
               {% else %}
                 <tr>
-                  <td colspan="2 alert-warning">¡Ups! No hay registros</td>
+                  <td class="alert-warning" colspan="3"><b>¡Ups! Aún no hay registros</b> </td>
                 </tr>
               {% endif %}
 

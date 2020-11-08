@@ -26,10 +26,12 @@ CREATE OR REPLACE TRIGGER DeleteTrainer BEFORE DELETE ON TRAINNERS FOR EACH ROW
         UPDATE GROUPS SET trainer_id = NULL WHERE trainer_id = old.trainer_id;
         DELETE FROM TRAINNERS_ATTENDANCES WHERE TRAINNERS_ATTENDANCES.trainer_id = old.tainer_id;
     END$$
+
 CREATE OR REPLACE TRIGGER DeleteClient BEFORE DELETE ON CLIENTS FOR EACH ROW
     BEGIN
         DELETE FROM MEMBERSHIPS WHERE MEMBERSHIPS.client_id = old.client_id;
         DELETE FROM CLIENT_ATTENDANCES WHERE CLIENT_ATTENDANCES.client_id = old.client_id;
+        DELETE FROM PAYMENTS_REGISTERS WHERE PAYMENTS_REGISTERS.client_id = old.client_id;
     END$$
 
 
@@ -135,3 +137,17 @@ CREATE OR REPLACE VIEW NCLYM AS SELECT * FROM (
   (SELECT COUNT(*) AS id FROM CLIENTS) AS ID,
   (SELECT COUNT(membership_id) AS records, MONTHNAME(register_date) AS month_number, YEAR(register_date) AS year FROM MEMBERSHIPS WHERE register_date BETWEEN SUBDATE(CURDATE(), INTERVAL 1 YEAR) AND NOW() GROUP BY MONTH(register_date),YEAR(register_date) ORDER BY MONTH(register_date),YEAR(register_date)) AS RESULTS
 );
+
+--Income by months last year
+CREATE OR REPLACE VIEW IBM AS SELECT * FROM (
+  (SELECT COUNT(*) AS id FROM CLIENTS) AS ID,
+  (SELECT SUM(payment_cost) AS month_income, MONTHNAME(payment_date) AS month, YEAR(payment_date) AS year FROM PAYMENTS_REGISTERS WHERE payment_date BETWEEN SUBDATE(CURDATE(), INTERVAL 1 YEAR) AND NOW() GROUP BY MONTH(payment_date),YEAR(payment_date) ORDER BY YEAR(payment_date), MONTH(payment_date)) AS RESULTS
+);
+
+--Memberships sold by month last year
+CREATE OR REPLACE VIEW MSM AS SELECT * FROM (
+  (SELECT COUNT(*) AS id FROM CLIENTS) AS ID,
+  (SELECT COUNT(payment_cost) AS sales, MONTHNAME(payment_date) AS month, YEAR(payment_date) AS year FROM PAYMENTS_REGISTERS WHERE payment_date BETWEEN SUBDATE(CURDATE(), INTERVAL 1 YEAR) AND NOW() GROUP BY MONTH(payment_date),YEAR(payment_date) ORDER BY YEAR(payment_date), MONTH(payment_date)) AS RESULTS
+);
+
+update PAYMENTS_REGISTERS set payment_date = "2020-08-15" where payment_register_id = 4;

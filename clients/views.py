@@ -24,8 +24,6 @@ from django.core.paginator import *
 def report(request):
 
     def changeLanguage(data):
-        print("*"*100)
-        print(data)
         if "January" in data:
             data = "Enero"
         elif "February" in data:
@@ -50,7 +48,6 @@ def report(request):
             data = "Noviembre"
         elif "December" in data:
             data = "Diciembre"
-        print(data)
         return data
 
     general = GeneralStats.objects.first()
@@ -98,6 +95,20 @@ def report(request):
     for c in nclym:
         NCLYMData.append(c[1])
         NCLYMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
+
+    incomes = IBM.objects.values_list()
+    incomesData = []
+    incomesLabels = []
+    for c in incomes:
+        incomesData.append(c[1])
+        incomesLabels.append(changeLanguage(c[2]) + " " + str(c[3]))
+
+    sales = MSM.objects.values_list()
+    salesData = []
+    salesLabels = []
+    for c in sales:
+        salesData.append(c[1])
+        salesLabels.append(changeLanguage(c[2]) + " " + str(c[3]))
 
     return render(request, 'admin/graphs/report.html', {
         'general': generalStats,
@@ -111,15 +122,17 @@ def report(request):
         'HCFMData': HCFMData,
         'HCFMLabels': HCFMLabels,
         'NCLYMData': NCLYMData,
-        'NCLYMLabels': NCLYMLabels
+        'NCLYMLabels': NCLYMLabels,
+        'incomesData': incomesData,
+        'incomesLabels': incomesLabels,
+        'salesData': salesData,
+        'salesLabels': salesLabels
     })
 
 
 def graphs(request):
 
     def changeLanguage(data):
-        print("*"*100)
-        print(data)
         if "January" in data:
             data = "Enero"
         elif "February" in data:
@@ -144,7 +157,6 @@ def graphs(request):
             data = "Noviembre"
         elif "December" in data:
             data = "Diciembre"
-        print(data)
         return data
 
     general = GeneralStats.objects.first()
@@ -193,6 +205,20 @@ def graphs(request):
         NCLYMData.append(c[1])
         NCLYMLabels.append(changeLanguage(c[2]) + ' ' + str(c[3]))
 
+    incomes = IBM.objects.values_list()
+    incomesData = []
+    incomesLabels = []
+    for c in incomes:
+        incomesData.append(c[1])
+        incomesLabels.append(changeLanguage(c[2]) + " " + str(c[3]))
+
+    sales = MSM.objects.values_list()
+    salesData = []
+    salesLabels = []
+    for c in sales:
+        salesData.append(c[1])
+        salesLabels.append(changeLanguage(c[2]) + " " + str(c[3]))
+
     return render(request, 'admin/graphs/index.html', {
         'general': generalStats,
         'CFLM': CFLMData,
@@ -205,7 +231,11 @@ def graphs(request):
         'HCFMData': HCFMData,
         'HCFMLabels': HCFMLabels,
         'NCLYMData': NCLYMData,
-        'NCLYMLabels': NCLYMLabels
+        'NCLYMLabels': NCLYMLabels,
+        'incomesData': incomesData,
+        'incomesLabels': incomesLabels,
+        'salesData': salesData,
+        'salesLabels': salesLabels
     })
 
 
@@ -375,15 +405,18 @@ def clientChecking(request, pk):
 
     return redirect("index")
 
-# PAYMENTS VIEW
 
+
+# PAYMENTS VIEW
 
 class PaymentCreate(SuccessMessageMixin, CreateView):
     model = PAYMENTS
+    form = PAYMENTS
+    fields = "__all__"
     success_message = '¡Pago registrado correctamente!'
 
     def get_success_url(self):
-        return reverse('index Payments')
+        return reverse('index payment')
 
 
 class PaymentList(ListView):
@@ -393,10 +426,12 @@ class PaymentList(ListView):
 
 class PaymentEdit(SuccessMessageMixin, UpdateView):
     model = PAYMENTS
+    form = PAYMENTS
+    fields = "__all__"
     success_message = '¡Pago actualizado correctamente!'
 
     def get_success_url(self):
-        return reverse('index Payments')
+        return reverse('index payment')
 
 
 class PaymentDelete(SuccessMessageMixin, DeleteView):
@@ -406,7 +441,12 @@ class PaymentDelete(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         success_message = '¡Pago eliminado correctamente!'
         messages.success(self.request, (success_message))
-        return reverse('index Payments')
+        return reverse('index payment')
+
+class PaymentDetails(DetailView):
+    model = PAYMENTS
+
+
 
 
 # MEMBERSHIP VIEWS
@@ -430,10 +470,105 @@ class MembershipDetails(DetailView):
     model = MEMBERSHIPS
 
 
+
+
+
+def membershipEditMethod(request, pk):
+    def get_cancel():
+        return (datetime.now() - timedelta(days=1)).date()
+    def get_days(number):
+        return (datetime.now() + timedelta(days=number)).date()
+    def get_weeks(number):
+        return (datetime.now() + timedelta(weeks=number)).date()
+    def get_months(number):
+        return (datetime.now() + timedelta(days=number*30)).date()
+    def get_years(number):
+        return (datetime.now() + timedelta(days=number*365)).date()
+
+    payments = PAYMENTS.objects.all()
+    membership = get_object_or_404(MEMBERSHIPS, client_id=pk)
+    if request.method == "POST":
+
+        request.POST = request.POST.copy()
+        payment_selected = PAYMENTS.objects.get(pk=request.POST['payment_option'])
+
+        if payment_selected.time_type == 'Día':
+            request.POST['expiration_date'] = get_days(payment_selected.number)
+        elif payment_selected.time_type == 'Semana':
+            request.POST['expiration_date'] = get_weeks(payment_selected.number)
+        elif payment_selected.time_type == 'Mes':
+            request.POST['expiration_date'] = get_months(payment_selected.number)
+        elif payment_selected.time_type == 'Año':
+            request.POST['expiration_date'] = get_years(payment_selected.number)
+
+        request.POST.pop('payment_option')
+        form = MembershipForm(request.POST, instance = membership)
+
+        if form.is_valid():
+            form.save()
+            pay = PAYMENTS_REGISTERS(client_id = CLIENTS(pk=request.POST['client_id']), payment_cost = payment_selected.payment_cost, payment_concept=payment_selected.payment_description)
+            pay.save()
+            messages.success(request, '¡Membresía actualizada correctamente!')
+            return HttpResponseRedirect(reverse('index membership'))
+
+    else:
+        form = MembershipForm(request.POST or None, instance=membership)
+        f = MembershipForm(request)
+
+    return render(request, 'admin/membership/edit.html', {'form': form, 'payment_options':payments})
+
+
+
+
+def membershipEditFromCreateMethod(request, pk):
+    def get_cancel():
+        return (datetime.now() - timedelta(days=1)).date()
+    def get_days(number):
+        return (datetime.now() + timedelta(days=number)).date()
+    def get_weeks(number):
+        return (datetime.now() + timedelta(weeks=number)).date()
+    def get_months(number):
+        return (datetime.now() + timedelta(days=number*30)).date()
+    def get_years(number):
+        return (datetime.now() + timedelta(days=number*365)).date()
+
+    membership = get_object_or_404(MEMBERSHIPS, client_id=pk)
+    if request.method == "POST":
+
+        request.POST = request.POST.copy()
+        payment_selected = PAYMENTS.objects.get(pk=request.POST['payment_option'])
+
+        if payment_selected.time_type == 'Día':
+            request.POST['expiration_date'] = get_days(payment_selected.number)
+        elif payment_selected.time_type == 'Semana':
+            request.POST['expiration_date'] = get_weeks(payment_selected.number)
+        elif payment_selected.time_type == 'Mes':
+            request.POST['expiration_date'] = get_months(payment_selected.number)
+        elif payment_selected.time_type == 'Año':
+            request.POST['expiration_date'] = get_years(payment_selected.number)
+
+        request.POST.pop('payment_option')
+        print("*"*100)
+        print(request.POST)
+        form = MembershipForm(request.POST, instance = membership)
+
+        if form.is_valid():
+            form.save()
+            #pay = PAYMENTS_REGISTERS(client_id = )
+            messages.success(request, '¡Cliente registrado correctamente!')
+            return HttpResponseRedirect(reverse('client index'))
+
+    else:
+        form = MembershipForm(request.POST or None, instance=membership)
+        payments = PAYMENTS.objects.all()
+        f = MembershipForm(request)
+
+    return render(request, 'admin/membership/edit.html', {'form': form, 'payment_options':payments})
+
 class MembershipEditFromCreate(SuccessMessageMixin, UpdateView):
     form_class = MembershipForm
     model = MEMBERSHIPS
-    success_message = 'Cliente registrado correctamente !'
+    success_message = 'Cliente registrado correctamente!'
 
     def get_success_url(self):
         return reverse('client index')
@@ -683,23 +818,19 @@ def TrainerEdit(request, pk):
         requested = request.POST.copy()
         if request.POST.get('change_password', 'off') == 'on':
             requested.pop('change_password')
-            form = trainerFormEdit(
-                requested, instance=trainer, initial={'trainer_id': pk})
+            form = trainerFormEdit(requested, instance=trainer, initial={'trainer_id': pk})
 
             if form.is_valid():
                 form.save()
-                messages.success(
-                    request, '¡Entrenador actualizado correctamente!')
+                messages.success(request, '¡Entrenador actualizado correctamente!')
                 return HttpResponseRedirect(reverse('trainer index'))
 
         else:
-            form = trainerFormEditWithoutPassword(
-                requested, instance=trainer, initial={'trainer_id': pk})
+            form = trainerFormEditWithoutPassword(requested, instance=trainer, initial={'trainer_id': pk})
 
             if form.is_valid():
                 form.save()
-                messages.success(
-                    request, '¡Entrenador actualizado correctamente!')
+                messages.success(request, '¡Entrenador actualizado correctamente!')
                 return HttpResponseRedirect(reverse('trainer index'))
 
     elif request.method == 'GET':

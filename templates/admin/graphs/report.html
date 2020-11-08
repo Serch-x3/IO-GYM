@@ -13,8 +13,47 @@
 <link rel="stylesheet" href="{% static 'css/main.css' %}">
 
 
+  <!-- Modal -->
+  <div class="modal fade" id="pdfModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-light">
+          <h5 class="modal-title" id="pdfModalLabel">Generando PDF xD...</h5>
+        </div>
+        <div class="modal-body">
+          El reporte se está generando. Espere un momento. <br>
+          <small>Puede que el navegador le solicite confirmar la descarga una vez que el PDF termine de generarse.</small>
+          <div class="progress mt-3">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+          </div>
+          <p id="progress-bar-label" class="text-center mt-1" >0%</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="container mt-3" id='report-container'>
+
+  <!-- Modal -->
+  <div class="modal fade" id="finishedModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-light">
+          <h5 class="modal-title" id="finishedModalLabel">Reporte generado con éxito</h5>
+        </div>
+        <div class="modal-body">
+          El reporte se ha generado con éxito. <br>
+          Confirme la descarga en caso de ser necesario. <br>
+        </div>
+        <div class="modal-footer">
+          <a href="{% url 'graphs' %}" class="btn btn-success">Volver</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="container mt-3 overflow-auto" id='report-container'>
+
   <div class="report-header">
     <h3 class="font-weight-bold">Reporte</h3>
   </div>
@@ -191,14 +230,67 @@
       </div>
 
 
+
+
+
+      <div class="dropdown-divider"></div>
+
+
+
+      <div class="chart" id="report-incomes">
+        <h3 class="text-center">Ingresos mensuales en el último año</h3>
+        <canvas id="chart-incomes"></canvas>
+        <div class="resume">
+          <h5>Resumen:</h5>
+          <table class="table table-striped text-center" id="table-incomes">
+            <thead class="thead-dark">
+              <th>Mes</th>
+              <th>Ingresos</th>
+            </thead>
+            <tbody>
+              {% for month in incomesLabels %}
+              <tr>
+                <th>{{ month }}</th>
+                <td class="income-month-data">data</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <div class="dropdown-divider"></div>
+
+
+
+      <div class="chart" id="report-memberships-sold">
+        <h3 class="text-center">Membresías vendidas mensualmente en el último año</h3>
+        <canvas id="chart-memberships-sold"></canvas>
+        <div class="resume">
+          <h5>Resumen:</h5>
+          <table class="table table-striped text-center" id="table-memberships-sold">
+            <thead class="thead-dark">
+              <th>Mes</th>
+              <th>Membresías Vendidas</th>
+            </thead>
+            <tbody>
+              {% for month in salesLabels %}
+              <tr>
+                <th>{{ month }}</th>
+                <td class="memberships-sold-month-data">data</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
     </div>
 
   </div>
-
-  <div class="controls text-center mb-4" id="buttons-preview">
-    <button type="button" name="button" class="btn btn-primary" id="downloadPdf" onclick="saveReport()">Descargar</button>
-  </div>
-
 </div>
 
 
@@ -286,7 +378,12 @@
       type: 'radar',
       data: canvasClientsData,
       options: {
-          responsive: true
+          responsive: true,
+          scale: {
+            ticks: {
+                suggestedMin: 0
+            }
+          }
       }
   });
   //Inserting data into clients flow table
@@ -294,6 +391,7 @@
   for(i = 0; i<canvasClientsData.datasets.length; i++){
     for(j = 0; j<7; j++){
       clientsTable.rows[j+1].cells[i+1].innerText = canvasClientsData.datasets[i].data[j]
+      clientsTable.rows[j+1].cells[i+1].style.backgroundColor= canvasClientsData.datasets[i].borderColor.replace('0.6', '0.3')
     }
   }
 
@@ -315,7 +413,12 @@
           }]
       },
       options: {
-          responsive: true
+          responsive: true,
+          scale: {
+            ticks: {
+                suggestedMin: 0
+            }
+          }
       }
   });
   var CFLYMData = {{CFLYMData|safe}}
@@ -328,10 +431,9 @@
 
 
 
-
   //NEW CLIENTS PER MONTH LAST YEAR
-  var canvasClientsByMonth = document.getElementById('chart-new-clients').getContext('2d');
-  var canvasClientsByMonthChart = new Chart(canvasClientsByMonth, {
+  var canvasNewClientsByMonth = document.getElementById('chart-new-clients').getContext('2d');
+  var canvasNewClientsByMonthChart = new Chart(canvasNewClientsByMonth, {
       type: 'radar',
       data: {
           labels: {{ NCLYMLabels|safe }},
@@ -344,7 +446,12 @@
           }]
       },
       options: {
-          responsive: true
+          responsive: true,
+          scale: {
+            ticks: {
+                suggestedMin: 0
+            }
+          }
       }
   });
   var NCLYMData = {{ NCLYMData|safe }}
@@ -353,5 +460,108 @@
     NCLYMElements[i].innerText = NCLYMData[i]
   }
 
+
+
+  //Incomes chart
+  var canvasIncomes = document.getElementById('chart-incomes').getContext('2d');
+  var canvasIncomesChart = new Chart(canvasIncomes, {
+    type: 'line',
+    data: {
+      labels: {{ incomesLabels|safe }},
+      datasets: [{
+        label: 'Ingresos',
+        data: {{ incomesData|safe }},
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)'
+        ],
+        fill: false
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+  var incomesData = {{ incomesData|safe }}
+  var incomesElements = document.getElementsByClassName('income-month-data')
+  for(i=0; i< incomesElements.length ; i++){
+    incomesElements[i].innerText = "$" + incomesData[i]
+  }
+
+
+
+
+  //Sales chart
+  var canvasMembershipsSold = document.getElementById('chart-memberships-sold').getContext('2d');
+  var canvasMembershipsSoldChart = new Chart(canvasMembershipsSold, {
+    type: 'bar',
+    data: {
+      labels: {{ salesLabels|safe }},
+      datasets: [{
+        label: 'Ingresos',
+        data: {{ salesData|safe }},
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+      }
+    }
+  });
+  var salesData = {{ salesData|safe }}
+  var salesElements = document.getElementsByClassName('memberships-sold-month-data')
+  for(i=0; i< salesElements.length ; i++){
+    salesElements[i].innerText = salesData[i]
+  }
+
+
+
+  $(document).ready(async function(){
+
+    $('#pdfModal').modal('show')
+
+    await canvasGeneralChart.update()
+    await canvasClientsChart.update()
+    await canvasClientsByMonthChart.update()
+    await canvasNewClientsByMonthChart.update()
+    await canvasIncomesChart.update()
+    await canvasMembershipsSoldChart.update()
+
+    updateProgress(10)
+
+    setTimeout(function(){
+      saveReport()
+    },1000)
+  })
 </script>
 {% endblock %}

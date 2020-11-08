@@ -28,7 +28,7 @@
         <a href="{% url 'index membership' %}"class="btn btn-secondary btn-block">Cancelar</a>
       </div>
 
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-7">
         <div class="form-group">
           <label for="stock" class="txt_negrita">Cliente</label>
           <select class="form-control" name="client_id" id="id_client_id" readonly>
@@ -63,7 +63,13 @@
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
           <input disabled class="form-control mb-1" type="text" value="{{form.expiration_date.value|date:'d / N / Y'}}">
-          {{ form.expiration_date|add_class:"form-control" }}
+
+          <label for="stock" class="txt_negrita">Ampliar membresía por:</label>
+          <select class="form-control" onload="u" name="payment_option" id="id_payment_option">
+            {% for payment in payment_options %}
+              <option onclick="updateCost({{payment.payment_cost}})" label="{{payment.payment_description}}" value="{{payment.payment_id}}">{{payment.payment_cost}}</option>
+            {% endfor %}
+          </select>
           {% for error in form.expiration_date.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -73,9 +79,28 @@
             </div>
           {% endfor %}
         </div>
+
+
+        <script type="text/javascript">
+          function updateCost(value){
+            document.getElementById('cost-label').innerText= "Costo: $ " + value
+          }
+
+          $(document).ready(function(){
+            selected_option = parseInt(document.getElementById('id_payment_option').selectedIndex)
+            document.getElementById('cost-label').innerText = "Costo: $ " + document.getElementById('id_payment_option').options[selected_option].text
+          });
+        </script>
+
+        <div class="col-12 mx-0">
+          <div class="alert-warning py-2 px-5 mx-0 rounded">
+            <h3 class="text-center font-weight-bold"id="cost-label">Cargando...</h3>
+          </div>
+        </div>
+
       </div>
 
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-5">
         <div class="form-group">
           <label for="stock" class="txt_negrita">Clases inscritas</label>
           {{ form.included_classes|add_class:"form-check-input" }}

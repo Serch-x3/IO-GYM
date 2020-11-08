@@ -17,22 +17,109 @@
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="row">
-
-      <div class="col-12 col-md-8">
-          <label for="">Nombre</label>
-          <input type="text" name="gymclass_name" value="{{object.gymclass_name}}" maxlength="40" class="form-control" id="id_gymclass_name">
+      <div class="col-6 col-md-2">
+        <div class="form-group">
+          <label for="">Cantidad</label>
+          {{ form.number|add_class:"form-control" }}
+          {% for error in form.number.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
       </div>
 
-      <div class="col-md-4 pt-4 mt-1 text-right d-none d-md-block">
+      <div class="col-6 col-md-3">
+        <div class="form-group">
+          <label for="">Unidad de tiempo</label>
+          {{ form.time_type|add_class:"form-control" }}
+          {% for error in form.time_type.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+
+      </div>
+
+      <div class="col-12 col-md-7">
+        <div class="form-group">
+          <label for="">Descripcion</label>
+          <small class="d-lg-none">&nbsp;</small>
+          {{ form.payment_description|add_class:"form-control" }}
+          {% for error in form.payment_description.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="form-group">
+          <label for="">Costo</label>
+          {{ form.payment_cost|add_class:"form-control" }}
+          {% for error in form.payment_cost.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="row mt-3 mb-5">
+      <div class="col-12 text-right d-none d-md-block">
         <button type="submit" class="btn btn-success">Aceptar</button>
-        <a href="{% url 'index gymclasses' %}" class="btn btn-secondary">Cancelar</a>
+        <a href="{% url 'index payment' %}" class="btn btn-secondary">Cancelar</a>
       </div>
 
-      <div class="col-12 mt-2 d-md-none">
+      <div class="col-12 d-md-none">
         <button type="submit" class="btn btn-success btn-block">Aceptar</button>
-        <a href="{% url 'index gymclasses' %}" class="btn btn-secondary btn-block">Cancelar</a>
+        <a href="{% url 'index payment' %}" class="btn btn-secondary btn-block">Cancelar</a>
       </div>
     </div>
+
   </form>
 </div>
+
+
+
+<script type="text/javascript">
+  function fillDescription(){
+    var n = document.getElementById('id_number').value
+    var t = document.getElementById('id_time_type').value
+    if(n > 1){
+      if(t === "Mes"){
+        t += "es"
+      }
+      else{
+        t += "s"
+      }
+    }
+    document.getElementById('id_payment_description').value = n + " " + t
+  }
+
+  $('#id_number').change(function(){
+    fillDescription();
+  })
+
+  $('#id_time_type').change(function(){
+    fillDescription();
+  })
+</script>
 {% endblock %}

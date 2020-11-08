@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+
+<div class="container mt-4 mb-2">
+  <div class="row">
+    <div class="col-9">
+      <h2>Detalles de pago</h2>
+    </div>
+    <div class="col-3">
+
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-6 col-md-2">
+      <label for="">Cantidad</label>
+      <div class="form-control"> {{object.number}}</div>
+    </div>
+
+
+    <div class="col-6 col-md-3">
+      <label for="">Unidad de tiempo</label>
+      <div class="form-control"> {{object.time_type}}</div>
+    </div>
+
+    <div class="col-12 col-md-7">
+      <label for="">Descripcion</label>
+      <div class="form-control"> {{object.payment_description}}</div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <label for="">Costo</label>
+      <div class="form-control"> {{object.payment_description}}</div>
+    </div>
+
+
+    <div class="col-md-4 pt-4 mt-1 text-right d-none d-md-block">
+      <a href="{% url 'edit payment' object.payment_id %}" class="btn btn-secondary">Editar</a>
+      <a href="{% url 'index payment' %}" class="btn btn-primary">Volver</a>
+    </div>
+
+    <div class="col-12 mt-2 d-md-none">
+      <a href="{% url 'edit payment' object.payment_id %}" class="btn btn-secondary btn-block">Editar</a>
+      <a href="{% url 'index payment' %}" class="btn btn-primary btn-block">Volver</a>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
