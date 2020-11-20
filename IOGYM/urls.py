@@ -76,6 +76,7 @@ urlpatterns = [
     path('admin/payments/create', login_required(PaymentCreate.as_view(template_name="admin/payments/create.html")), name='create payment'),
     path('admin/payments/edit/<int:pk>', login_required(PaymentEdit.as_view(template_name="admin/payments/edit.html")), name='edit payment'),
     path('admin/payments/details/<int:pk>', login_required(PaymentDetails.as_view(template_name="admin/payments/details.html")), name='details payment'),
+    path('admin/payments/delete/<int:pk>', login_required(PaymentDelete.as_view()), name='delete payment'),
 
 
 

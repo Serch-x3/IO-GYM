@@ -225,7 +225,7 @@ class CLIENTS(models.Model):
     client_surname = models.CharField(max_length=40, blank=True, null=True, verbose_name='Apellidos')
     client_birthday = models.DateField(verbose_name='Fecha de nacimiento')
     client_phone = models.CharField(max_length=12, blank=True, null=True, verbose_name='Teléfono')
-    client_emergency_phone = models.CharField(max_length=12, blank=True, verbose_name='Teléfono de emergencias')
+    client_emergency_phone = models.CharField(max_length=12, blank=True, null=True, verbose_name='Teléfono de emergencias')
     client_email = models.CharField(max_length=40, blank=True, null=True, validators=[emailValidator], verbose_name='Email')
     client_gender = models.CharField(choices=options, max_length=1, blank=True, null=True, verbose_name='Género')
     client_medical_info = models.CharField(max_length=200, null=True, blank=True, verbose_name='Información Médica')

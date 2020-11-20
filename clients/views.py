@@ -51,8 +51,8 @@ def report(request):
         return data
 
     general = GeneralStats.objects.first()
-    generalStats = [general.clients, general.trainers, general.groups,
-                    general.classes, general.active_memberships, general.expirated_memberships]
+    generalStats = [general.clients, general.trainers, general.classes,
+                general.groups, general.active_memberships, general.expirated_memberships]
 
     cflm = CFLM.objects.first()
     CFLMData = [cflm.sunday, cflm.monday, cflm.tuesday,
@@ -160,8 +160,8 @@ def graphs(request):
         return data
 
     general = GeneralStats.objects.first()
-    generalStats = [general.clients, general.trainers, general.groups,
-                    general.classes, general.active_memberships, general.expirated_memberships]
+    generalStats = [general.clients, general.trainers, general.classes,
+                general.groups, general.active_memberships, general.expirated_memberships]
 
     cflm = CFLM.objects.first()
     CFLMData = [cflm.sunday, cflm.monday, cflm.tuesday,
@@ -532,6 +532,7 @@ def membershipEditFromCreateMethod(request, pk):
     def get_years(number):
         return (datetime.now() + timedelta(days=number*365)).date()
 
+    payments = PAYMENTS.objects.all()
     membership = get_object_or_404(MEMBERSHIPS, client_id=pk)
     if request.method == "POST":
 
@@ -560,10 +561,12 @@ def membershipEditFromCreateMethod(request, pk):
 
     else:
         form = MembershipForm(request.POST or None, instance=membership)
-        payments = PAYMENTS.objects.all()
         f = MembershipForm(request)
 
     return render(request, 'admin/membership/edit.html', {'form': form, 'payment_options':payments})
+
+
+
 
 class MembershipEditFromCreate(SuccessMessageMixin, UpdateView):
     form_class = MembershipForm

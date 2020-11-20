@@ -68,16 +68,16 @@
             </thead>
             <tbody>
               {% if object_list|length > 0 %}
-                {% for payments in page_obj %}
+                {% for payment in page_obj %}
                   <tr>
-                    <td>{{ payments.payment_description}}</td>
-                    <td>$ {{ payments.payment_cost}}</td>
+                    <td>{{ payment.payment_description}}</td>
+                    <td>$ {{ payment.payment_cost}}</td>
                     <td align="right">
-                      <form method="POST" action="">
+                      <form method="POST" action="{% url 'delete payment' payment.payment_id %}">
                         {% csrf_token %}
                         <div class="btn-group">
-                          <a href="{% url 'details payment' payments.payment_id %}" title="Detalles" class="btn btn-primary">Ver</a>
-                          <a href="{% url 'edit payment' payments.payment_id %}" title="Editar"class="btn btn-secondary">Editar </a>
+                          <a href="{% url 'details payment' payment.payment_id %}" title="Detalles" class="btn btn-primary">Ver</a>
+                          <a href="{% url 'edit payment' payment.payment_id %}" title="Editar"class="btn btn-secondary">Editar </a>
                           <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deletepayment{{payment.payment_id}}Modal" >
                             Eliminar
                           </button>
