@@ -126,7 +126,7 @@
                 <td>{{ trainer.trainer_name }} {{ trainers.trainer_id}}</td>
                 <td>{{ trainer.trainer_surname }}</td>
                 <td>{{ trainer.trainer_phone }}</td>
-                <td>{{ trainer.trainer_email }}</td>
+                <td>{{ trainer.trainer_email|default_if_none:"Sin asignar" }}</td>
                 <td>
                   <form method="POST" action="{% url 'trainer delete' trainer.trainer_id %}">
                     {% csrf_token %}

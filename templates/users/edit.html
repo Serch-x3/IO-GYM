@@ -16,7 +16,7 @@
 
 <div class="container">
 
-  <form action="{{key}}" method="post" enctype="multipart/form-data">
+  <form action="{{key}}" method="post" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <div class="row">
       <div class="col-12 col-md-10 form-group">
@@ -80,14 +80,25 @@
         <label for="">Nivel de acceso</label>
 
         {% if userInfo.is_superuser%}
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="0">
-            <label class="form-check-label" for="exampleRadios1">Asistente</label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="1" checked>
-            <label class="form-check-label" for="exampleRadios2">Administrador</label>
-          </div>
+          {% if userInfo.id != user.id %}
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="0">
+              <label class="form-check-label" for="exampleRadios1">Asistente</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="1" checked>
+              <label class="form-check-label" for="exampleRadios2">Administrador</label>
+            </div>
+          {% else %}
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="is_superuser" id="id_is_superuser" value="1" checked>
+              <label class="form-check-label" for="exampleRadios2">Administrador</label>
+            </div>
+
+            <div class="alert alert-warning mt-2">
+              No puede cambiar el nivel de acceso de este usuario porque tiene la sesión activa.
+            </div>
+          {% endif %}
 
         {% else %}
           <div class="form-check">

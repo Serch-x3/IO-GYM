@@ -13,13 +13,18 @@
 
 <div class="container">
 
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <div class="row">
 
       <div class="col-12 col-md-8">
           <label for="">Nombre</label>
           <input type="text" name="gymclass_name" maxlength="40" class="form-control" id="id_gymclass_name">
+          {% for error in form.gymclass_name.errors %}
+            <div class="alert alert-warning mt-2">
+              {{error}}
+            </div>
+          {% endfor %}
       </div>
 
       <div class="col-md-4 pt-4 mt-1 text-right d-none d-md-block">

@@ -14,13 +14,13 @@
 
 <div class="container">
 
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <div class="row">
       <div class="col-6 col-md-2">
         <div class="form-group">
           <label for="">Cantidad</label>
-          {{ form.number|add_class:"form-control" }}
+          <input type="number" name="number" value="{{form.instance.number}}" min="1" class="form-control" id="id_number" required>
           {% for error in form.number.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -67,7 +67,7 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Costo</label>
-          {{ form.payment_cost|add_class:"form-control" }}
+          <input type="number" name="payment_cost" value="{{form.instance.payment_cost}}" min="0" step="any" class="form-control" id="id_payment_cost" required>
           {% for error in form.payment_cost.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}

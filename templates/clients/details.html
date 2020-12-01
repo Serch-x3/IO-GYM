@@ -51,6 +51,8 @@
           <div class="form-control"> Masculino</div>
         {% elif clients.client_gender == 'F'%}
           <div class="form-control"> Femenino</div>
+        {% elif clients.client_gender == None%}
+          <div class="form-control"> Sin asignar</div>
         {% else%}
           <div class="form-control"> No binario</div>
         {% endif%}
@@ -74,14 +76,14 @@
     <div class="col-12 col-md-6">
       <div class="form-group">
         <label for="">Email.</label>
-        <div class="form-control">{{clients.client_email}} </div>
+        <div class="form-control">{{clients.client_email|default_if_none:'Sin asignar'}} </div>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
       <div class="form-group">
         <label for="">Datos médicos.</label>
-        <div class="form-control">{{clients.client_medical_info}} </div>
+        <div class="form-control">{{clients.client_medical_info|default_if_none:'Sin datos médicos'}} </div>
       </div>
     </div>
   </div>

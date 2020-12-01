@@ -52,7 +52,7 @@
       <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
           <label for="">Fecha de nacimiento.</label>
-          <input class="form-control" type="date" name="client_birthday" required id="id_client_birthday">
+          <input class="form-control" type="date" name="client_birthday" required id="id_client_birthday" value="{{form.instance.client_birthday|date:'Y-m-d'}}">
           {% for error in form.client_birthday.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -83,7 +83,7 @@
         <div class="form-group">
           <label for="">Teléfono.</label>
 
-          <input class="form-control" type="tel" name="client_phone" id="id_client_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444">
+          <input class="form-control" type="tel" name="client_phone" id="id_client_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.instance.client_phone}}">
           {% for error in form.client_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -98,7 +98,7 @@
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
           <label for="">Teléfono de emergencia.</label>
-          <input class="form-control" type="tel" name="client_emergency_phone" id="id_client_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444">
+          <input class="form-control" type="tel" name="client_emergency_phone" id="id_client_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444"  value="{{form.instance.client_emergency_phone}}">
           {% for error in form.client_emergency_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}

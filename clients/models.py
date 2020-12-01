@@ -2,6 +2,8 @@ from django.core.validators import MaxValueValidator
 from django.core.validators import MinLengthValidator
 from django.core.validators import MinValueValidator
 from django.core.validators import EmailValidator
+from django.core.validators import validate_slug
+from django.core.validators import RegexValidator
 from django.db import models
 from model_utils import Choices
 import time
@@ -9,6 +11,9 @@ from datetime import datetime, timedelta
 from django.shortcuts import get_list_or_404, get_object_or_404
 from fernet_fields import fields
 # Create your models here.
+
+only_letters = RegexValidator(r'^[a-zA-Z]*$', 'Sólo se permiten letras')
+validate_alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Sólo se permiten carácteres alfanuméricos (0-9 y A-Z).')
 
 class MSM(models.Model):
     id = models.IntegerField(verbose_name='id', db_column='id'),
@@ -194,6 +199,7 @@ class MEMBERSHIPS(models.Model):
     class Meta:
         managed = True
         db_table = 'MEMBERSHIPS'
+        verbose_name = "Membresía"
 
 
 class CLIENTS_ATTENDANCES(models.Model):
@@ -221,11 +227,11 @@ class CLIENTS(models.Model):
     emailValidator = EmailValidator(message="Email inválido")
     options = Choices(('M', 'Masculino'), ('F', 'Femenino'),('N', 'No binario'))
     client_id = models.AutoField(primary_key=True)
-    client_name = models.CharField(max_length=40, blank=True, null=False, verbose_name='Nombre')
-    client_surname = models.CharField(max_length=40, blank=True, null=True, verbose_name='Apellidos')
+    client_name = models.CharField(max_length=40, blank=False, null=False, verbose_name='Nombre', validators=[only_letters])
+    client_surname = models.CharField(max_length=40, blank=False, null=False, verbose_name='Apellidos', validators=[only_letters])
     client_birthday = models.DateField(verbose_name='Fecha de nacimiento')
-    client_phone = models.CharField(max_length=12, blank=True, null=True, verbose_name='Teléfono')
-    client_emergency_phone = models.CharField(max_length=12, blank=True, null=True, verbose_name='Teléfono de emergencias')
+    client_phone = models.CharField(max_length=12, null=False, verbose_name='Teléfono')
+    client_emergency_phone = models.CharField(max_length=12, null=False, verbose_name='Teléfono de emergencias')
     client_email = models.CharField(max_length=40, blank=True, null=True, validators=[emailValidator], verbose_name='Email')
     client_gender = models.CharField(choices=options, max_length=1, blank=True, null=True, verbose_name='Género')
     client_medical_info = models.CharField(max_length=200, null=True, blank=True, verbose_name='Información Médica')
@@ -234,6 +240,7 @@ class CLIENTS(models.Model):
     class Meta:
         managed = True
         db_table = 'CLIENTS'
+        verbose_name = "Cliente"
 
     def __str__(self):
         return self.client_name + ' ' + self.client_surname
@@ -241,11 +248,12 @@ class CLIENTS(models.Model):
 
 class GYMCLASSES(models.Model):
     gymclass_id = models.AutoField(primary_key=True)
-    gymclass_name = models.CharField(max_length=40, blank=True, verbose_name='Nombre')
+    gymclass_name = models.CharField(max_length=40, blank=False, unique=True, validators=[validate_slug], verbose_name='nombre')
 
     class Meta:
         managed = True
         db_table = 'GYMCLASSES'
+        verbose_name = "clase"
 
     def __str__(self):
         return self.gymclass_name
@@ -255,21 +263,22 @@ class TRAINERS(models.Model):
     emailValidator = EmailValidator(message="Email inválido")
     options = Choices(('M', 'Masculino'), ('F', 'Femenino'),('N', 'No binario'))
     trainer_id = models.AutoField(primary_key=True)
-    trainer_name = models.CharField(max_length=40, blank=True, verbose_name='Nombre')
-    trainer_surname = models.CharField(max_length=40, blank=True, null=True, verbose_name='Apellidos')
+    trainer_name = models.CharField(max_length=40, blank=False, null=False, verbose_name='Nombre', validators=[only_letters])
+    trainer_surname = models.CharField(max_length=40, blank=False, null=False, verbose_name='Apellidos', validators=[only_letters])
     trainer_birthday = models.DateField(verbose_name='Fecha de nacimiento')
-    trainer_phone = models.CharField(max_length=12, blank=True, null=True, verbose_name='Teléfono')
-    trainer_emergency_phone = models.CharField(max_length=12, blank=True, verbose_name='Teléfono de emergencia')
+    trainer_phone = models.CharField(max_length=12, null=False, verbose_name='Teléfono')
+    trainer_emergency_phone = models.CharField(max_length=12, null=False, verbose_name='Teléfono de emergencia')
     trainer_email = models.CharField(max_length=40, blank=True, null=True, validators=[emailValidator], verbose_name='Email')
     trainer_gender = models.CharField(choices=options, max_length=1, blank=True, null=True, verbose_name='Género')
     trainer_address = models.CharField(max_length=60, blank=True, null=True, verbose_name='Dirección')
-    trainer_rfc = models.CharField(validators=[MinLengthValidator(12)], max_length=13, blank=True, null=True, verbose_name='RFC')
-    trainer_password = fields.EncryptedTextField(max_length=40, blank=True, verbose_name='Contraseña')
-    trainer_rfid = models.CharField(max_length=10, blank=True, null=True, unique=True, verbose_name='Llave de acceso')
+    trainer_rfc = models.CharField(validators=[MinLengthValidator(12), validate_alphanumeric], max_length=13, blank=True, null=True, verbose_name='RFC')
+    trainer_password = fields.EncryptedTextField(max_length=40, null=False, verbose_name='Contraseña')
+    trainer_rfid = models.CharField(max_length=10, null=True, blank=True, unique=True, verbose_name='Llave de acceso')
 
     class Meta:
         managed = True
         db_table = 'TRAINNERS'
+        verbose_name = 'Entrenador'
 
     def __str__(self):
         return self.trainer_name + ' ' + self.trainer_surname
@@ -278,7 +287,7 @@ class TRAINERS(models.Model):
 class GROUPS(models.Model):
     options = Choices('Lunes', 'Martes', 'Miércoles','Jueves', 'Viernes', 'Sábado', 'Domingo')
     group_id = models.AutoField(primary_key=True)
-    gymclass_id = models.ForeignKey('GYMCLASSES', models.DO_NOTHING,db_column='gymclass_id', blank=True, null=True, verbose_name='Clase')
+    gymclass_id = models.ForeignKey('GYMCLASSES', models.DO_NOTHING,db_column='gymclass_id', null=False, verbose_name='Clase')
     trainer_id = models.ForeignKey('TRAINERS', models.DO_NOTHING, db_column='trainer_id', blank=True, null=True, verbose_name='Entrenador')
     weekday = models.CharField(choices=options, max_length=15, verbose_name='Día', blank=False, null=False)
     hour = models.CharField(max_length=10, null=True, verbose_name='Hora')
@@ -286,19 +295,21 @@ class GROUPS(models.Model):
     class Meta:
         managed = True
         db_table = 'GROUPS'
+        verbose_name = 'Grupo'
 
 
 class PAYMENTS(models.Model):
     options = Choices('Día', 'Semana', 'Mes', 'Año')
     payment_id = models.AutoField(primary_key=True)
-    number = models.IntegerField(verbose_name='Cantidad', blank=True, null=False, default=1)
+    number = models.PositiveIntegerField(verbose_name='Cantidad', blank=True, null=False, default=1, validators=[MinValueValidator(1)])
     time_type = models.CharField(choices = options, verbose_name="Unidad de tiempo", null=False, default="Días", max_length=15)
-    payment_description = models.CharField(max_length=40, blank=True, verbose_name='Descripcion')
-    payment_cost = models.FloatField(verbose_name='Costo', blank=True, null=False, default="1")
+    payment_description = models.CharField(max_length=40, null=False, unique=True, verbose_name='Descripcion')
+    payment_cost = models.FloatField(verbose_name='Costo', blank=True, null=False, default=0, validators=[MinValueValidator(0)])
 
     class Meta:
         managed = True
         db_table = 'PAYMENTS'
+        verbose_name = "pago"
 
 
 class PAYMENTS_REGISTERS(models.Model):

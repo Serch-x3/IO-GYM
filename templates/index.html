@@ -13,6 +13,8 @@
   },5000);
 </script>
 
+<script src="{% static 'js/scroll.js'%}" charset="utf-8"></script>
+
 <script src="{% static 'js/rfid.js' %}" charset="utf-8"></script>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -190,7 +192,7 @@
   </div>
 </div>
 
-<div class="container mt-2">
+<div class="container mt-2" style="min-height: 100vh;">
 
 
 
@@ -223,7 +225,7 @@
             <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
           </svg>
         </button>
-        <a href="{% url 'index' %}#manual_access" class="btn btn-warning">Limpiar</a>
+        <a href="{% url 'index' %}?client_name=&client_surname=" class="btn btn-warning">Limpiar</a>
       </div>
       <!-- HIDE WHEN VIEWPORT IS MEDIUM OR LOWER-->
       <div class="col-12 col-md-4 d-md-none">
@@ -233,7 +235,7 @@
             <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
           </svg>
         </button>
-        <a href="{% url 'index' %}#manual_access" class="btn btn-warning btn-block">Limpiar</a>
+        <a href="{% url 'index' %}?client_name=&client_surname=" class="btn btn-warning btn-block">Limpiar</a>
       </div>
     </div>
   </form>

@@ -16,7 +16,7 @@
 
 <div class="container">
 
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <input type="hidden" name="trainer_id" value="{{form.instance.trainer_id}}">
     <div class="row">
@@ -54,7 +54,7 @@
       <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
           <label for="">Fecha de nacimiento</label>
-          <input class="form-control" type="date" name="trainer_birthday" required id="id_trainer_birthday" value="{{form.trainer_birthday.value|date:'Y-m-d'}}">
+          <input class="form-control" type="date" name="trainer_birthday" required id="id_trainer_birthday" value="{{form.instance.trainer_birthday|date:'Y-m-d'}}">
           {% for error in form.trainer_birthday.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -86,7 +86,7 @@
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group my-auto">
           <label for="">Teléfono. <small>Formato: (XXX-XXX-XXXX)</small></label>
-          <input class="form-control" type="tel" name="trainer_phone" id="id_trainer_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_phone.value|default_if_none:"" }}">
+          <input class="form-control" type="tel" name="trainer_phone" id="id_trainer_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_phone.value|default_if_none:"" }}" required>
           {% for error in form.trainer_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -101,7 +101,7 @@
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
           <label for="">Teléfono de emergencia. <small>Formato: (XXX-XXX-XXXX)</small></label>
-          <input class="form-control" type="tel" name="trainer_emergency_phone" id="id_trainer_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_emergency_phone.value|default_if_none:"" }}">
+          <input class="form-control" type="tel" name="trainer_emergency_phone" id="id_trainer_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_emergency_phone.value|default_if_none:"" }}" required>
           {% for error in form.trainer_emergency_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -211,7 +211,7 @@
       <div class="col-12 col-md-6">
         <div class="form-group">
           <label for="">Llave de Acceso</label>
-          <input type="password" name="trainer_rfid" maxlength="10" class="form-control" id="id_trainer_rfid" value="{{form.instance.trainer_rfid}}">
+          <input type="password" name="trainer_rfid" maxlength="10" class="form-control" id="id_trainer_rfid" value="{{form.instance.trainer_rfid|default_if_none:""}}">
           <small id="passwordHelpBlock" class="form-text text-muted">
             Pase la llave de identificación encima del lector.
           </small>

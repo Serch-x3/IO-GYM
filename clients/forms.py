@@ -6,7 +6,10 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.core.validators import validate_slug
 
+validate_letters = RegexValidator(r'^[a-zA-Z]*$', 'Sólo se permiten letras')
+validate_alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Sólo se permiten carácteres alfanuméricos (0-9 y A-Z).')
 
 class MembershipForm(forms.ModelForm):
     class Meta:
@@ -99,7 +102,7 @@ class trainerFormEditWithoutPassword(forms.ModelForm):
 
 class CustomUserCreationForm(forms.Form):
     is_superuser = forms.IntegerField(label="Admin")
-    username = forms.CharField(label='Usuario', min_length=4, max_length=150)
+    username = forms.CharField(label='Usuario', min_length=4, max_length=150, validators=[validate_alphanumeric])
     email = forms.EmailField(label='Email')
     password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Confirmación de contraseña', widget=forms.PasswordInput)

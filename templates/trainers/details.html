@@ -46,8 +46,15 @@
     <div class="col-6 col-md-6 col-lg-2">
       <div class="form-group">
         <label for="">Género</label>
-        <small class="d-lg-none">&nbsp;</small>
-        <div class="form-control"> {{object.trainer_gender}}</div>
+        {% if trainers.trainer_gender == 'M'%}
+          <div class="form-control"> Masculino</div>
+        {% elif trainers.trainer_gender == 'F'%}
+          <div class="form-control"> Femenino</div>
+        {% elif trainers.trainer_gender == None%}
+          <div class="form-control"> Sin asignar</div>
+        {% else%}
+          <div class="form-control"> No binario</div>
+        {% endif%}
       </div>
     </div>
 
@@ -70,21 +77,21 @@
     <div class="col-12 col-md-6">
       <div class="form-group">
         <label for="">Email</label>
-        <div class="form-control"> {{object.trainer_email}}</div>
+        <div class="form-control"> {{object.trainer_email|default_if_none:"Sin asignar"}}</div>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
       <div class="form-group">
         <label for="">Dirección</label>
-        <div class="form-control"> {{object.trainer_address}}</div>
+        <div class="form-control"> {{object.trainer_address|default_if_none:"Sin asignar"}}</div>
       </div>
     </div>
 
     <div class="col-12 col-md-6">
       <div class="form-group">
         <label for="">RFC</label>
-        <div class="form-control"> {{object.trainer_rfc}}</div>
+        <div class="form-control"> {{object.trainer_rfc|default_if_none:"Sin asignar"}}</div>
       </div>
     </div>
   </div>

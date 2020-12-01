@@ -60,14 +60,30 @@
           {% endfor %}
         </div>
 
+
+
+
+        <script type="text/javascript">
+          function updateCost(){
+            selected_option = parseInt(document.getElementById('id_payment_option').selectedIndex);
+            var obj = document.getElementById('cost-label').innerText = "Costo: $ " + document.getElementById('id_payment_option').options[selected_option].text;
+          }
+
+          $(document).ready(function(){
+            updateCost();
+          });
+        </script>
+
+
+
         <div class="form-group">
           <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
           <input disabled class="form-control mb-1" type="text" value="{{form.expiration_date.value|date:'d / N / Y'}}">
 
-          <label for="stock" class="txt_negrita">Ampliar membresía por:</label>
-          <select class="form-control" onload="u" name="payment_option" id="id_payment_option">
+          <label for="stock" class="txt_negrita">Ampliar membresía a partir de hoy por:</label>
+          <select class="form-control" onchange="updateCost();" name="payment_option" id="id_payment_option">
             {% for payment in payment_options %}
-              <option onclick="updateCost({{payment.payment_cost}})" label="{{payment.payment_description}}" value="{{payment.payment_id}}">{{payment.payment_cost}}</option>
+              <option label="{{payment.payment_description}}: ${{payment.payment_cost}}" value="{{payment.payment_id}}">{{payment.payment_cost}}</option>
             {% endfor %}
           </select>
           {% for error in form.expiration_date.errors %}
@@ -81,16 +97,7 @@
         </div>
 
 
-        <script type="text/javascript">
-          function updateCost(value){
-            document.getElementById('cost-label').innerText= "Costo: $ " + value
-          }
 
-          $(document).ready(function(){
-            selected_option = parseInt(document.getElementById('id_payment_option').selectedIndex)
-            document.getElementById('cost-label').innerText = "Costo: $ " + document.getElementById('id_payment_option').options[selected_option].text
-          });
-        </script>
 
         <div class="col-12 mx-0">
           <div class="alert-warning py-2 px-5 mx-0 rounded">

@@ -7,7 +7,7 @@
 <div class="container mt-4">
   <h2>Registrar entrenador</h2>
 
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" autocomplete="off">
     {% csrf_token %}
     <div class="row">
       <div class="col-12 col-md-6">
@@ -44,7 +44,7 @@
       <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
           <label for="">Fecha de nacimiento</label>
-          <input class="form-control" type="date" name="trainer_birthday" required id="id_trainer_birthday" value="{{form.instance.trainer_birthday|date:'Y-m-d'}}">
+          <input class="form-control" type="date" name="trainer_birthday" required id="id_trainer_birthday" value="{{form.instance.trainer_birthday|date:'Y-m-d'}}" required>
           {% for error in form.trainer_birthday.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}
@@ -76,7 +76,7 @@
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group my-auto">
           <label for="">Teléfono. <small>Formato: (XXX-XXX-XXXX)</small></label>
-          <input class="form-control" type="tel" name="trainer_phone" id="id_trainer_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.instance.trainer_emergency_phone}}">
+          <input class="form-control" type="tel" name="trainer_phone" id="id_trainer_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.instance.trainer_emergency_phone}}" required>
           {% for error in form.trainer_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
               {{error}}

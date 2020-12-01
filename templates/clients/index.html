@@ -145,12 +145,8 @@
               <tr>
                 <td>{{ clients.client_name }}</td>
                 <td>{{ clients.client_surname }}</td>
-                {% if clients.client_phone == None %}
-                  <td class="alert-danger font-weight-bold">Sin asignar</td>
-                {% else %}
-                  <td>{{ clients.client_phone }}</td>
-                {% endif %}
-                <td>{{ clients.client_email }}</td>
+                <td>{{ clients.client_phone|default_if_none:"Sin asignar" }}</td>
+                <td>{{ clients.client_email|default_if_none:"Sin asignar" }}</td>
                 <td>
                   <form method="POST" action="{% url 'client delete' clients.client_id %}">
                     {% csrf_token %}
