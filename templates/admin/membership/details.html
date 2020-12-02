@@ -33,6 +33,33 @@
         <p><span class="txt_negrita">Fecha de Registro:</span> <div class="form-control"> {{object.register_date|date:'d / F / Y'}}</div></p>
         <p><span class="txt_negrita">Fecha de vencimiento:</span> <div class="form-control"> {{object.expiration_date|date:'d / F / Y'}}</div></p>
       {% endlanguage %}
+
+      <div id="remaining"></div>
+      <script type="text/javascript">
+
+        expiration_year = {{object.expiration_date|date:'Y'}};
+        expiration_month = {{object.expiration_date|date:'m'}} -1;
+        expiration_day = {{object.expiration_date|date:'d'}};
+        expiration_date = new Date(expiration_year, expiration_month, expiration_day);
+        today = new Date(new Date().getFullYear(),new Date().getMonth() , new Date().getDate())
+        diff = expiration_date - today;
+
+        if(expiration_date - today < 0){
+          document.getElementById('remaining').className="alert alert-danger"
+          document.getElementById('remaining').innerHTML = "!La membresía ha expirado!"
+        }
+        else if(expiration_date - today == 0){
+          document.getElementById('remaining').className="alert alert-warning"
+          document.getElementById('remaining').innerHTML = "!Hoy se vence la membresía!"
+        }
+        else {
+          timeRemaining = diff/(1000*60*60*24)
+          document.getElementById('remaining').className="alert alert-success"
+          document.getElementById('remaining').innerHTML = "Vigente por " + timeRemaining + " días"
+        }
+      </script>
+
+
     </div>
 
     <div class="col-12 col-md-6 my-2">
@@ -41,9 +68,13 @@
           <span class="font-weight-bold">Clases inscritas:</span>
         </div>
         <ul class="list-group list-group-flush">
-          {% for class in memberships.included_classes.all %}
-            <li class="list-group-item">{{ class }}</li>
+          {% if memberships.included_classes.all|length == 0 %}
+            <div class=" alert-warning py-3 pl-2">Sin clases inscritas</div>
+          {% else %}
+            {% for class in memberships.included_classes.all %}
+              <li class="list-group-item">{{ class }}</li>
             {% endfor %}
+          {% endif %}
         </ul>
       </div>
     </div>

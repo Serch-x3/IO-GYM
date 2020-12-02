@@ -22,7 +22,7 @@
           <input type="text" name="gymclass_name" maxlength="40" class="form-control" id="id_gymclass_name" value="{{form.instance.gymclass_name}}">
           {% for error in form.gymclass_name.errors %}
             <div class="alert alert-warning mt-2">
-              Sólo se aceptan caracteres alfanuméricos (0-9 y A-Z).
+              {{error}}
             </div>
           {% endfor %}
       </div>

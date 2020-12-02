@@ -60,9 +60,13 @@
           <tr>
             <td>{{ memberships.client_id}}</td>
             <td>
-              {% for class in memberships.included_classes.all %}
-                {{ class }},
-              {% endfor %}
+              {% if memberships.included_classes.all|length == 0 %}
+                Sin asignar
+              {% else %}
+                {% for class in memberships.included_classes.all %}
+                  {{ class }},
+                {% endfor %}
+              {% endif %}
             </td>
             {% load i18n %}
             {% language 'es' %}

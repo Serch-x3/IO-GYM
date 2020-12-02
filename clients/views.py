@@ -489,21 +489,29 @@ def membershipEditMethod(request, pk):
     membership = get_object_or_404(MEMBERSHIPS, client_id=pk)
     if request.method == "POST":
 
+        payment_selected = PAYMENTS(number=-1, time_type="Día", payment_description="Default", payment_cost=0)
+
         request.POST = request.POST.copy()
-        payment_selected = PAYMENTS.objects.get(pk=request.POST['payment_option'])
 
-        if payment_selected.time_type == 'Día':
-            request.POST['expiration_date'] = get_days(payment_selected.number)
-        elif payment_selected.time_type == 'Semana':
-            request.POST['expiration_date'] = get_weeks(payment_selected.number)
-        elif payment_selected.time_type == 'Mes':
-            request.POST['expiration_date'] = get_months(payment_selected.number)
-        elif payment_selected.time_type == 'Año':
-            request.POST['expiration_date'] = get_years(payment_selected.number)
+        if(request.POST.get('payment_option', False)):
+            if(not request.POST['payment_option'] == "-1"):
+                payment_selected = PAYMENTS.objects.get(pk=request.POST['payment_option'])
 
-        request.POST.pop('payment_option')
+                if payment_selected.time_type == 'Día':
+                    request.POST['expiration_date'] = get_days(payment_selected.number)
+                elif payment_selected.time_type == 'Semana':
+                    request.POST['expiration_date'] = get_weeks(payment_selected.number)
+                elif payment_selected.time_type == 'Mes':
+                    request.POST['expiration_date'] = get_months(payment_selected.number)
+                elif payment_selected.time_type == 'Año':
+                    request.POST['expiration_date'] = get_years(payment_selected.number)
+                request.POST.pop('payment_option')
+            else:
+                request.POST['expiration_date'] = membership.expiration_date
+        else:
+            request.POST['expiration_date'] = membership.expiration_date
+
         form = MembershipForm(request.POST, instance = membership)
-
         if form.is_valid():
             form.save()
             pay = PAYMENTS_REGISTERS(client_id = CLIENTS(pk=request.POST['client_id']), payment_cost = payment_selected.payment_cost, payment_concept=payment_selected.payment_description)
@@ -536,26 +544,34 @@ def membershipEditFromCreateMethod(request, pk):
     membership = get_object_or_404(MEMBERSHIPS, client_id=pk)
     if request.method == "POST":
 
+        payment_selected = PAYMENTS(number=-1, time_type="Día", payment_description="Default", payment_cost=0)
+
         request.POST = request.POST.copy()
-        payment_selected = PAYMENTS.objects.get(pk=request.POST['payment_option'])
 
-        if payment_selected.time_type == 'Día':
-            request.POST['expiration_date'] = get_days(payment_selected.number)
-        elif payment_selected.time_type == 'Semana':
-            request.POST['expiration_date'] = get_weeks(payment_selected.number)
-        elif payment_selected.time_type == 'Mes':
-            request.POST['expiration_date'] = get_months(payment_selected.number)
-        elif payment_selected.time_type == 'Año':
-            request.POST['expiration_date'] = get_years(payment_selected.number)
+        if(request.POST.get('payment_option', False)):
+            if(not request.POST['payment_option'] == "-1"):
+                payment_selected = PAYMENTS.objects.get(pk=request.POST['payment_option'])
 
-        request.POST.pop('payment_option')
-        print("*"*100)
-        print(request.POST)
+                if payment_selected.time_type == 'Día':
+                    request.POST['expiration_date'] = get_days(payment_selected.number)
+                elif payment_selected.time_type == 'Semana':
+                    request.POST['expiration_date'] = get_weeks(payment_selected.number)
+                elif payment_selected.time_type == 'Mes':
+                    request.POST['expiration_date'] = get_months(payment_selected.number)
+                elif payment_selected.time_type == 'Año':
+                    request.POST['expiration_date'] = get_years(payment_selected.number)
+                request.POST.pop('payment_option')
+            else:
+                request.POST['expiration_date'] = membership.expiration_date
+        else:
+            request.POST['expiration_date'] = membership.expiration_date
+
         form = MembershipForm(request.POST, instance = membership)
 
         if form.is_valid():
             form.save()
-            #pay = PAYMENTS_REGISTERS(client_id = )
+            pay = PAYMENTS_REGISTERS(client_id = CLIENTS(pk=request.POST['client_id']), payment_cost = payment_selected.payment_cost, payment_concept=payment_selected.payment_description)
+            pay.save()
             messages.success(request, '¡Cliente registrado correctamente!')
             return HttpResponseRedirect(reverse('client index'))
 

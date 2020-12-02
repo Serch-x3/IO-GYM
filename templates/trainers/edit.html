@@ -22,7 +22,7 @@
     <div class="row">
       <div class="col-12 col-md-6">
         <div class="form-group">
-          <label for="">Nombre</label>
+          <label for="">Nombre <small class="text-danger">*</small></label>
           {{ form.trainer_name|add_class:"form-control" }}
           {% for error in form.trainer_name.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -37,7 +37,7 @@
 
       <div class="col-12 col-md-6">
         <div class="form-group">
-          <label for="">Apellidos</label>
+          <label for="">Apellidos <small class="text-danger">*</small></label>
           {{ form.trainer_surname|add_class:"form-control" }}
           {% for error in form.trainer_surname.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -53,7 +53,7 @@
 
       <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
-          <label for="">Fecha de nacimiento</label>
+          <label for="">Fecha de nacimiento <small class="text-danger">*</small></label>
           <input class="form-control" type="date" name="trainer_birthday" required id="id_trainer_birthday" value="{{form.instance.trainer_birthday|date:'Y-m-d'}}">
           {% for error in form.trainer_birthday.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -68,7 +68,7 @@
 
       <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
-          <label for="">Género</label>
+          <label for="">Género <small class="text-danger">*</small></label>
           <small class="d-lg-none">&nbsp;</small>
           {{ form.trainer_gender|add_class:"form-control" }}
           {% for error in form.trainer_gender.errors %}
@@ -85,7 +85,7 @@
 
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group my-auto">
-          <label for="">Teléfono. <small>Formato: (XXX-XXX-XXXX)</small></label>
+          <label for="">Teléfono. <small class="text-danger">*</small> <small>Formato: (XXX-XXX-XXXX)</small></label>
           <input class="form-control" type="tel" name="trainer_phone" id="id_trainer_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_phone.value|default_if_none:"" }}" required>
           {% for error in form.trainer_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -100,7 +100,7 @@
 
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
-          <label for="">Teléfono de emergencia. <small>Formato: (XXX-XXX-XXXX)</small></label>
+          <label for="">Teléfono de emergencia. <small class="text-danger">*</small> <small>Formato: (XXX-XXX-XXXX)</small></label>
           <input class="form-control" type="tel" name="trainer_emergency_phone" id="id_trainer_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{ form.trainer_emergency_phone.value|default_if_none:"" }}" required>
           {% for error in form.trainer_emergency_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -175,7 +175,7 @@
       <div class="row">
         <div class="col-12 col-md-6">
           <div class="form-group">
-            <label for="">Contraseña</label>
+            <label for="">Contraseña <small class="text-danger">*</small></label>
             <input class="form-control" type="password" name="trainer_password" id="id_trainer_password" required disabled>
             {% for error in form.trainer_password.errors %}
               <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -191,7 +191,7 @@
 
         <div class="col-12 col-md-6">
           <div class="form-group">
-            <label for="">Confirmación de contraseña</label>
+            <label for="">Confirmación de contraseña <small class="text-danger">*</small></label>
             <input type="password" name="trainer_password2" class="form-control" id="id_trainer_password2" required disabled>
             {% for error in form.trainer_password2.errors %}
               <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -225,6 +225,8 @@
           {% endfor %}
         </div>
       </div>
+
+      <small class="col-12 text-center">Los <small class="text-danger">*</small> indican campos obligarorios</small>
 
     </div>
 

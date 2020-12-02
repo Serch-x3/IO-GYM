@@ -28,7 +28,7 @@ function startTime() {
 
   var today = new Date();
 
-  document.getElementById('clock-date-span').innerHTML = weekday[today.getDay()] + ' ' + today.getDate() + ' de ' + month[today.getMonth()] + " del " + today.getFullYear()
+  document.getElementById('clock-date-span').innerHTML = weekday[today.getDay()-1] + ' ' + today.getDate() + ' de ' + month[today.getMonth()] + " del " + today.getFullYear()
   var h = today.getHours();
   if (h > 12){
     h -= 12

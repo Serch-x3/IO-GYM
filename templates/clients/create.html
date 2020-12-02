@@ -21,7 +21,7 @@
     <div class="row">
       <div class="col-12 col-md-6">
         <div class="form-group">
-          <label for="">Nombre</label>
+          <label for="">Nombre <small class="text-danger">*</small> </label>
           {{ form.client_name|add_class:"form-control" }}
           {% for error in form.client_name.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -36,7 +36,7 @@
 
       <div class="col-12 col-md-6">
         <div class="form-group">
-          <label for="">Apellidos</label>
+          <label for="">Apellidos <small class="text-danger">*</small> </label>
           {{ form.client_surname|add_class:"form-control" }}
           {% for error in form.client_surname.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -51,7 +51,7 @@
 
       <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
-          <label for="">Fecha de nacimiento.</label>
+          <label for="">Fecha de nacimiento <small class="text-danger">*</small></label>
           <input class="form-control" type="date" name="client_birthday" required id="id_client_birthday" value="{{form.instance.client_birthday|date:'Y-m-d'}}">
           {% for error in form.client_birthday.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -66,7 +66,7 @@
 
       <div class="col-6 col-md-6 col-lg-2">
         <div class="form-group">
-          <label for="">Género.</label>
+          <label for="">Género <small class="text-danger">*</small></label>
           {{ form.client_gender|add_class:"form-control" }}
           {% for error in form.client_gender.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -81,7 +81,7 @@
 
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
-          <label for="">Teléfono.</label>
+          <label for="">Teléfono <small class="text-danger">*</small></label>
 
           <input class="form-control" type="tel" name="client_phone" id="id_client_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444" value="{{form.instance.client_phone}}">
           {% for error in form.client_phone.errors %}
@@ -97,7 +97,7 @@
 
       <div class="col-12 col-md-6 col-lg-4">
         <div class="form-group">
-          <label for="">Teléfono de emergencia.</label>
+          <label for="">Teléfono de emergencia <small class="text-danger">*</small></label>
           <input class="form-control" type="tel" name="client_emergency_phone" id="id_client_emergency_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="333-333-4444"  value="{{form.instance.client_emergency_phone}}">
           {% for error in form.client_emergency_phone.errors %}
             <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
@@ -127,7 +127,7 @@
 
       <div class="col-12">
         <div class="form-group">
-          <label for="">Datos médicos.<br>
+          <label for="">Datos médicos <small class="text-danger">*</small><br>
             <small>Ingrese datos médicos del cliente que considere importantes para cuidar su salud.</small>
           </label>
           {{ form.client_medical_info|add_class:"form-control" }}
@@ -158,6 +158,10 @@
           {% endfor %}
         </div>
       </div>
+
+
+
+      <small class="col-12 text-center">Los <small class="text-danger">*</small> indican campos obligarorios</small>
 
     </div>
 

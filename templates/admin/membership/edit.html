@@ -3,6 +3,24 @@
 {% load widget_tweaks %}
 {% block content %}
 
+<!-- No classes Modal -->
+<div class="modal fade" id="noPaymentsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="noPaymentsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title" id="noPaymentsModalLabel">No se puede editar el registro</h5>
+      </div>
+      <div class="modal-body">
+        <p>No hay pagos registrados en el sistema.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="{% url 'index membership' %}" class="btn btn-secondary">Cancelar</a>
+        <a href="{% url 'create gymclasses' %}" class="btn btn-primary">Crear clase</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="container mt-5 mb-2">
   <div class="row">
@@ -63,67 +81,88 @@
 
 
 
-        <script type="text/javascript">
-          function updateCost(){
-            selected_option = parseInt(document.getElementById('id_payment_option').selectedIndex);
-            var obj = document.getElementById('cost-label').innerText = "Costo: $ " + document.getElementById('id_payment_option').options[selected_option].text;
-          }
-
-          $(document).ready(function(){
-            updateCost();
-          });
-        </script>
 
 
 
-        <div class="form-group">
-          <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
-          <input disabled class="form-control mb-1" type="text" value="{{form.expiration_date.value|date:'d / N / Y'}}">
+        {% if payment_options|length == 0%}
 
-          <label for="stock" class="txt_negrita">Ampliar membresía a partir de hoy por:</label>
-          <select class="form-control" onchange="updateCost();" name="payment_option" id="id_payment_option">
-            {% for payment in payment_options %}
-              <option label="{{payment.payment_description}}: ${{payment.payment_cost}}" value="{{payment.payment_id}}">{{payment.payment_cost}}</option>
-            {% endfor %}
-          </select>
-          {% for error in form.expiration_date.errors %}
-            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-              {{error}}
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          {% endfor %}
-        </div>
+          <div class="form-group">
+            <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
+            <input disabled class="form-control mb-1" type="text" value="{{form.expiration_date.value|date:'d / N / Y'}}">
+          </div>
 
+          <div class="alert alert-warning">
+            Sin pagos registrados. La fecha de vencimiento de la membresía será la actualmente registrada.
+          </div>
 
+        {% else %}
+          <div class="form-group">
+            <label for="stock" class="txt_negrita">Fecha de vencimiento:</label>
+            <input disabled class="form-control mb-1" type="text" value="{{form.expiration_date.value|date:'d / N / Y'}}">
 
+              <label for="stock" class="txt_negrita">Ampliar membresía a partir de hoy por:</label>
+              <select class="form-control" onchange="updateCost();" name="payment_option" id="id_payment_option">
+                <option label="No modificar" value="-1" selected>0</option>
+                {% for payment in payment_options %}
+                  <option label="{{payment.payment_description}}: ${{payment.payment_cost}}" value="{{payment.payment_id}}">{{payment.payment_cost}}</option>
+                {% endfor %}
+              </select>
+              {% for error in form.expiration_date.errors %}
+                <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+                  {{error}}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endfor %}
+          </div>
 
-        <div class="col-12 mx-0">
           <div class="alert-warning py-2 px-5 mx-0 rounded">
             <h3 class="text-center font-weight-bold"id="cost-label">Cargando...</h3>
           </div>
-        </div>
+
+
+          <script type="text/javascript">
+            function updateCost(){
+              selected_option = parseInt(document.getElementById('id_payment_option').selectedIndex);
+              var obj = document.getElementById('cost-label').innerText = "Costo: $ " + document.getElementById('id_payment_option').options[selected_option].text;
+            }
+
+            $(document).ready(function(){
+              updateCost();
+            });
+          </script>
+        {% endif %}
 
       </div>
 
       <div class="col-12 col-md-5">
         <div class="form-group">
           <label for="stock" class="txt_negrita">Clases inscritas</label>
-          {% for error in form.included_classes.errors %}
-          <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
-            {{error}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          {% endfor %}
-          {{ form.included_classes|add_class:"form-check-input" }}
+          {% if form.included_classes|length == 0 %}
+              <script type="text/javascript">
+                //$('#noClassesModal').modal('show');
+              </script>
+              <div class="alert alert-warning">
+                No hay clases registradas, pero aún puede editar la membresía.
+              </div>
+          {% else %}
+            {% for error in form.included_classes.errors %}
+            <div class="alert alert-danger alert-dismissible fade show my-2" role="alert">
+              {{error}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+            {{ form.included_classes|add_class:"form-check-input" }}
+          {% endif %}
         </div>
       </div>
     </div>
 
   </form>
 </div>
+
 
 {% endblock %}

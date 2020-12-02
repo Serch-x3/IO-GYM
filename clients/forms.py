@@ -8,8 +8,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_slug
 
-validate_letters = RegexValidator(r'^[a-zA-Z]*$', 'Sólo se permiten letras')
-validate_alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Sólo se permiten carácteres alfanuméricos (0-9 y A-Z).')
+validate_letters = RegexValidator(r'^[ a-zA-ZÁáÉéÍíÓóÚúÑñ]*$', 'Sólo se permiten letras')
+validate_alphanumeric = RegexValidator(r'^[ 0-9a-zA-ZÁáÉéÍíÓóÚúÑñ]*$', 'Sólo se permiten carácteres alfanuméricos (0-9 y A-Z).')
 
 class MembershipForm(forms.ModelForm):
     class Meta:
@@ -29,7 +29,7 @@ class trainerForm(forms.ModelForm):
 
     def clean_trainer_rfid(self):
         rfid = self.cleaned_data.get('trainer_rfid')
-        if TRAINERS.objects.filter(trainer_rfid = rfid).count() > 0:
+        if rfid != None and TRAINERS.objects.filter(trainer_rfid = rfid).count() > 0:
             raise ValidationError("Esta llave de acceso ya ha sido registrado. Use otro.")
         return rfid
 
